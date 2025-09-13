@@ -1,0 +1,40 @@
+\documentclass[12pt]{article}  
+ \usepackage{latexsym, color, amssymb}
+\newtheorem{q} {Problem}
+\newcommand{\beq}{\begin{q}\hskip.1cm }
+\newcommand{\eeq}{\end{q}\par } 
+\newcommand{\ra}{\rightarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\dar}{\downarrow}
+\begin{document}
+
+\hskip4.5cm{\Large\bf Homework 1}\vskip2cm 
+ To show that $p\oplus q\equiv (p\land\lnot q)\lor  (\lnot p\land q) $ using truth table, where $\oplus$ is the XOR conjunction, we write the truth table below:\\
+\begin{tabular}{c|c|c|c|c|c|c|c}% here c means centered, l would mean left justified and r would be right. The | are used to let LaTeX know how many columns we need.
+$ p$ & $q$ & $\neg p$ & $p \wedge \neg q$ & $  \neg p \wedge q$ & $\left(p \wedge \neg q\right) \vee \left(\neg p \wedge q\right) $& $\neg q$ & $p \oplus q$ \\ \hline
+True&True&False&False&False&False&False&False\\ \hline % \\ means new line  \hline means "make a horizontal line under this row".
+True&False&False&True&True&False&True&True\\ \hline
+False&True&True&False&False&True&True&True\\ \hline  % the & (ampersand) symbols are used line up the items in the rows and indicate the end of the column.
+False&False&True&True&False&False&False&False\\ \hline
+\end{tabular}\vskip1cm
+
+\beq Given the truth table above, write the truth table for $p\lor q\land s$ and its negation\eeq
+
+\[
+\begin{array}{|c|c|c|c|c|}
+\hline
+p & q & s & p \lor (q \land s) & \lnot(p \lor (q \land s)) \\
+\hline
+T & T & T & T & F \\
+T & T & F & T & F \\
+T & F & T & T & F \\
+T & F & F & T & F \\
+F & T & T & T & F \\
+F & T & F & F & T \\
+F & F & T & F & T \\
+F & F & F & F & T \\
+\hline
+\end{array}
+\]
+
+\end{document}
