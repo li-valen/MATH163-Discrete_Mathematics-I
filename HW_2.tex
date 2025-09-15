@@ -1,0 +1,230 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\usepackage{cmbright}
+
+\title{HW-2}
+\author{Valen Li}
+\date{September 2025}
+
+\begin{document}
+
+\section*{Logical Operators: NAND and NOR}
+
+In this document, we address a series of questions to demonstrate the properties and equivalences of logical operators, including the newly introduced NAND ($|$), defined as true when at least one of $p$ or $q$ is false, and NOR ($\downarrow$), defined as true only when both $p$ and $q$ are false. We use truth tables to verify equivalences and construct compound propositions.
+
+\subsection*{Q1: Conjunction, Disjunction, and Conditional using $\neg$ and $\vee$}
+To express conjunction ($p \wedge q$), disjunction ($p \vee q$), and conditional ($p \to q$) using only $\neg$ and $\vee$, we use the following equivalences:
+\begin{itemize}
+    \item Disjunction: $p \vee q$ (already given).
+    \item Conjunction: $p \wedge q \equiv \neg(\neg p \vee \neg q)$
+    \item Conditional: $p \to q \equiv \neg p \vee q$.
+\end{itemize}
+The truth table verifies these equivalences:
+
+\begin{center}
+\begin{tabular}{cc|cccc}
+\toprule
+$p$ & $q$ & $\neg p$ & $\neg q$ & $\neg p \vee \neg q$ & $\neg(\neg p \vee \neg q)$ \\
+\midrule
+T & T & F & F & F & T \\
+T & F & F & T & T & F \\
+F & T & T & F & T & F \\
+F & F & T & T & T & F \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The column for $\neg(\neg p \vee \neg q)$ matches $p \wedge q$. For the conditional:
+
+\begin{center}
+\begin{tabular}{cc|cc}
+\toprule
+$p$ & $q$ & $\neg p$ & $\neg p \vee q$ \\
+\midrule
+T & T & F & T \\
+T & F & F & F \\
+F & T & T & T \\
+F & F & T & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The column for $\neg p \vee q$ matches $p \to q$. Thus, $\neg$ and $\vee$ can express all three.
+
+\subsection*{Q2: Conjunction, Disjunction, and Conditional using $\neg$ and $\wedge$}
+To express conjunction ($p \wedge q$), disjunction ($p \vee q$), and conditional ($p \to q$) using only $\neg$ and $\wedge$, we use:
+\begin{itemize}
+    \item Conjunction: $p \wedge q$ (already given).
+    \item Disjunction: $p \vee q \equiv \neg(\neg p \wedge \neg q)$
+    \item Conditional: $p \to q \equiv \neg(p \wedge \neg q)$.
+\end{itemize}
+The truth table verifies these:
+
+\begin{center}
+\begin{tabular}{cc|ccccc}
+\toprule
+$p$ & $q$ & $\neg p$ & $\neg q$ & $\neg p \wedge \neg q$ & $\neg(\neg p \wedge \neg q)$ & $\neg(p \wedge \neg q)$ \\
+\midrule
+T & T & F & F & F & T & T \\
+T & F & F & T & F & T & F \\
+F & T & T & F & F & T & T \\
+F & F & T & T & T & F & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The column for $\neg(\neg p \wedge \neg q)$ matches $p \vee q$, and $\neg(p \wedge \neg q)$ matches $p \to q$. Thus, $\neg$ and $\wedge$ can express all three.
+
+\subsection*{Q3: Truth Table for NAND ($p | q$)}
+The NAND operator ($p | q$) is true when at least one of $p$ or $q$ is false, and false when both are true:
+
+\begin{center}
+\begin{tabular}{cc|c}
+\toprule
+$p$ & $q$ & $p | q$ \\
+\midrule
+T & T & F \\
+T & F & T \\
+F & T & T \\
+F & F & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Q4: Showing $p | q \equiv \neg(p \wedge q)$}
+We compare $p | q$ with $\neg(p \wedge q)$ using a truth table:
+
+\begin{center}
+\begin{tabular}{cc|ccc}
+\toprule
+$p$ & $q$ & $p \wedge q$ & $\neg(p \wedge q)$ & $p | q$ \\
+\midrule
+T & T & T & F & F \\
+T & F & F & T & T \\
+F & T & F & T & T \\
+F & F & F & T & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The columns for $\neg(p \wedge q)$ and $p | q$ are identical, confirming $p | q \equiv \neg(p \wedge q)$.
+
+\subsection*{Q5: Truth Table for NOR ($p \downarrow q$)}
+The NOR operator ($p \downarrow q$) is true only when both $p$ and $q$ are false:
+
+\begin{center}
+\begin{tabular}{cc|c}
+\toprule
+$p$ & $q$ & $p \downarrow q$ \\
+\midrule
+T & T & F \\
+T & F & F \\
+F & T & F \\
+F & F & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Q6: Showing $p \downarrow q \equiv \neg(p \vee q)$}
+We compare $p \downarrow q$ with $\neg(p \vee q)$ using a truth table:
+
+\begin{center}
+\begin{tabular}{cc|ccc}
+\toprule
+$p$ & $q$ & $p \vee q$ & $\neg(p \vee q)$ & $p \downarrow q$ \\
+\midrule
+T & T & T & F & F \\
+T & F & T & F & F \\
+F & T & T & F & F \\
+F & F & F & T & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The columns for $\neg(p \vee q)$ and $p \downarrow q$ are identical, confirming $p \downarrow q \equiv \neg(p \vee q)$.
+
+\subsection*{Q7: Showing $\{\downarrow\}$ is Functionally Complete}
+A set of operators is functionally complete if it can express negation, conjunction, and disjunction (or equivalently, $\neg$ and $\vee$ or $\neg$ and $\wedge$). We show this for $\{\downarrow\}$ in two parts.
+
+\subsubsection*{Q7a: Showing $p \downarrow p \equiv \neg p$}
+We construct a truth table for $p \downarrow p$:
+
+\begin{center}
+\begin{tabular}{c|cc}
+\toprule
+$p$ & $p \downarrow p$ & $\neg p$ \\
+\midrule
+T & F & F \\
+F & T & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Since $p \downarrow p$ matches $\neg p$, we have $p \downarrow p \equiv \neg p$.
+
+\subsubsection*{Q7b: Showing $(p \downarrow q) \downarrow (p \downarrow q) \equiv p \vee q$}
+We construct a truth table:
+
+\begin{center}
+\begin{tabular}{cc|ccc}
+\toprule
+$p$ & $q$ & $p \downarrow q$ & $(p \downarrow q) \downarrow (p \downarrow q)$ & $p \vee q$ \\
+\midrule
+T & T & F & T & T \\
+T & F & F & T & T \\
+F & T & F & T & T \\
+F & F & T & F & F \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The column for $(p \downarrow q) \downarrow (p \downarrow q)$ matches $p \vee q$. Since we can express $\neg p$ (from Q7a) and $p \vee q$, and Q1 shows that $\{\neg, \vee\}$ is functionally complete, $\{\downarrow\}$ is functionally complete.
+
+\subsection*{Q8: Expressing $p \to q$ using only $\downarrow$}
+We proved $p \to q \equiv \neg p \vee q$ in class so using this and the work from Q7:
+\begin{itemize}
+    \item $\neg p \equiv p \downarrow p$.
+    \item $p \vee q \equiv (p \downarrow q) \downarrow (p \downarrow q)$.
+\end{itemize}
+Thus, $p \to q \equiv \neg p \vee q \equiv (p \downarrow p) \vee q \equiv ((p \downarrow p) \downarrow q) \downarrow ((p \downarrow p) \downarrow q)$. The truth table verifies:
+
+\begin{center}
+\begin{tabular}{cc|ccccc}
+\toprule
+$p$ & $q$ & $p \downarrow p$ & $(p \downarrow p) \downarrow q$ & $((p \downarrow p) \downarrow q) \downarrow ((p \downarrow p) \downarrow q)$ & $p \to q$ \\
+\midrule
+T & T & F & T & T & T \\
+T & F & F & T & F & F \\
+F & T & T & F & T & T \\
+F & F & T & T & T & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The columns match, so $p \to q \equiv ((p \downarrow p) \downarrow q) \downarrow ((p \downarrow p) \downarrow q)$.
+
+\subsection*{Q9: Showing $p | q \equiv q | p$}
+We compare $p | q$ and $q | p$ using a truth table:
+
+\begin{center}
+\begin{tabular}{cc|cc}
+\toprule
+$p$ & $q$ & $p | q$ & $q | p$ \\
+\midrule
+T & T & F & F \\
+T & F & T & T \\
+F & T & T & T \\
+F & F & T & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The columns for $p | q$ and $q | p$ are identical, confirming $p | q \equiv q | p$.
+
+\end{document}
