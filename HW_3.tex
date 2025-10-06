@@ -1,0 +1,207 @@
+\documentclass[12pt]{article}
+\usepackage{latexsym, color, amssymb}
+\voffset=-.8cm
+\hoffset=-1.5cm
+\setlength{\textheight}{23cm}
+\setlength{\textwidth}{15cm}
+\pagestyle{myheadings}
+\newtheorem{q}{Problem}
+\newtheorem{dfntn}{Definition}
+\newcommand{\df}{\displaystyle\frac}
+\newcommand{\beq}{\begin{q} \hskip-.3cm)}
+\newcommand{\eeq}{\end{q}\newpage}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\rla}{\leftrightarrow}
+\markright{Dr. Petrescu CCP MATH163 Homework 3 - Solutions}
+\begin{document}
+\vskip.1cm{\bf Show all your work to get credit.} \vskip0.3cm
+{\bf Name}: Valen Li\ \vskip.5cm
+{\bf Date}: September 21, 2025 \vskip.5cm
+
+%%%% Problem 1
+\begin{q}
+Prove that \(\neg [r \vee (q \wedge (\neg r \rightarrow \neg p))] \equiv \neg r \wedge (p \vee \neg q)\) by using a series of logical equivalences.
+\end{q}
+{\bf Solution:} 
+
+\begin{itemize}
+    \item Simplify the implication: \(\neg r \ra \neg p \equiv \neg (\neg r) \vee \neg p \equiv r \vee \neg p\). Thus, the expression becomes:
+    \[
+    \neg [r \vee (q \wedge (r \vee \neg p))].
+    \]
+    \item Apply De Morgan’s Law to the negation of the disjunction:
+    \[
+    \neg [r \vee (q \wedge (r \vee \neg p))] = \neg r \wedge \neg (q \wedge (r \vee \neg p)).
+    \]
+    \item Apply De Morgan’s to the negated conjunction:
+    \[
+    \neg (q \wedge (r \vee \neg p)) = \neg q \vee \neg (r \vee \neg p).
+    \]
+    So the expression is:
+    \[
+    \neg r \wedge (\neg q \vee \neg (r \vee \neg p)).
+    \]
+    \item Simplify \(\neg (r \vee \neg p)\):
+    \[
+    \neg (r \vee \neg p) = \neg r \wedge \neg (\neg p) = \neg r \wedge p.
+    \]
+    Thus:
+    \[
+    \neg r \wedge (\neg q \vee (\neg r \wedge p)).
+    \]
+    \item Distribute \(\neg q \vee (\neg r \wedge p)\):
+    \[
+    \neg q \vee (\neg r \wedge p) = (\neg q \vee \neg r) \wedge (\neg q \vee p).
+    \]
+    So the expression becomes:
+    \[
+    \neg r \wedge (\neg q \vee \neg r) \wedge (\neg q \vee p).
+    \]
+    \item Apply the absorption law:
+    \[
+    \neg r \wedge (\neg q \vee \neg r) = \neg r.
+    \]
+    Resulting in: 
+    \[
+    \neg r \wedge (\neg q \vee p).
+    \]
+    \item Recognize that \(\neg q \vee p = p \vee \neg q\) (commutative property), so:
+    \[
+    \neg r \wedge (p \vee \neg q).
+    \]
+    This matches the right hand side we were given at the start.
+\end{itemize}
+
+\eeq
+
+%%%% Problem 2
+\begin{q}
+Express the following propositions using quantifiers, then express the negation in English and using quantifiers: \\
+(a) Some people have no common sense. \\
+(b) All Swedish movies are boring. \\
+(c) No one can keep a secret. \\
+(d) Someone in this class has a bad attitude. \\
+Make sure you indicate the predicate and its domain.
+\end{q}
+{\bf Solution:}
+
+\begin{itemize}
+    \item[(a)] {\bf Proposition:} Some people have no common sense.
+    \begin{itemize}
+        \item {\bf Predicate:} \(C(x) = \) ``x has common sense.''
+        \item {\bf Domain:} All people.
+        \item {\bf Quantified Form:} \(\exists x \neg C(x)\).
+        \item {\bf Negation (English):} ``All people have common sense.''
+        \item {\bf Negation (Quantifiers):} \(\neg (\exists x \neg C(x)) \equiv \forall x C(x)\).
+    \end{itemize}
+
+    \item[(b)] {\bf Proposition:} All Swedish movies are boring.
+    \begin{itemize}
+        \item {\bf Predicate:} \(B(x) = \) ``x is boring.''
+        \item {\bf Domain:} All Swedish movies.
+        \item {\bf Quantified Form:} \(\forall x B(x)\).
+        \item {\bf Negation (English):} ``Some Swedish movies are not boring.''
+        \item {\bf Negation (Quantifiers):} \(\neg (\forall x B(x)) \equiv \exists x \neg B(x)\).
+    \end{itemize}
+
+    \item[(c)] {\bf Proposition:} No one can keep a secret.
+    \begin{itemize}
+        \item {\bf Predicate:} \(K(x) = \) ``x can keep a secret.''
+        \item {\bf Domain:} All people.
+        \item {\bf Quantified Form:} \(\forall x \neg K(x)\).
+        \item {\bf Negation (English):} ``Someone can keep a secret.''
+        \item {\bf Negation (Quantifiers):} \(\neg (\forall x \neg K(x)) \equiv \exists x K(x)\).
+    \end{itemize}
+
+    \item[(d)] {\bf Proposition:} Someone in this class has a bad attitude.
+    \begin{itemize}
+        \item {\bf Predicate:} \(A(x) = \) ``x has a bad attitude.''
+        \item {\bf Domain:} All people in this class.
+        \item {\bf Quantified Form:} \(\exists x A(x)\).
+        \item {\bf Negation (English):} ``No one in this class has a bad attitude.''
+        \item {\bf Negation (Quantifiers):} \(\neg (\exists x A(x)) \equiv \forall x \neg A(x)\).
+    \end{itemize}
+\end{itemize}
+
+\eeq
+
+%%%% Problem 3
+\begin{q}
+Let \(M(x) = \) ``x is a millionaire'' and \(P(x) = \) ``x drives a Porsche''. The domain is all people. Translate to English: \\
+(a) \(\forall x (M(x) \ra P(x))\) \\
+(b) \(\exists x (M(x) \ra P(x))\) \\
+(c) \(\forall x (M(x) \wedge P(x))\) \\
+(d) \(\exists x (M(x) \vee P(x))\)
+\end{q}
+{\bf Solution:}
+
+\begin{itemize}
+    \item[(a)] \(\forall x (M(x) \ra P(x))\): ``All millionaires drive a Porsche.''
+    \item[(b)] \(\exists x (M(x) \ra P(x))\): Since \(M(x) \ra P(x) \equiv \neg M(x) \vee P(x)\), this translates to: ``There exists a person who is either not a millionaire or drives a Porsche.''
+    \item[(c)] \(\forall x (M(x) \wedge P(x))\): ``Everyone is both a millionaire and drives a Porsche.''
+    \item[(d)] \(\exists x (M(x) \vee P(x))\): ``There exists a person who is either a millionaire or drives a Porsche.''
+\end{itemize}
+
+\eeq
+
+%%%% Problem 4
+\begin{q}
+Prove that \(\cos x\) and \(\sin x\) are continuous \(\forall x \in \mathbb{R}\).
+\end{q}
+(I didn't understand how to prove this, so I watched a YouTube video that explained it and I only kinda get it so heres my attempt at the proof) \\ \\
+{\bf Solution:} 
+
+
+
+To prove that \(\sin x\) is continuous at every point \(a \in \mathbb{R}\), we need to show that for every \(\epsilon > 0\), there exists a \(\delta > 0\) such that if \(|x - a| < \delta\), then \(|\sin x - \sin a| < \epsilon\).
+
+Start with the trigonometric identity:
+\[
+\sin x - \sin a = 2 \cos\left(\frac{x + a}{2}\right) \sin\left(\frac{x - a}{2}\right).
+\]
+Taking the absolute value:
+\[
+|\sin x - \sin a| = 2 \left|\cos\left(\frac{x + a}{2}\right)\right| \left|\sin\left(\frac{x - a}{2}\right)\right|.
+\]
+Since \(\left|\cos \theta\right| \leq 1\) for any \(\theta\), this simplifies to:
+\[
+|\sin x - \sin a| \leq 2 \left|\sin\left(\frac{x - a}{2}\right)\right|.
+\]
+We use the known inequality \(|\sin \theta| \leq |\theta|\) for all real \(\theta\) (this can be established geometrically: in the unit circle, the vertical distance \(\sin \theta\) is less than or equal to the arc length \(\theta\) for \(\theta \geq 0\), and by symmetry for \(\theta < 0\)):
+\[
+\left|\sin\left(\frac{x - a}{2}\right)\right| \leq \left|\frac{x - a}{2}\right| = \frac{|x - a|}{2}.
+\]
+Substituting back:
+\[
+|\sin x - \sin a| \leq 2 \cdot \frac{|x - a|}{2} = |x - a|.
+\]
+To make \(|\sin x - \sin a| < \epsilon\), choose \(\delta = \epsilon\). Then, if \(|x - a| < \delta = \epsilon\), we have \(|\sin x - \sin a| \leq |x - a| < \epsilon\).
+
+This \(\delta\) works for any \(a\), so \(\sin x\) is continuous everywhere.
+\\ \\
+Similarly, for \(\cos x\) at \(a \in \mathbb{R}\):
+\[
+\cos x - \cos a = -2 \sin\left(\frac{x + a}{2}\right) \sin\left(\frac{x - a}{2}\right).
+\]
+Taking the absolute value:
+\[
+|\cos x - \cos a| = 2 \left|\sin\left(\frac{x + a}{2}\right)\right| \left|\sin\left(\frac{x - a}{2}\right)\right|.
+\]
+Since \(\left|\sin \theta\right| \leq 1\) for any \(\theta\):
+\[
+|\cos x - \cos a| \leq 2 \cdot 1 \cdot \left|\sin\left(\frac{x - a}{2}\right)\right| = 2 \left|\sin\left(\frac{x - a}{2}\right)\right|.
+\]
+Again, using \(|\sin \theta| \leq |\theta|\):
+\[
+2 \left|\sin\left(\frac{x - a}{2}\right)\right| \leq 2 \cdot \frac{|x - a|}{2} = |x - a|.
+\]
+So:
+\[
+|\cos x - \cos a| \leq |x - a|.
+\]
+Choose \(\delta = \epsilon\). If \(|x - a| < \delta = \epsilon\), then \(|\cos x - \cos a| < \epsilon\).
+
+This works for any \(a\), so \(\cos x\) is continuous everywhere.
+\eeq
+
+\end{document}
