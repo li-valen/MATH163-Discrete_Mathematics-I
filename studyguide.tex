@@ -1,0 +1,3360 @@
+%++++++++++++++++++++++++++++++++++++++++
+\documentclass[article, 11pt]{article}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{tabu} % extra features for tabular environment
+\usepackage{amsmath}  % improve math presentation
+\usepackage{graphicx} % takes care of graphic including machinery
+\usepackage[margin=1in]{geometry} % decreases margins
+\usepackage{cite} % takes care of citations
+\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
+\usepackage{tikz}
+\usepackage{caption} 
+\usepackage{fancyhdr}
+\usepackage{amssymb} % symbols like /therefore
+\usepackage{amsthm} % proofs
+\usepackage{enumerate} % lettered lists
+\usepackage{mathtools} % macros
+\usepackage{hyperref} % hyperlinks
+\usetikzlibrary{scopes}
+% \usepackage{xcolor} \pagecolor[rgb]{0.12549019607,0.1294117647,0.13725490196} \color[rgb]{0.82352941176,0.76862745098,0.62745098039} % dark theme
+\theoremstyle{definition}
+\newtheorem{example}{Example}[subsubsection]
+\newtheorem*{remark}{Remark}
+\newtheorem{theorem}{Theorem}[subsubsection]
+\newtheorem{definition}{Definition}[subsubsection]
+\newtheorem{corollary}{Corollary}[subsubsection]
+\hypersetup{
+	colorlinks=false,      % false: boxed links; true: colored links
+	linkcolor=blue,        % color of internal links
+	citecolor=blue,        % color of links to bibliography
+	filecolor=magenta,     % color of file links
+	urlcolor=blue         
+}
+\usepackage{titling}
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+\usepackage{siunitx} % units
+\usepackage{verbatim} 
+\newcommand{\studyTitle}{Study Guide} 
+\newcommand{\class}{MATH 163: Discrete Mathematics 1 Fall 2022}
+\newcommand{\professor}{Dr. Petrescu}
+\newcommand{\name}{Valen Li}
+\pagestyle{fancy}
+\fancyhf{}% clears all header and footer fields
+\fancyfoot[C]{--~\thepage~--}
+\renewcommand*{\headrulewidth}{0.4pt}
+\renewcommand*{\footrulewidth}{0pt}
+\lhead{\name}
+\chead{\leftmark}
+\rhead{\professor}
+
+
+\fancypagestyle{plain}{%
+  \fancyhf{}% clears all header and footer fields
+  \fancyfoot[C]{--~\thepage~--}%
+  \renewcommand*{\headrulewidth}{0pt}%
+  \renewcommand*{\footrulewidth}{0pt}%
+}
+
+% Shortcuts
+\newcommand{\xor}{\oplus} % exclusive or
+\newcommand{\true}{\textbf{T}} % true
+\newcommand{\false}{\textbf{F}} % false
+\newcommand{\lra}{\leftrightarrow} % iff
+
+\newcommand{\powset}{\mathcal{P}} % power set
+
+\newcommand{\comp}{\circ} % composition
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil} % ceil function
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor} % floor function
+\DeclarePairedDelimiter\abs{\lvert}{\rvert} % absolute value
+
+\DeclarePairedDelimiter\paren{(}{)} % parenthesis
+
+\newcommand{\df}{\displaystyle\frac} % displaystyle fraction
+\newcommand{\qeq}{\overset{?}{=}} % questionable equality
+
+\newcommand{\Mod}[1]{\;\mathrm{mod}\; #1} % modulo operator
+
+% Sets
+\DeclarePairedDelimiter\set{\{}{\}}
+\newcommand{\unite}{\cup}
+\newcommand{\inter}{\cap}
+
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\realspos}{\mathbb{R}^+} % real numbers: textbook is Z^+
+\newcommand{\ints}{\mathbb{Z}}
+\newcommand{\posints}{\mathbb{Z}^+}
+\newcommand{\nats}{\mathbb{N}} % textbook is Z^+ and 0
+\newcommand{\rats}{\mathbb{Q}}
+\newcommand{\comps}{\mathbb{C}}
+
+% Counting
+\newcommand\perm[2][^n]{\prescript{#1\mkern-2.5mu}{}P_{#2}}
+\newcommand\comb[2][^n]{\prescript{#1\mkern-0.5mu}{}C_{#2}}
+
+\setlength\parindent{0pt}
+
+% Sign Charts
+\newdimen\tcolw \tcolw=2.5em % the column width
+\edef\ecatcode{\catcode`&=\the\catcode`&\relax}\catcode`&=4
+\def\sgchart#1#2{\vbox{\offinterlineskip\halign{\hfil##\quad&##\hfil\crcr\sgchartA#2,:,%
+   \omit\sgchartR&\kern.2pt\sgchartS{.5\tcolw}\relax\sgchartE#1,\relax,%
+   \sgchartS{.5\tcolw}\relax\cr
+   \noalign{\kern2pt}&\def~{}\kern.5\tcolw\sgchartD#1,\relax,\cr}}}
+\def\sgchartA#1:#2,{\cr\ifx,#1,\else $#1$&\sgchartB#2{}\expandafter\sgchartA\fi}
+\def\sgchartB#1{\hbox to\tcolw{\hss$#1$\hss}\sgchartC}
+\def\sgchartC#1{\ifx,#1,\else
+   \strut\vrule\kern-.4pt\hbox to\tcolw{\hss$#1$\hss}\expandafter\sgchartC\fi}
+\def\sgchartD#1#2,{\ifx\relax#1\else\hbox to\tcolw{\hss$#1#2$\hss}\expandafter\sgchartD\fi}
+\def\sgchartE#1#2,{\ifx\relax#1\else
+    \ifx~#1\sgchartS\tcolw\circ \else\sgchartS\tcolw\bullet\fi \expandafter\sgchartE\fi}
+\def\sgchartR{\leaders\vrule height2.8pt depth-2.4pt\hfil}
+\def\sgchartS#1#2{\hbox to#1{\kern-.2pt\sgchartR \ifx\relax#2\else
+   \kern-.7pt$#2$\kern-.7pt\sgchartR\fi\kern-.2pt}}
+\ecatcode
+%++++++++++++++++++++++++++++++++++++++++
+% Custom Commands for Merged Content
+\theoremstyle{definition}
+\newtheorem{q}{Problem}
+\providecommand{\beq}{\begin{q}} 
+\providecommand{\eeq}{\end{q}}
+\providecommand{\ra}{\rightarrow}
+\providecommand{\dar}{\downarrow}
+\providecommand{\df}{\displaystyle\frac}
+\providecommand{\lra}{\leftrightarrow}
+%++++++++++++++++++++++++++++++++++++++++
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\studyTitle}}
+    \normalsize\vspace{0.1in}\\
+    \vspace{0.1in}\large{\text{\class}} \\
+    \vspace{0.1in}\text{\professor}\\
+    \vspace{0.1in}\large\text{Final: \text{\final}}\\
+    \vspace{3in}
+}
+
+\author{\name}
+\date{\today}
+
+\begin{document}
+    \thispagestyle{empty}
+    \pagebreak
+    \tableofcontents
+    \pagebreak
+    
+    \section{Logic and Proofs}  
+    \subsection{Propositional Logic}
+    \stepcounter{subsubsection}
+    \subsubsection{Propositions}
+    \begin{definition}
+        \textbf{Proposition:} A statement that is either true or false.
+    \end{definition}    
+    \begin{figure}[H]
+        \centering
+            \begin{tabular}{c|c}
+                $p$ & $\neg p$ \\
+                \hline
+                T & F \\
+                F & T
+            \end{tabular}
+        \caption{Truth table for \textbf{negation}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \begin{tabular}{c|c|c|c|c}
+                $p$ & $q$ & $p \land q$ & $p \lor q$ & $p \xor q$ \\
+                \hline
+                T & T & T & T & F \\
+                T & F & F & T & T \\
+                F & T & F & T & T \\
+                F & F & F & F & F
+            \end{tabular}
+        \caption{Truth table for \textbf{bit operations}}
+    \end{figure}
+    \subsubsection{Conditional Statements}
+    \begin{definition}
+        \textbf{Conditional Statement:} A statement of the form $p \to q$. The conditional statement is called the \textit{hypothesis} (or \textit{antecedent} or \textit{premise}) and $q$ is called the \textit{conclusion} (or \textit{consequence}). 
+    \end{definition}
+    \begin{definition}
+        \textbf{Converse:} The proposition $q \to p$ is the converse of the proposition $p \to q$. 
+    \end{definition}
+    \begin{figure}[H]
+        \centering
+            \begin{tabular}{c|c|c}
+                $p$ & $q$ & $q \to p$ \\
+                \hline
+                T & T & T \\
+                T & F & T \\
+                F & T & F \\
+                F & F & T 
+            \end{tabular}   
+        \caption{Truth Table for converse of implication of two propositions $p$ and $q$}
+    \end{figure}
+    \begin{definition}
+        \textbf{Contrapositive:} The proposition $\neg q \to \neg p$ is the contrapositive of the proposition $p \to q$.  
+    \end{definition}
+    \begin{itemize}
+        \item Same truth value as $p \to q$
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+            \begin{tabular}{c|c|c|c|c}
+                $p$ & $q$ & $\neg{p}$ & $\neg{q}$ & $\neg q \to \neg p$ \\
+                \hline
+                T & T & F & F & T \\
+                T & F & F & T & F \\
+                F & T & T & F & T \\
+                F & F & T & T & T
+            \end{tabular}   
+        \caption{Truth Table for contrapositive of implication of two propositions $p$ and $q$}
+    \end{figure}
+    \begin{definition}
+        \textbf{Inverse:} The proposition $\neg p \to \neg q$ is the inverse of the proposition $p \to q$.    
+    \end{definition}
+    \begin{figure}[H]
+        \centering
+            \begin{tabular}{c|c|c|c|c}
+                $p$ & $q$ & $\neg{p}$ & $\neg{q}$ & $\neg p \to \neg q$ \\
+                \hline
+                T & T & F & F & T \\
+                T & F & F & T & T \\
+                F & T & T & F & F \\
+                F & F & T & T & T
+            \end{tabular}    
+        \caption{Truth Table for inverse of implication of two propositions $p$ and $q$}
+    \end{figure}
+    \stepcounter{subsubsection}
+    \subsubsection{Precedence of Logical Operators}
+    \begin{figure}[H]
+        \centering
+        \begin{tabular}{|c|c|}
+            \hline
+            Operator & Precedence \\
+            \hline
+            $\neg$ & 1 \\
+            $\land$ & 2 \\
+            $\lor$ & 3 \\
+            $\to$ & 4 \\
+            $\lra$ & 5 \\
+            \hline        
+        \end{tabular}
+        \caption{Precedence of Logical Operators}
+    \end{figure}
+    \stepcounter{subsection}
+    \subsection{Propositional Equivalences}
+    \subsubsection{Introduction}
+    \begin{definition}
+        \textbf{Tautology:} A compound proposition that is always true.
+    \end{definition}
+    \begin{definition}
+        \textbf{Contradiction:} A compound proposition that is always false.  
+    \end{definition}
+    \begin{definition}
+        \textbf{Contingency:} A compound proposition that is neither a tautology nor a contradiction. 
+    \end{definition}
+    \begin{figure}[H]
+        \centering
+        \begin{tabular}{c|c|c|c}
+            $p$ & $\neg q$ & $p \lor \neg q$ & $p \land \neg q$ \\
+            \hline
+            T & T & T & F \\
+            T & F & T & F \\
+        \end{tabular}
+        \caption{Truth Table of an example of a Tautology and Contradiction}
+    \end{figure}
+    \subsubsection{Logical Equivalences}
+    \begin{definition}
+        Two propositions are \textbf{logically equivalent} if $p \lra q$ is a tautology.    
+    \end{definition}
+    The following are important logical equivalences:
+    \begin{figure}[H]
+        \centering
+        \begin{tabular}{|c|}
+            \hline
+            De Morgan's Laws \\
+            \hline
+            \begin{tabular}{c}
+                $\neg(p \land q) \lra \neg p \lor \neg q$ \\
+                $\neg(p \lor q) \lra \neg p \land \neg q$ \\
+            \end{tabular} \\
+            \hline
+        \end{tabular}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \begin{tabular}{|c|}
+            \hline
+            Conditional-Disjunction Equivalence \\
+            \hline
+            \begin{tabular}{c}
+                $p \to q \lra \neg p \lor q$ \\
+            \end{tabular} \\
+            \hline
+        \end{tabular}
+    \end{figure}    
+
+    Here are some other logical equivalences:
+    \begin{figure}[H]
+        \centering
+        {\setlength{\tabcolsep}{2em}
+        \begin{tabular}{|c|c|}
+            \hline
+            \multicolumn{2}{|c|}{} \\
+            \multicolumn{2}{|c|}{Logical Equivalences} \\
+            \multicolumn{2}{|c|}{} \\
+            \hline
+            Equivalence & Name \\
+            \hline
+            $p \land \true \equiv \true$ & Identity Laws \\
+            $p \land \false \equiv \false$ &  \\
+            \hline
+            $p \lor \true \equiv \true$ & Domination Laws \\
+            $p \lor \false \equiv \false$ &  \\
+            \hline
+            $p \lor p \equiv p$ & Idempotent Laws \\
+            $p \land p \equiv p$ &  \\
+            \hline
+            $\neg(\neg p) \equiv p$ & Double Negation Law \\
+            \hline
+            $p \lor q \equiv q \lor p $ & Commutative Laws \\
+            $p \land q \equiv q \land p$ &  \\
+            \hline
+            $(p \lor q) \lor r \equiv p \lor (q \lor r)$ & Associative Laws \\
+            $(p \land q) \land r \equiv p \land (q \land r)$ &  \\
+            \hline
+            $p \lor (q \land r) \equiv (p \lor q) \land (p \lor r)$ & Distributive Laws \\
+            $p \land (q \lor r) \equiv (p \land q) \lor (p \land r)$ &  \\
+            \hline
+            $\neg(p \land q) \equiv \neg p \lor \neg q$ & De Morgan's Laws \\
+            $\neg(p \lor q) \equiv \neg p \land \neg q$ &  \\
+            \hline
+            $p \lor (p \land q) \equiv p$ & Absorption Laws \\
+            $p \land (p \lor q) \equiv p$ &  \\
+            \hline
+            $p \lor \neg p \equiv \true$ & Negation Laws \\
+            $p \land \neg p \equiv \false$ &  \\
+            \hline
+        \end{tabular}}
+    \end{figure}
+    
+    \begin{figure}[H]
+        \centering
+        {\setlength{\tabcolsep}{2em}
+        \begin{tabular}{|c|}
+            \hline
+            \\
+            Logical Equivalences Involving Conditional Statements \\
+            \\
+            \hline
+            $p \to q \equiv \neg p \lor q$ \\
+            $p \to q \equiv \neg q \to \neg p$ \\
+            $p \lor q \equiv \neg p \to q$ \\
+            $p \land q \equiv \neg (\neg p \lor \neg q) \equiv \neg (p \to \neg q)$ \\
+            $\neg(p \to q) \equiv p \land \neg q$ \\
+            $(p \to q) \land (p \to r) \equiv p \to (q \land r) $ \\
+            $(p \to r) \land (q \to r) \equiv (p \lor q) \to r$ \\
+            $(p \to q) \lor (p \to r) \equiv p \to (q \lor r)$ \\
+            $(p \to r) \lor (q \to r) \equiv (p \land q) \to r$ \\
+            \hline
+        \end{tabular}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        {\setlength{\tabcolsep}{2em}
+        \begin{tabular}{|c|}
+            \hline
+            \\
+            Logical Equivalences Involving Biconditonal Statements \\
+            \\
+            \hline
+            $p \lra q \equiv (p \to q) \land (q \to p)$ \\
+            $p \lra q \equiv \neg p \lra \neg q$ \\
+            $p \lra q \equiv (p \land q) \lor (\neg p \land \neg q)$ \\
+            $\neg(p \lra q) \equiv p \lra \neg q$ \\
+            \hline
+        \end{tabular}}
+    \end{figure}
+    \begin{equation*}
+        \bigvee_{i=1}^n p_i = p_1 \lor p_2 \lor \cdots \lor p_n
+    \end{equation*}
+    \begin{equation*}
+        \bigwedge_{i=1}^n p_i = p_1 \land p_2 \land \cdots \land p_n
+    \end{equation*}
+    By De Morgan's laws, it follows that:
+    \stepcounter{subsubsection}
+    \stepcounter{subsubsection}
+    \begin{equation*}
+        \neg \bigvee_{i=1}^n p_i = \bigwedge_{i=1}^n \neg p_i
+    \end{equation*}
+    \subsubsection{Satisfiability}
+    \begin{definition}
+        A compound proposition is \textbf{satisfiable} if there is an assignment of truth values to its variables that makes it true (When it is a tautology or a contigency). 
+    \end{definition}
+    \begin{definition}
+        A compound proposition is \textbf{unsatisfiable} if there is no assignment of truth values to its variables that makes it true (When it is a contradiction). To prove this, we can prove that the negation is a tautology.
+    \end{definition}
+    \subsection{Predicates and Quantifiers}
+    \stepcounter{subsubsection}
+    \subsubsection{Predicates}
+    \begin{definition}
+        A \textbf{statement} contains 2 parts: a \textbf{subject} and a \textbf{predicate}.
+        \begin{itemize}
+            \item In the statement, $x$ is greater than 3, $x$ is the subject and greater than 3 is the predicate.
+            \item The statement $P(x)$ is said to be the value of the \textbf{propositional function} $P$ at $x$.
+        \end{itemize}
+    \end{definition}
+    \subsubsection{Quantifiers}
+    \begin{definition}
+        \textbf{Universal Quantifier}: $\forall x P(x)$. $P(x)$ for all values of $x$ in the domain.
+        \begin{itemize}
+            \item An element for which $P(x)$ is false is called a \textbf{counterexample}.
+        \end{itemize}   
+    \end{definition}
+    \begin{definition}
+        \textbf{Existential Quantifier}: $\exists x P(x)$. There exists an element $x$ in the domain such that $P(x)$ is true.    
+    \end{definition}
+    \begin{definition}
+        \textbf{Uniqueness Quantifier}: $\exists! x P(x)$. There exists exactly one element $x$ in the domain such that $P(x)$ is true.    
+    \end{definition}
+    
+    \textit{A way to think about determining the truth value of quantifiers is to think about looping. To determine if $\forall x P(x)$ is true, we loop through all the elements in the domain and check if $P(x)$ is true for all of them. To determine if $\exists x P(x)$ is true, we loop through all the elements in the domain and check if $P(x)$ is true for at least one of them.}
+    \subsubsection{Quantifiers Over Finite Domains}
+    When domain is finite, we can express statements using propositional logic:
+    \begin{equation*}
+        \forall x P(x) \equiv \bigwedge_{i=1}^{n} P(x)
+    \end{equation*}
+    \begin{equation*}
+        \exists x P(x) \equiv \bigvee_{i=1}^{n} P(x)
+    \end{equation*}
+    \stepcounter{subsubsection}
+    \subsubsection{Precedence of Quantifiers}
+    $\forall x$ and $\exists x$ have higher precedence than all logical operators from propositional calculus. For instance, $\forall P(x) \lor Q(x) \equiv (\forall P(x)) \lor Q(x)$.
+    \stepcounter{subsubsection}
+    \subsubsection{Negating Quantified Expressions}
+    \begin{figure}[H]
+        \begin{align*}
+            \neg \forall x P(x) &\equiv \exists x \neg P(x) \\
+            \neg \exists x P(x) &\equiv \forall x \neg P(x)
+        \end{align*}
+        \caption{De Morgan's Laws for Quantifiers}
+    \end{figure}
+    \subsection{Nested Quantifiers}
+    \begin{figure}[H]
+        \centering
+        \begin{tabular}{|c|p{12em}|p{12em}|}
+            \hline
+            Statement & When True & When False \\
+            \hline
+            $\forall x \forall y P(x,y)$ & $P(x,y)$ is true for all values of $x$ and $y$ & $\exists x \exists y \neg P(x,y)$ \\
+            \hline
+            $\forall x \exists y P(x,y)$ & For every $x$ there is a $y$ such that $P(x,y)$ is true & $\exists x \forall y \neg P(x,y)$ \\
+            \hline
+            $\exists x \forall y P(x,y)$ & There is an $x$ such that $P(x,y)$ is true for all values of $y$ & $\forall x \exists y \neg P(x,y)$ \\
+            \hline
+            $\exists x \exists y P(x,y)$ & There is an $x$ and a $y$ such that $P(x,y)$ is true & $\forall x \forall y \neg P(x,y)$ \\
+            \hline
+        \end{tabular}
+        \caption{Quantifications of Two Variables}
+    \end{figure}
+    \subsection{Rules of Inference}
+    \begin{figure}[H]
+        \centering
+        \begin{tabular}{|l|c|c|}
+            \hline
+            Rule of Inference & Tautology & Name \\
+            \hline
+            $\begin{array}{rl}
+                & p \\
+                & p \to q \\
+                \cline{2-2}
+                \therefore & q
+            \end{array}$ & $(p \land (p \to q)) \to q$ & Modus Ponens \\
+            \hline
+            $\begin{array}{rl}
+                & \neg q \\
+                & p \to q \\
+                \cline{2-2}
+                \therefore & q 
+            \end{array}$ & $(\neg q \land (p \to q)) \to \neg p$ & Modus Tollens \\
+            \hline
+            $\begin{array}{rl}
+                & p \to q \\
+                & q \to r \\
+                \cline{2-2}
+                \therefore & p \to r
+            \end{array}$ & $((p \to q) \land (q \to r)) \to (p \to r)$ & Hypothetical Syllogism \\
+            \hline
+            $\begin{array}{rl}
+                & p \lor q \\
+                & \neg p \\
+                \cline{2-2}
+                \therefore & q
+            \end{array}$ & $((p \lor q) \land \neg p) \to q$ & Disjunctive Syllogism \\
+            \hline
+            $\begin{array}{rl}
+                & p \\
+                \cline{2-2}
+                \therefore & p \lor q
+            \end{array}$ & $p \to (p \lor q)$ & Addition \\
+            \hline
+            $\begin{array}{rl}
+                & p \land q \\
+                \cline{2-2}
+                \therefore & p
+            \end{array}$ & $(p \land q) \to p$ & Simplification \\
+            \hline
+            $\begin{array}{rl}
+                & p \\
+                & q \\
+                \cline{2-2}
+                \therefore & p \land q
+            \end{array}$ & $((p) \land (q)) \to (p \land q)$ & Conjunction \\
+            \hline
+            $\begin{array}{rl}
+                & p \lor q \\
+                & \neg p \lor r \\
+                \cline{2-2}
+                \therefore & q \lor r
+            \end{array}$ & $((p \lor q) \land (\neg p \lor r)) \to (q \lor r)$ & Resolution \\
+            \hline
+        \end{tabular}
+        \caption{Rules of Inference for Propositional Logic}
+    \end{figure}
+    Note: Resolution is saying, regardless of what $p$ is, $q$ or $r$ is true.
+    \begin{figure}[H]
+        \centering
+        \begin{tabular}{|l|c|}
+            \hline
+            Rule of Inference & Name \\
+            \hline
+            $\begin{array}{rl}
+                & \forall x P(x) \\
+                \cline{2-2}
+                \therefore & P(c)
+            \end{array}$ & Universal Instantiation \\
+            \hline
+            $\begin{array}{rl}
+                & P(c) \text{ for an arbitrary } c \\
+                \cline{2-2}
+                \therefore & \forall x P(x)
+            \end{array}$ & Universal Generalization \\
+            \hline
+            $\begin{array}{rl}
+                & \exists x P(x) \\
+                \cline{2-2}
+                \therefore & P(c) \text{ for some element } c
+            \end{array}$ & Existential Instantiation \\
+            \hline
+            $\begin{array}{rl}
+                & P(c) \text{ for some element } c \\
+                \cline{2-2}
+                \therefore & \exists x P(x)
+            \end{array}$ & Existential Generalization \\
+            \hline
+        \end{tabular}
+        \caption{Rules of Inference for Quantified Statements}
+    \end{figure}
+    \textbf{Universal Modus Ponens:} The usage of universal instantiation and modus ponens together.
+    \begin{center}
+        $\begin{array}{rl}
+            & \forall x (P(x) \to Q(x)) \\
+            & P(a) \text{, where } a \text{ is a particular element in the domain} \\
+            \cline{2-2}
+            \therefore & Q(a)
+        \end{array}$
+    \end{center}
+    \subsection{Introduction to Proofs}
+    Prove $\forall x(P(x) \to Q(x))$ by showing that $P(c) \to Q(c)$ is true, where $c$ is an arbitrary element of the domain, and then apply universal generalization.
+    \stepcounter{subsubsection}
+    \stepcounter{subsubsection}
+    \stepcounter{subsubsection}
+    \stepcounter{subsubsection}
+    \subsubsection{Direct Proofs}
+    Show $p \to q$ by first assuming $p$ is true and then showing that $q$ is true using the rules of inference.
+    
+    \begin{definition}
+        The integer $n$ is \textbf{even} if $\exists k \in \ints \mid n = 2k$.
+    \end{definition}
+    \begin{definition}
+        The integer $n$ is \textbf{odd} if $\exists k \in \ints \mid n = 2k + 1$.   
+    \end{definition}
+    \begin{definition}
+        Two integers have the same \textbf{parity} if they are both even or both odd. They have \textbf{opposite parity} if one is even and the other is odd.     
+    \end{definition}
+    \subsubsection{Proof by Contraposition}
+    \begin{definition}
+        An \textbf{indirect proof} is a proof that does not start with the premise and ends with the conclusion. One type is \textbf{proof by contraposition}. This is a proof that shows $p \to q$ by showing $\neg q \to \neg p$.   
+    \end{definition}
+    \subsubsection{Proof by Contradiction}
+    Another type of indirect proof is \textbf{proof by contradiction}. 
+    We can prove $p$ is true by showing that $\neg p \to (r \land \neg r)$. Assume the negation of $p$ is true, and then show that $r$ and $\neg r$ are both true. This is a contradiction, so $p$ must be true.
+    \\
+
+    Important example of proof by contradiction: Prove that $\sqrt{2}$ is irrational.
+    \begin{proof} By contradiction. Let $p$ be the proposition that $\sqrt{2}$ is irrational. Assum $\neg p$ is true, that is, assume $\sqrt{2}$ is rational. By definition of rational numbers, there exist integers $a$ and $b$ such that $\sqrt{2} = \frac{a}{b}$, where $\frac{a}{b}$ is in simplest terms. Then, we have:
+    \begin{align*}
+        \sqrt{2} &= \frac{a}{b} \\
+               2 &= \frac{a^2}{b^2} \\
+            2b^2 &= a^2 \\
+        \intertext{Since $a^2$ is a multiple of 2, $a^2$ is even. Therefore, $a$ is even, and $a = 2k$ for some integer $k$.}
+           2b^2 &= 4k^2 \\
+            b^2 &= 2k^2 \\
+        \intertext{Since $b^2$ is a multiple of 2, $b^2$ is even. Therefore, $b$ is even, and $b = 2l$ for some integer $l$.}
+        \sqrt{2} &= \frac{2k}{2l}
+    \end{align*}
+    Since both $a$ and $b$ are even, we can divide both the numerator and denominator by 2. Because our assumption of $\neg p$ leads to the contradiction that 2 divides both $a$ and $b$ and 2 does not divide both $a$ and $b$, $\neg p$ is false. Therefore, $p$ is true.
+    \end{proof}
+    \subsection{Proof Methods and Strategy}
+    \stepcounter{subsubsection}
+    \subsubsection{Exhaustive Proof and Proof by Cases}
+    \textbf{Exhaustive Proof}: Prove that $p \to q$ by showing:
+    \begin{equation*}
+        \bigvee_{i=1}^n p_i \to q
+    \end{equation*}
+    \textbf{Proof by Cases}: Prove that $p \to q$ by breaking $p$ into cases and showing that $q$ is true in each case.
+    \section{Basic Structures}
+    \subsection{Sets}
+    \subsubsection{Introduction}
+    \begin{definition}
+        A \textbf{set} is an unordered collection of distinct objects called \textbf{elements} or \textbf{members} of the set. A set is said to \textbf{contain} its elements. We write $a \in A$ to denote that $a$ is an element of the set $A$. The notation $a \notin A$ denotes that $a$ is not an element of the set $A$.   
+    \end{definition}
+
+    Sets of types of numbers:
+    \begin{itemize}
+        \item Natural Numbers: $\nats = \{0, 1, 2, 3, \dots\} = \set*{\posints \unite 0}$
+        \item Integers: $\ints = \{..., -2, -1, 0, 1, 2, \dots\}$
+        \item Positive Integers: $\ints^+ = \{1, 2, 3, \dots\}$
+        \item Rational Numbers: $\rats = \set*{\df{a}{b} \mid a, b \in \ints \text{ and } b \neq 0}$
+        \item Real Numbers: $\reals$
+        \item Positive Real Numbers: $\reals^+$
+        \item Complex Numbers: $\comps$
+    \end{itemize}
+
+    \begin{definition}
+        \textbf{Equality of Sets}:
+        \begin{equation*}
+            A=B \lra \forall x (x \in A \lra x \in B) \lra A \subseteq B \land B \subseteq A   
+        \end{equation*}
+    \end{definition}
+
+    \begin{definition}
+        \textbf{Empty Set}: $\emptyset = \set*{}$
+    \end{definition}
+    \stepcounter{subsubsection}
+    \subsubsection{Subsets}
+    \begin{definition}
+        \textbf{Subset}:
+        \begin{equation*}
+            A \subseteq B \lra \forall x (x \in A \lra x \in B) \lra B \supseteq A
+        \end{equation*}
+        To show that $A \not\subseteq B$, show $\exists x (x \in A \land x \not\in B)$.
+    \end{definition}
+
+    \begin{theorem}
+        For every set $S$, $\emptyset \subseteq S$ and $S \subseteq S$.
+    \end{theorem}
+    \subsubsection{Size of a Set}
+    \begin{definition}
+        Let $S$ be a set. If there are exactly $n$ distinct elements in $S$, where $n$ is a nonnegative integer, we say that $S$ is a \textbf{finite set} and that $n$ is the \textbf{cardinality} of $S$, denoted by $|S|$.
+        \begin{itemize}
+            \item Note: Theorem 2.1.3.1!
+        \end{itemize}
+    \end{definition}
+    \subsubsection{Power Sets}
+    \begin{definition}
+        Let $S$ be a set. The \textbf{power set} of $S$, denoted by $\powset(S)$, is the set of all subsets of $S$.
+    \end{definition}
+    \begin{theorem} Cardinality of a power set
+        \begin{equation*}
+            |\powset(S)| = 2^{|S|}
+        \end{equation*}
+    \end{theorem}
+    \subsubsection{Cartesian Products}
+    \begin{definition}
+        Let $A$ and $B$ be sets. The \textbf{Cartesian product} of $A$ and $B$, denoted by $A \times B$, is the set of all ordered pairs $(a,b)$ where $a \in A$ and $b \in B$. Hence:
+        \begin{equation*}
+            A \times B = \{(a,b) \mid a \in A \land b \in B\}    
+        \end{equation*}
+    \end{definition}
+    \subsection{Set Operations}
+    \subsubsection{Introduction}
+    \begin{definition}
+        Let $A$ and $B$ be sets. The \textbf{union} of the sets $A$ and $B$, denoted $A \unite B$, is the set that contains those elements that are in either $A$ or $B$ or both. Hence:
+        \begin{equation*}
+            A \unite B = \{x \mid x \in A \lor x \in B\}
+        \end{equation*}
+    \end{definition}
+    \begin{definition}
+        Let $A$ and $B$ be sets. The \textbf{intersection} of the sets $A$ and $B$, denoted $A \inter B$, is the set that contains those elements in both $A$ and $B$. Hence:
+        \begin{equation*}
+            A \inter B = \{x \mid x \in A \land x \in B\}
+        \end{equation*}
+    \end{definition}
+    \begin{definition}
+        Two sets are called \textbf{disjoint} if their intersection is the emptyset.
+    \end{definition}
+    \begin{definition}
+        Let $A$ and $B$ be sets. The \textbf{difference} of the sets $A$ and $B$, denoted $A - B$, is the set that contains those elements in $A$ but not in $B$. It is also called the \textbf{complement of $B$ with respect to $A$}. Hence:
+        \begin{equation*}
+            A - B = \{x \mid x \in A \land x \not\in B\}
+        \end{equation*}
+    \end{definition}
+    \begin{definition}
+        Let $U$ be the universal set. The \textbf{complement} of a set $A$, denoted $\overline{A}$, is the set $U - A$. Hence:
+        \begin{equation*}
+            \overline{A} = \{x \mid x \in U \land x \not\in A\}
+        \end{equation*}
+    \end{definition}
+    \begin{definition}
+        Let $A$ and $B$ be sets. The \textbf{symmetric difference} of $A$ and $B$ is the set of elements that are in either $A$ or $B$ but not in both. It is denoted by $A \xor B$. Hence:
+        \begin{equation*}
+            A \xor B = (A \unite B) - (A \inter B)
+        \end{equation*} 
+    \end{definition}
+    \subsubsection{Set Identities}
+    \begin{figure}[H]
+        \centering
+        {\renewcommand{\arraystretch}{1.5}
+        \begin{tabular}{|l|c|}
+            \hline
+            Identity & Name \\
+            \hline
+            $A \inter U = A$ & Identity Laws \\
+            $A \unite \emptyset = A$ & \\
+            \hline
+            $A \unite U = U$ & Domination Laws \\
+            $A \inter \emptyset = \emptyset$ & \\
+            \hline
+            $A \unite A = A$ & Idempotent Laws \\
+            $A \inter A = A$ & \\
+            \hline
+            $\overline{(\overline{A})} = A$ & Complementation Law \\
+            \hline
+            $A \unite B = B \unite A$ & Commutative Laws \\
+            $A \inter B = B \inter A$ & \\
+            \hline
+            $A \unite (B \unite C) = (A \unite B) \unite C$ & Associative Laws \\
+            $A \inter (B \inter C) = (A \inter B) \inter C$ & \\
+            \hline
+            $A \unite (B \inter C) = (A \unite B) \inter (A \unite C)$ & Distributive Laws \\
+            $A \inter (B \unite C) = (A \inter B) \unite (A \inter C)$ & \\
+            \hline
+            $\overline{A \inter B} = \overline{A} \unite \overline{B}$ & De Morgan's Laws \\
+            $\overline{A \unite B} = \overline{A} \inter \overline{B}$ & \\
+            \hline
+            $A \unite (A \inter B) = A$ & Absorption Laws \\
+            $A \inter (A \unite B) = A$ & \\
+            \hline
+            $A \unite \overline{A} = U$ & Complement Laws \\
+            $A \inter \overline{A} = \emptyset$ & \\
+            \hline
+        \end{tabular}}
+        \caption{Set Identities}
+    \end{figure}
+    There are 3 ways to prove that two sets are equal:
+    \begin{enumerate}
+        \item Showing that they are subsets of each other. (Definition 2.2)
+        \item Membership tables.
+        \item Set identities.
+    \end{enumerate}
+    A \textbf{membership table} considers each combination of the atomic sets (the original sets used to produce the sets on each side) that an element can belong to and verify that elements in the same combinations of sets belong to both the sets in the identity. Use a 1 to indicate that an element belongs to a set and a 0 to indicate that it does not. For example, consider the following identity:
+    \begin{equation*}
+        A \unite (A \inter B) = A
+    \end{equation*}
+    We can construct a membership table for this identity as follows:
+    \begin{center}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            $A$ & $B$ & $A \unite (A \inter B)$ \\
+            \hline
+            1 & 1 & 1 \\
+            1 & 0 & 1 \\
+            0 & 1 & 0 \\
+            0 & 0 & 0 \\
+            \hline
+        \end{tabular}
+    \end{center}
+    Since the columns are the same, we can conclude that the sets are equal.
+    \subsubsection{Generalized Unions and Intersections}
+    \begin{definition}
+        The \textbf{union} of a collection of sets is the set that contains those elements that are members of at least one set in the collection. It is denoted by:
+        \begin{equation*}
+            A_1 \unite A_2 \unite \cdots A_n = \bigcup_{i=1}^{n} A_i
+        \end{equation*}
+    \end{definition}
+    \begin{definition}
+        The \textbf{intersection} of a collection of sets is the set that contains those elements that are members of all sets in the collection. It is denoted by:
+        \begin{equation*}
+            A_1 \inter A_2 \inter \cdots A_n = \bigcap_{i=1}^{n} A_i
+        \end{equation*}
+    \end{definition}
+    \subsection{Functions}
+    \subsubsection{Introduction}
+    \begin{definition}
+        Let $A$ and $B$ be nonempty sets. A \textbf{function} $f$ from $A$ to $B$ is an assignment of exactly one element of $B$ to each element of $A$. We write $f(a) = b$ if $b$ is the unique element of $B$ assigned by the function $f$ to the element $a$ of $A$. If $f$ is a function from $A$ to $B$, we write $f: A \to B$.
+        \begin{itemize}
+            \item Functions are sometimes also called \textbf{mappings} or \textbf{transformations}
+        \end{itemize}
+    \end{definition}
+    \begin{definition}
+        Let $f: A \to B$ be a function. $A$ is the \textbf{domain} of $f$ and $B$ is the \textbf{codomain} of $f$. If $f(a) = b$, we say that $b$ is the \textbf{image} of $a$ and $a$ is the \textbf{preimage} of $b$. The \textbf{range}, or \textbf{image} of $f$ is the set of all images of elements of $A$. Also, if $f$ is a function from $A$ to $B$, we say that $f$ \textbf{maps} $A$ to $B$.
+        \begin{itemize}
+            \item Codomain is set of possible values of the function and range is the set of all elements of the codomain that are achieved as the value of $f$ for at least one element of the domain.
+            \item Two functions are \textbf{equal} when they have the same domain, same codomain, and map each each element of their common domain to the same element in their common codomain.
+        \end{itemize}
+    \end{definition}
+    \begin{definition}
+        Let $f_1$ and $f_2$ be functions from $A$ to $B$. Then $f_1 + f_2$ and $f_1f_2$ are also functions from $A$ to $B$ defined $\forall x \in A$ by:
+        \begin{align*}
+            (f_1 + f_2)(x) &= f_1(x) + f_2(x) \\
+               (f_1f_2)(x) &= f_1(x)f_2(x)
+        \end{align*}
+    \end{definition}
+    \begin{definition}
+        Let $f$ be a function from $A$ to $B$ and let $S \subseteq A$. The \textbf{image} of $S$ under the function $f$ is the subset of $B$ that consists of the images of the elements of $S$. We denote the image of $S$ by $f(S)$, so:
+        \begin{equation*}
+            f(S) = \set*{t \mid \exists s \in S (t = f(s))} = \set*{f(s) \mid s \in S}
+        \end{equation*}
+    \end{definition}
+    \subsubsection{One-to-One and Onto Functions}
+    \begin{definition}
+        A function $f$ with domain $A$ is \textbf{one-to-one} if and only if: 
+        \begin{equation*}
+            \forall a \forall b (a,b \in A \land (f(a) = f(b) \to a = b))
+        \end{equation*}
+        \begin{itemize}
+            \item A function $f$ is one-to-one if and only if $f(a) \neq f(b)$ whenever $a \neq b$. This is obtained by taking the contrapositve of the implication in the definition.
+        \end{itemize}
+    \end{definition}
+    \begin{definition}
+        A function $f$ whose domain $A$ and codomain $B$ are subsets of the set of real numbers is called \textbf{increasing} if $f(x) \leq f(y)$ whenever $x < y$ and $x,y \in A$. Hence:
+        \begin{equation*}
+            \forall x \forall y (x,y \in A \land x < y \to f(x) \leq f(y))
+        \end{equation*}
+    \end{definition}
+    \begin{definition}
+        A function $f$ whose domain $A$ and codomain $B$ are subsets of the set of real numbers is called \textbf{strictly increasing} if $f(x) < f(y)$ whenever $x < y$ and $x,y \in A$. Hence:
+        \begin{equation*}
+            \forall x \forall y (x,y \in A \land x < y \to f(x) < f(y))
+        \end{equation*}
+    \end{definition}
+    \begin{definition}
+        A function $f$ whose domain $A$ and codomain $B$ are subsets of the set of real numbers is called \textbf{decreasing} if $f(x) \geq f(y)$ whenever $x < y$ and $x,y \in A$. Hence:
+        \begin{equation*}
+            \forall x \forall y (x,y \in A \land x < y \to f(x) \geq f(y))
+        \end{equation*}
+    \end{definition}
+    \begin{definition}
+        A function $f$ whose domain $A$ and codomain $B$ are subsets of the set of real numbers is called \textbf{strictly decreasing} if $f(x) > f(y)$ whenever $x < y$ and $x,y \in A$. Hence:
+        \begin{equation*}
+            \forall x \forall y (x,y \in A \land x < y \to f(x) > f(y))
+        \end{equation*}
+    \end{definition}
+    \begin{definition}
+        A function $f$ from $A$ to $B$ is \textbf{onto}, or a \textbf{surjection}, if and only if for every element $y \in B$ there exists an element $x \in A$ such that $f(x) = y$. Hence:
+        \begin{equation*}
+            \forall y \exists x (f(x) = y)
+        \end{equation*}
+        where the domain for $x$ is $A$ and the domain of $y$ is $B$.
+        \begin{itemize}
+            \item $f$ is \textbf{surjective} if it is onto.
+        \end{itemize}
+    \end{definition}
+    \begin{definition}
+        The function $f$ is a \textbf{one-to-one correspondence} if it is both one-to-one and onto. 
+        \begin{itemize}
+            \item Such a function is \textbf{bijective}
+        \end{itemize}
+        \label{def:one-to-one-correspondence}
+    \end{definition}
+    \begin{figure}[H]
+        \centering
+        {\renewcommand{\arraystretch}{1.5}
+        \begin{tabular}{|l p{25em}|}
+            \hline
+            \multicolumn{2}{|l|}{Suppose that $f: A \to B$.} \\
+            \hline
+            Show $f$ is injective: & Show that if $f(x) = f(y)$ for arbitrary $x,y \in A$, then $x = y$ \\
+            Show $f$ is not injective: & Find particular elements, $x,y \in A$ such that $x \neq y$ and $f(x)=f(y)$. \\
+            Show $f$ is surjective: & Consider an arbitrary element $y \in B$ and find an element $x \in A$ such that $f(x) = y$. \\
+            Show $f$ is not surjective: & Find a particular $y \in B$ such that $f(x) \neq y$ for all $x \in A$. \\
+            Show $f$ is bijective: & Show that $f$ is both injective and surjective. \\
+            \hline
+        \end{tabular}}
+    \end{figure}
+    \subsubsection{Inverse Functions and Composite Functions}
+    \begin{definition}
+        Let $f$ be a one-to-one correspondence from the set $A$ to the set $B$. The \textbf{inverse function} of $f$ is denoted by $f^{-1}$: Hence: 
+        \begin{equation*}
+            f^{-1}(b) = a \text{ when } f(a) = b
+        \end{equation*}
+        \begin{itemize}
+            \item A one-to-one correspondence $f$ is \textbf{invertible} because we can define an inverse function $f^{-1}$.
+            \item A function is \textbf{invertible} if it is not a one-to-one correspondence, because the inverse of $f$ does not exist.
+        \end{itemize}
+    \end{definition}
+    \begin{definition}
+        Let $g$ be a function from the set $A$ to the set $B$ and let $f$ be a function from the set $B$ to the set $C$. The \textbf{composition} of the functions $f$ and $g$, denoted for all $a \in A$ by $f \comp g$, is the function from $A$ to $C$ defined by:
+        \begin{equation*}
+            (f \comp g)(a) = f(g(a))
+        \end{equation*}
+        \begin{itemize}
+            \item $f \comp g$ assigns the element $a$ of $A$ the element assigned by $f$ to $g(a)$. 
+            \item The domain of $f \comp g$ is the domain of $g$.
+            \item The range of $f \comp g$ is the image of the range of $g$ with respect to $f$.
+            \item The composition $f \comp g$ cannot be defined unless the range of $g$ is a subset of the domain of $f$. 
+            \item \textbf{Not Commutative!} 
+            \begin{equation*}
+                f \comp g \neq g \comp f
+            \end{equation*}
+            \item When composing with inverse function, an identity function is obtained:
+            \begin{equation*}
+                f \comp f^{-1}(a) = f^{-1} \comp f(a) = a
+            \end{equation*}
+        \end{itemize}
+    \end{definition}
+    \stepcounter{subsubsection}
+    \subsubsection{Some Important Functions}
+    \begin{definition}
+        The \textbf{floor function} assigns to the real number $x$ the largest integer that is less than or equal to $x$. The value of the floor function at $x$ is denoted by $\floor*{x}$. The \textbf{ceiling function} assigns to the real number $x$ the smllest integer that is greater than or equal to $x$. The value of the ceiling function at $x$ is denoted by $\ceil*{x}$.
+    \end{definition}
+    \begin{figure}[H]
+        \centering
+        {\renewcommand{\arraystretch}{1.3}
+        \begin{tabular}{|c|}
+            \hline
+            \textbf{$n$ is an integer, $x$ is a real number} \\
+            \hline
+            $\floor*{x} = n \lra n \leq x < n+1$ \\
+            $\ceil*{x} = n \lra n-1 < x \leq n$ \\
+            $\floor*{x} = n \lra x-1 < n \leq x$ \\
+            $\ceil*{x} = n \lra x \leq n < x+1$ \\
+            \hline
+            $x-1 < \floor*{x} \leq x \leq \ceil*{x} < x+1$ \\
+            \hline
+            $\floor*{-x} = -\ceil*{x}$ \\
+            $\ceil*{-x} = -\floor*{x}$ \\
+            \hline
+            $\floor*{x+n} = \floor*{x} + n$ \\
+            $\ceil*{x+n} = \ceil*{x} + n$ \\
+            \hline
+        \end{tabular}}
+        \caption{Useful Properties of the Floor and Ceiling Functions}
+    \end{figure}
+    \subsection{Sequences and Summations}
+    \stepcounter{subsubsection}
+    \subsubsection{Sequences}
+    \begin{definition}
+        A \textbf{sequence} is a function from the set of integers to a set $S$. We use the notation $a_n$ to denote the image of the integer $n$. $a_n$ is called a \textbf{term} of the sequence.
+    \end{definition}
+    \begin{definition}
+        A \textbf{geometric progression} is a sequence of the form:
+        \begin{equation*}
+            a, ar, ar^2, \dots, ar^n, \dots 
+        \end{equation*}
+        where the \textbf{initial term} $a$ and the \textbf{common ratio} $r$ are real numbers.
+    \end{definition}
+    \begin{definition}
+        An \textbf{arithmetic progression} is a sequence of the form:
+        \begin{equation*}
+            a, a+d, a+2d, \dots, a+nd, \dots
+        \end{equation*}
+        where the \textbf{initial term} $a$ and the \textbf{common difference} $d$ are real numbers.
+    \end{definition}
+    \subsubsection{Recursive Relations}
+    \begin{definition}
+        A \textbf{recursive relation} for the sequence $\set*{a_n}$ is an equation that expresses $a_n$ in terms of one or more of the previous terms of the sequence, namely, $a_0, a_1, \dots, a_{n-1}$, for all integers $n$ with $n \geq n_0$, where $n_0$ is a nonnegative integer. A sequence is called a \textbf{solution} of a recurrence relation if its terms satisfy the recurrence relation.
+    \end{definition}
+    \begin{definition}
+        The \textbf{Fibonacci sequence} is a sequence of integers defined by the recurrence relation:
+        \begin{equation*}
+            f_0 = 0, \quad f_1 = 1, \quad f_{n+2} = f_{n+1} + f_n
+        \end{equation*}
+    \end{definition}
+    \stepcounter{subsubsection}
+    \subsubsection{Summations}
+    \begin{definition}
+        The \textbf{sum} of a sequence $\set*{a_n}$ is the real number:
+        \begin{equation*}
+            \sum_{j=0}^{n} a_j = a_0 + a_1 + a_2 + \dots
+        \end{equation*}
+    \end{definition}
+    \begin{theorem}
+        If $a$ and $r$ are real numbers and $r \neq 0$, then:
+        \begin{equation*}
+            \sum_{j=0}^{n} ar^j = \begin{cases}
+                                    \df{ar^{n+1} - a}{r-1}, & \text{if } r \neq 1 \cr a(n+1), & \text{if } r = 1
+                                  \end{cases}
+        \end{equation*}
+    \end{theorem}
+    \begin{figure}[H]
+        \centering
+        {\renewcommand{\arraystretch}{2}
+        \begin{tabular}{|c|c|}
+            \hline
+            Sum & Closed Form \\
+            \hline
+            $\displaystyle\sum_{k=0}^{n}ar^k, r \neq 0$ & $\df{ar^{n+1}-a}{r-1}, r \neq 1$ \\
+            $\displaystyle\sum_{k=1}^n k$               & $\df{n(n+1)}{2}$ \\
+            $\displaystyle\sum_{k=1}^n k^2$             & $\df{n(n+1)(2n+1)}{6}$ \\
+            $\displaystyle\sum_{k=1}^n k^3$             & $\df{n^2(n+1)^2}{4}$ \\
+            $\displaystyle\sum_{k=0}^{\infty}x^k, \abs*{x} < 1$ & $\df{1}{1-x}$ \\
+            $\displaystyle\sum_{k=1}^{\infty}kx^{k-1}, \abs*{x} < 1$ & $\df{1}{(1-x)^2}$ \\
+            \hline
+        \end{tabular}}
+        \caption{Some Useful Summation Formulae}
+    \end{figure}
+    \subsection{Cardinality of Sets}
+    \subsubsection{Introduction}
+    \begin{definition}
+        The sets $A$ and $B$ have the \textbf{same cardinality} if and only if there is a one-to-one correspondence from $A$ to $B$. When $A$ and $B$ have the same cardinality, we write $|A| = |B|$.
+        \begin{itemize}
+            \item For infinite sets, the definition of cardinality provides a relative measure of the size of two sets, rather than a measure of the size of one particular set. 
+        \end{itemize}
+    \end{definition}
+    \begin{definition}
+        If there is a one-to-one correspondence from $A$ to $B$, the cardinality of $A$ is less than or equal to the cardinality of $B$ and we write $|A| \leq |B|$. Moreover, when $|A| \leq |B|$ and $A$ and $B$ have different cardinality, we say that the cardinality of $A$ is less than the cardinality of $B$ and we write $|A| < |B|$.
+    \end{definition}
+    \begin{remark}
+        Definitions 2.5.1.1 and 2.5.1.2 do not give any separate meaning to $|A|$ and $|B|$ when $A$ and $B$ are arbitrary infinite sets.
+    \end{remark}
+    \subsubsection{Countable Sets}
+    \begin{definition}
+        A set that is either finite or has the same cardinality as the set of positive integers is called \textbf{countable}. A set that is not countable is called \textbf{uncountable}. When an infinite set $S$ is countable, we denote the cardinality of $S$ by $\aleph_0$. We write $|S| = \aleph_0$ and say that $S$ has cardinality ``aleph null.''
+        \begin{itemize}
+            \item To prove that a set is countable, we must show that there is a one-to-one correspondence between the set and the set of positive integers (\hyperref[def:one-to-one-correspondence]{Refer to Definition 2.3.2.7})
+        \end{itemize}
+    \end{definition}
+    The following are examples of how to prove some common sets are countable:
+    \begin{example}
+        Prove that $\ints$ is countable. \\
+        \begin{proof}
+            We can list all integers in a sequence by starting with 0 and alternating between positive and negative integers: $0, 1, -1, 2, -2, 3, -3, \dots$. Let $f$ have the domain $\ints^+$.
+            \begin{equation*}
+                f(n) = \begin{cases}
+                            \df{n}{2}, & \text{if } n \text{ is even} \cr
+                            -\df{n-1}{2}, & \text{if } n \text{ is odd}
+                        \end{cases}
+            \end{equation*}
+            Since when $n$ is even, $f(n)$ maps to all positive integers, and when $n$ is odd, $f(n)$ maps to all negative integers and 0, the codomain of $f$ is $\ints$. Since there is a function $f$ that maps $\ints^+$ to $\ints$, we can conclude that $\ints$ is countable.
+        \end{proof}
+    \end{example}
+    \begin{example}
+        Prove that $\rats^+$ is countable.
+        \begin{proof}
+            Every positive rational number is the quotient $p/q$ of two positive integers. We can arrange the positive rational numbers by listing those with denominator $q=1$ in the first row, those with denominator $q=2$ in the second row, and so on:
+            \begin{align*}
+                \begin{tabular}{c | c c c c c c}
+                      & 1           & 2           & 3           & 4           & 5           & $\cdots$ \\
+                      \hline\rule{0pt}{1.2\normalbaselineskip} 
+                    1 & $\frac{1}{1}$ & $\frac{2}{1}$ & $\frac{3}{1}$ & $\frac{4}{1}$ & $\frac{5}{1}$ & $\cdots$ \\[1em]
+                    2 & $\frac{1}{2}$ & $\frac{2}{2}$ & $\frac{3}{2}$ & $\frac{4}{2}$ & $\frac{5}{2}$ & $\cdots$ \\[1em]
+                    3 & $\frac{1}{3}$ & $\frac{2}{3}$ & $\frac{3}{3}$ & $\frac{4}{3}$ & $\frac{5}{3}$ & $\cdots$ \\[1em]
+                    4 & $\frac{1}{4}$ & $\frac{2}{4}$ & $\frac{3}{4}$ & $\frac{4}{4}$ & $\frac{5}{4}$ & $\cdots$ \\[1em]
+                    5 & $\frac{1}{5}$ & $\frac{2}{5}$ & $\frac{3}{5}$ & $\frac{4}{5}$ & $\frac{5}{5}$ & $\cdots$ \\[1em]
+                    $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\ddots$
+                \end{tabular}    
+            \end{align*}
+            Each rational number can be represented by the ordered pair $(i,j)$ where $i$ is the row number and $j$ is the column number. We can see by snaking a line from $\rats^{+}_{11}$ to $\rats^{+}_{21}$ to $\rats^{+}_{12}$ to $\rats^{+}_{13}$ to $\rats^{+}_{31}$ and so forth, such that there is a zigzag-ing enumeration, we can list the element of $\rats^+$ in a sequence indexed by the positive integers, and thus $\rats^+$ is countable.
+        \end{proof}
+    \end{example}
+    \begin{remark}
+        Note that the same proof can be used to show that $\rats^-$ is countable, and thus the union of $\rats^+$ and $\rats^-$ is countable. By using the ordered pair $(0,0)$, we can show that $\rats$ is countable.
+    \end{remark}
+    \subsubsection{Uncountable Sets}
+    We can utilize the \textbf{Cantor diagonalization argument} to prove that the set of real numbers is uncountable.
+    \begin{example}
+        Prove that $\reals$ is uncountable. 
+        \begin{proof} By contradiction. 
+            Suppose $\reals$ is countable. Then, the subset of all real numbers that fall between 0 and 1 would also be countable (The subset of a countable set is countable). Under this assumption, the real numbers between 0 and  can be listed in some order, $r_1, r_2, r_3, \dots$. Let the decimal representation of these real numbers be: 
+            \begin{align*}
+                r_1 &= 0.d_{11}d_{12}d_{13}d_{14}\dots \\
+                r_2 &= 0.d_{21}d_{22}d_{23}d_{24}\dots \\
+                r_3 &= 0.d_{31}d_{32}d_{33}d_{34}\dots \\
+                r_4 &= 0.d_{41}d_{42}d_{43}d_{44}\dots \\
+                    &\vdotswithin{=}
+            \end{align*}
+            where $d_{ij} \in \set*{x \mid 0 \leq x \leq 9}$. Then, form a new real number with decimal expansion $r=0.d_1d_2d_3d_4\dots$, where the decimal digits are determined by the following rule:
+            \begin{equation*}
+                d_i = \begin{cases}
+                            4 & \text{if } d_{ii} \neq 4 \\
+                            5 & \text{if } d_{ii} = 4
+                        \end{cases}
+            \end{equation*}
+            For instance, let $r_1 = 0.23794102\dots, r_2=0.44590138\dots, r_3=0.09118764\dots, r=4=0.80553900\dots,$ and so on. Then we have $r=0.d_1d_2d_3d_4\dots=0.4544$, where $d_1=4$ because $d_{11} \neq 4$, $d_2=5$ because $d_{21}=4$, $d_3=4$ because $d_{31} \neq 4$, and so on. \\
+            
+            Every real number has a unique decimal expansion. Therefore, the real number $r$ is not equal to any of $r_1,r_2,\dots$ because the decimal expansion of $r$ differs from the decimal expansion of $r_i$ in the $i$th place to the right of the decimal point, for each $i$. \\
+
+            Because there is a real number $r$ between 0 and 1 that is not in the list, the assumption that all the real numbers between 0 and 1 could be listed must be false. Therefore, all the real numbers between 0 and 1 cannot be listed, so the set of real numbers between 0 and 1 is uncountable. Any set with an uncountable subset is uncountable. Hence, the set of real numbers is uncountable.
+        \end{proof}
+    \end{example}
+    \begin{remark}
+        What we essentially did in the proof was create a number that is not in the list. We proved that we can infinitely create new numbers, $r$ that are not in the list. 
+    \end{remark}
+    \begin{theorem}
+        If $A$ and $B$ are countable sets, then $A \unite B$ is also countable.
+        \begin{itemize}
+            \item Proof on page 184.
+        \end{itemize}
+    \end{theorem}
+    \begin{theorem}
+        \textbf{Schröder-Bernstein Theorem} If $A$ and $B$ are sets with $|A| \leq |B|$ and $|B| \leq |A|$, then $|A| = |B|$. In other words, if there are one-to-one functions $f$ from $A$ to $B$ and $g$ from $B$ to $A$, then there is a one-to-one correspondence between $A$ and $B$.
+    \end{theorem}
+    \subsection{Matrices}
+    \stepcounter{section}
+    \section{Number Theory}
+    \subsection{Divisibility and Modular Arithmetic}
+    \subsection{Integer Representations and Algorithms}
+    \subsection{Primes and Greatest Common Divisors}
+    \subsection{Solving Congruences}
+    \subsection{Applications of Congruences}
+    \section{Induction and Recursion}
+    \subsection{Mathematical Induction}
+    \subsection{Strong Induction and Well Ordering Principle}
+    \section{Counting}
+    \subsection{Basics of Counting}
+    \stepcounter{subsubsection}
+    \subsubsection{Basic Counting Principles}
+    \begin{theorem}
+        \textbf{Multiplication Rule}: Multiply the number of ways that $A$ can occur by the number of ways that $B$ can occur (where $A$ and $B$ are two events).
+        \begin{itemize}
+            \item $|A_1 \times A_2 \times \dots \times A_n| = |A_1| \cdot |A_2| \cdot \dots \cdot |A_n|$
+        \end{itemize}
+    \end{theorem}
+    \begin{theorem}
+        \textbf{Sum Rule}: Add the number of ways that $A$ can occur to the number of ways that $B$ can occur (where $A$ and $B$ are two events).
+        \begin{itemize}
+            \item $|A_1 \unite A_2 \unite \dots \unite A_n| = |A_1| + |A_2| + \dots + |A_n|$ when $A_i \inter A_j =$ for all $i,j$.
+        \end{itemize}
+    \end{theorem}
+    \stepcounter{subsubsection}
+    \stepcounter{subsubsection}
+    \subsubsection{Subtraction Rule (Inclusion-Exclusion For Two Sets)}
+    \begin{theorem}
+        \textbf{Subtraction Rule}: If $A$ can be done in either $n_1$ or $n_2$ ways, then the number of ways to do the task is $n_1 + n_2$ minus the number of ways to do the task that are common to the two different ways.
+        \begin{itemize}
+            \item $|A_1 \unite A_2| = |A_1| + |A_2| - |A_1 \inter A_2|$
+        \end{itemize}
+    \end{theorem}
+    \subsubsection{Division Rule}
+    \begin{theorem}
+        \textbf{Division Rule}: There are $n/d$ ways to do a task if it can be done using a procedure that can be carried out in $n$ ways, and for every way $w$, exactly $d$ of the $n$ ways correspond to way $w$.
+        \begin{itemize}
+            \item Useful when it appears that a task can be done in $n$ different ways, but it turns out that for each way of doing the task, there are $d$ equivalent ways of doing it. There are $n/d$ inequivalent ways to do the task.
+        \end{itemize}
+    \end{theorem}
+    \subsection{Pigeonhole Principle}
+    \subsubsection{Introduction}
+    \begin{theorem}
+        \textbf{Pigeonhole Principle}: If $k$ is a positive integer and $k+1$ or more objects are placed into $k$ boxes, then there is at least one box containing two or more of the objects.
+    \end{theorem}
+    \begin{corollary}
+        A function $f$ from a set with $k+1$ or more elements to a set with $k$ elements is not one-to-one.
+    \end{corollary}
+    \subsubsection{Generalized Pigeonhole Principle}
+    \begin{theorem}
+        \textbf{Generalized Pigeonhole Principle}: If $N$ objects are placed into $k$ boxes, then there is at least one box containing at least $\ceil*{\df{N}{k}}$ objects.
+    \end{theorem}
+    Here are some proofs using the pigeonhole principle:
+    \begin{example}
+        \textbf{Show that for every integer $n$ there is a multiple of $n$ that has only 0s and 1s in its decimal expansion.}
+        \begin{proof}
+            Let $n$ be a positive integer. Consider the $n+1$ integers $1,11,111,\dots,11\dots 1$ (where the last integer in this list is the integer with $n+1$ 1s in its decimal expansion). Note that there are $n$ possible remainders when an integer is divided by $n$. Because there are $n+1$ integers in this list, by the pigeonhole principle, there must be two with the same remainder when divided by $n$. The larger of these integers less the smaller one is a multiple of $n$, which has decimal expansion with only 0s and 1s.
+        \end{proof}
+    \end{example}
+    \begin{example}
+        \textbf{How many cards must be selected from a standard deck of 62 cards to guarentee that:}
+        \begin{enumerate}[a)]
+            \item at least three cards are of the same suit?
+            \item at least three hearts are selected?
+        \end{enumerate}
+        \begin{proof}
+            \textbf{a)} Suppose there are 4 boxes, one for each suit, and as cards are selected they are placed in their respective box. Using the generalized pigeonhole principle, we see that if $N$ cards are selected, there is at least 1 box contaning at least $\ceil*{N/4}$ cards. Thus, we know that at least 3 cards of 1 suit are selected if $\ceil*{N/4} \geq 3$. The smallest integer $N$ to satisfy this inequality is $2\times 4+1=9$, so we must select at least 9 cards to guarentee that at least 3 cards are of the same suit.
+        \end{proof}
+        \begin{itemize}
+            \item Note that if 8 cards are selected, it is possible to have 2 cards of each suit, so more than eight cards are needed.
+        \end{itemize} 
+    \begin{proof}
+        \textbf{b)} We do not use the generalized pigeonhole principle because we want to make sure that there are 3 hearts, not just 3 cards of a suit. Note that in the worst case, we can select all the clubs, diamonds, and spades, 39 cards in all, before we select a single heart. The next 3 cards will all be hearts, so we may need to select 42 cards to get 3 hearts.
+    \end{proof}
+    \end{example}
+    \subsubsection{Some Elegant Applications of the Pigeonhole Principle}
+    \begin{example}
+        During a month with 30 days, a baseball team plays at least one game a day, but no more than 45 games. Show that there must be a period fo some number of consecutive days during which the team must play exactly 14 games.
+        \begin{proof}
+            Let $a_j$ be the number of games played on or before the $j$th day of the month. Then $a_1, a_2, \dots, a_{30}$ is an increasing sequence of distinct positive integers, with $1 \leq a_j \leq 45$. Moreover, $a_1 + 14, a_2 + 14, \dots, a_j + 14$ is also an increasing sequence of distinct positive integers, with $15 \leq a_j + 14 \leq 59$. \\
+
+            The 60 positive integers $a_1, a_2, \dots, a_{30}, a_1 + 14, a_2 + 14, \dots, a_j + 14$ are all less than or equal to 59. Hence, by the pigeonhole principle two of these integers must be equal. Because the integers $a_j, j = 1,2,\dots, 30$, are all distinct and the integers $a_j+14, j= 1,2,\dots,30$ are all distinct, there must be indices $i$ and $j$ with $a_i = a_j + 14$. This means that exactly 14 games were played from day $j+1$ to day $i$.
+        \end{proof}
+    \end{example}
+    \begin{example}
+        Show that among any $n+1$ positive integers not exceeding $2n$ there must be an integer that divides one of the other integers.
+        \begin{proof}
+            Write out each of the $n+1$ integers $a_1, a_2, \dots, a_{n+1}$ as a power of 2 times an odd integer. In other words, let $a_j=2^{k_j}q_j$, for $j=1,2,\dots n+1$, where $k_j$ is a nonnegative integer and $q_j$ is odd. The integers $q_1, q_2, \dots, q_{n+1}$ are all odd positive integers less than $2n$. Because there are only $n$ odd positive integers less than $2n$, it follows from the pigeonhole principle that two of the integers $q_1, q_2, \dots, q_{n+1}$ must be equal. Therefore, there are distinct integers $i$ and $j$ such that $q_i = q_j$. Let $q$ be the common value of $q_i$ and $q_j$. Then $a_i = 2^{k_i}q$ and $a_j = 2^{k_j}q$. It follows that if $k_i < k_j$, then $a_i$ divides $a_j$; while if $k_i > k_j$, then $a_j$ divides $a_i$. In either case, there is an integer that divides one of the other integers.
+        \end{proof}
+    \end{example}
+    \begin{theorem}
+        Every sequence of $n^2 + 1$ distinct real numbers contains a subsequence of $n+1$ that is either strictly increasing or strictly decreasing.
+    \end{theorem}
+    \subsection{Permutations and Combinations}
+    \stepcounter{subsubsection}
+    \subsubsection{Permutations}
+    \begin{definition}
+        A \textbf{permutation} of a set $S$ is an ordering of the elements of $S$.
+    \end{definition}
+    \begin{theorem}
+        If $n$ is a positive integer and $r$ is an integer with $1 \leq r \leq n$, then there are:
+        \begin{equation*}
+            P(n,r) = n(n-1)(n-2)\cdots(n-r+1)
+        \end{equation*}
+        $r$-permutations of a set of $n$ \textbf{distinct} elements.
+    \end{theorem}
+    \begin{corollary}
+        If $n$ and $r$ are integers with $0 \leq r \leq n$, then: 
+        \begin{equation*}
+            P(n,r) = \frac{n!}{(n-r)!}
+        \end{equation*}
+    \end{corollary}
+    \subsubsection{Combinations}
+    \begin{definition}
+        An $r$-combination of a set $S$ is a subset of $S$ with $r$ elements.
+    \end{definition}
+    \begin{theorem}
+        The number of $r$-combinations of a set with $n$ elements, where $n$ is a nonnegative integer and $r$ is an integer with $0 \leq r \leq n$, is:
+        \begin{equation*}
+            C(n,r) = \frac{n!}{r!(n-r)!}
+        \end{equation*}
+    \end{theorem}
+    \begin{corollary}
+        Let $n$ and $r$ be nonnegative integers with $r \leq n$. Then:
+        \begin{equation*}
+            C(n,r) = C(n, n-r)
+        \end{equation*}
+    \end{corollary}
+    \begin{definition}
+        \textbf{Combinatorial Proof}: If this is on the final, doomed. Refer to Homework 3 (Practice Exam 3) Question 13 Part B for an example. Page 438 uses this method to prove the Binomial Theorem.
+    \end{definition}
+    \subsection{Binomial Coefficients and Identities}
+    \subsubsection{Binomial Theorem}
+    \begin{theorem}
+        Let $x$ and $y$ be variables, and let $n$ be a nonnegative integer. Then:
+        \begin{equation*}
+            (x+y)^n = \sum_{j=0}^n \binom{n}{j}x^jy^{n-j} = \binom{n}{0}x^ny^0 + \binom{n}{1}x^{n-1}y^1 + \cdots + \binom{n}{n}x^0y^n
+        \end{equation*}
+    \end{theorem}
+    \begin{corollary}
+        Let $n$ be a nonnegative integer. Then:
+        \begin{equation*}
+            \sum_{k=0}^n \binom{n}{k} = 2^n
+        \end{equation*}        
+    \end{corollary}
+    \begin{corollary}
+        Let $n$ be a positive integer. Then:
+        \begin{equation*}
+            \sum_{k=0}^n (-1)^k \binom{n}{k} = 0
+        \end{equation*}
+    \end{corollary}
+    \begin{corollary}
+        Let $n$ be a nonnegative integer. Then:
+        \begin{equation*}
+            \sum_{k=0}^n 2^k \binom{n}{k} = 3^n
+        \end{equation*}
+    \end{corollary}
+    \subsubsection{Pascal's Identity}
+    \begin{theorem}
+        \textbf{Pascal's Identity}: Let $n$ and $k$ be positive integers with $n \geq k$. Then:
+        \begin{equation*}
+            \binom{n+1}{k} = \binom{n}{k-1} + \binom{n}{k}
+        \end{equation*}
+    \end{theorem}
+    \subsubsection{Other Identities Involving Binomial Coefficients}
+    \begin{theorem}
+        \textbf{Vandermonde's Identity}: Let $m,n,r$ be nonnegative integers, $r < m,n$. Then:
+        \begin{equation*}
+            \binom{m + n}{r} = \sum_{k=0}^r \binom{n}{k}\binom{m}{r-k}
+        \end{equation*}
+    \end{theorem}
+    \begin{corollary}
+        If $n$ is a nonnegative integer, then:
+        \begin{equation*}
+            \binom{2n}{n} = \sum_{k=0}^n \binom{n}{k}^2
+        \end{equation*}
+    \end{corollary}
+    \begin{theorem}
+        Let $n$ and $r$ be nonnegative integers with $r \leq n$. Then:
+        \begin{equation*}
+            \binom{n + 1}{r + 1} = \sum_{j=r}^n \binom{j}{r}
+        \end{equation*}
+    \end{theorem}
+    \subsection{Generalized Permutations and Combinations}
+    \stepcounter{subsubsection}
+    \subsubsection{Permutations with Repetition}
+    \begin{theorem}
+        The number of $r$-permutations of a set of $n$ objects \textbf{with repetition} is:
+        \begin{equation*}
+            P_r(n) = n^r
+        \end{equation*}
+    \end{theorem}
+    \subsubsection{Combinations with Repetition}
+    \begin{itemize}
+        \item STARS AND BARS
+    \end{itemize}
+    \begin{theorem}
+        There are $C(n+r-1, r) = C(n+r-1, n-1)$ $r$-combinations from a set of $n$ elements \textbf{with repetition}.
+    \end{theorem}
+    \begin{itemize}
+        \item $n$ stars and $r$ bars. Total positions is $n+r-1$. Number of ways to place $r$ bars is $C(n+r-1, r)$.
+        \item Recall that we can have restrictions for each bar. \textbf{At least: Subtract from $n+r-1$ the number of stars. At most, subtract the complement.} 
+    \end{itemize}
+    \subsubsection{Permutations with Indistinguishable Objects}
+    \begin{theorem}
+        The number of different permutations of $n$ objects where there are $n_1$ indistinguishable objects of type 1, $n_2$ indistinguishable objects of type 2, \ldots, $n_k$ indistinguishable objects of type $k$ is:
+        \begin{equation*}
+            \frac{n!}{n_1!n_2!\cdots n_k!}
+        \end{equation*}
+    \end{theorem}
+    \begin{itemize}
+        \item Proof on Page 450.
+    \end{itemize}
+    \subsubsection{Distributing Objects into Boxes}
+    \begin{theorem}
+        The number of ways to distribute $n$ \textbf{distinguishable objects} into $k$ \textbf{distinguishable boxes} so that $n_i$ objects are placed into box $i, i = 1, 2, \ldots, k$ is:
+        \begin{equation*}
+            \frac{n!}{n_1!n_2!\cdots n_k!}
+        \end{equation*}
+    \end{theorem}
+    \begin{figure}[H]
+        \centering
+        {\renewcommand{\arraystretch}{2}
+        \begin{tabular}{|l|c|}
+            \hline
+            Situation & Formula \\
+            \hline
+            $n$ Distinguishable Objects and $r$ Boxes & $\df{n!}{n_1!n_2!\cdots n_k!}$ \\
+            $n$ Indistinguishable Objects and $r$ Distinguishable Boxes & $\displaystyle\binom{n + r - 1}{r}$ \\
+            $n$ Distinguishable Objects and $r$ Indistinguishable Boxes & Give up. Start writing everything out. \\
+            \hline
+        \end{tabular}}
+        \caption{Distributing Objects into Boxes}
+    \end{figure}
+    \section{Probability}
+    \subsection{Introduction to Discrete Probability}
+    \subsection{Probability Theory}
+    \subsection{Bayes' Theorem}
+    \begin{theorem} \textbf{Bayes' Theorem}: Suppose that $E$ and $F$ are events from a sample space $S$ such that $p(E) \neq 0$ and $p(F) \neq 0$. Then:
+        \begin{equation*}
+            p(F \mid E) = \frac{p(E \mid F)p(F)}{p(E \mid F)p(F) + p(E \mid \overline{F})p(\overline{F})}
+        \end{equation*}
+    \end{theorem}
+    \subsection{Expected Value and Variance}
+    \stepcounter{subsubsection}
+    \subsubsection{Expected Values}
+    \begin{definition}
+        The \textbf{expected value} of the random variable $X$ on the sample space $S$ is:
+        \begin{equation*}
+            E(X) = \sum_{s \in S} p(s)X(s)
+        \end{equation*}
+        The \textbf{deviation} of $X$ at $s \in S$ is: 
+        \begin{equation*}
+            d(s) = X(s) - E(X)
+        \end{equation*}
+    \end{definition} 
+    \begin{theorem}
+        If $X$ is a random variable and $p(X=r)$ is the probability that $X=r$, so that $p(X=r) = \displaystyle\sum_{s \in S, X(s)=r} p(s)$, then:
+        \begin{equation*}
+            E(X) = \sum_{r \in X(s)} p(X=r)r
+        \end{equation*}
+    \end{theorem}
+    \begin{example}
+        \textbf{Expected Value of a Die: }
+        \begin{itemize}
+            \item Let $X$ be the random variable that represents the number of spots on a die. Then $X$ is a random variable on the sample space $S = \{1,2,3,4,5,6\}$.
+            \item Let $\displaystyle p(s) = \frac{1}{6}$ for each $s \in S$.
+            \item Then $\displaystyle E(X) = \sum_{s \in S} p(s)X(s) = \sum_{s \in S} \frac{1}{6}X(s) = \frac{1}{6}\sum_{s \in S} X(s) = \frac{1}{6}\cdot 21 = \df{7}{2}$
+            \item The expected value of $X$ is 3.5.
+        \end{itemize}
+        \label{ex:ev-die}
+    \end{example} 
+    \begin{theorem}
+        The expected number of successes when $n$ mutually independent Bernoulli trials are formed, where $p$ is the probability of success on each trial, is:
+        \begin{equation*}
+            E(X) = np
+        \end{equation*}
+    \end{theorem}
+    \subsubsection{Linearity of Expectations}
+    \begin{theorem}
+        If $X_i=1,2,\dots,n$ with $n$ a positive integer, are random variables on $S$, and if $a$ and $b$ are real numbers:
+        \begin{enumerate}[(i).]
+            \item $E(X_1 + X_2 + \dots + X_n) = E(X_1) + E(X_2) + \dots + E(X_n)$
+            \item E(aX + b) = aE(X) + b
+        \end{enumerate}
+    \end{theorem}
+    \stepcounter{subsubsection}
+    \subsubsection{Geometric Distribution}
+    \begin{definition}
+        TA random variable $X$ has a \textbf{geometric distribution with parameter} $p$ if $p(X = k) = (1-p)^{k-1}p$ for $k = 1,2,\dots$, where $p$ is a real number with $0 \leq p \leq 1$.
+    \end{definition}
+    \begin{theorem}
+        If the random variable $X$ has the geometric distribution with parameter $p$, then:
+        \begin{equation*}
+            E(X) = \frac{1}{p}
+        \end{equation*}
+    \end{theorem}
+    \subsubsection{Independent Random Variables}
+    \begin{theorem}
+        The random variables $X$ and $Y$ on the sample space $S$ are \textbf{independent} if:
+        \begin{equation*}
+            p(X=r_1 \text{ and } Y=r_2) = p(X=r_1)p(Y=r_2)
+        \end{equation*}
+        or in words, if the probability that $X = r_1$ and $Y = r_2$ equals the product of the probabilities that $X = r_1$ and $Y = r_2$ for all numbers $r_1$ and $r_2$.
+    \end{theorem}
+    \begin{theorem}
+        If $X$ and $Y$ are independent random variables on the sample space $S$, then:
+        \begin{equation*}
+            E(XY) = E(X)E(Y)
+        \end{equation*}
+    \end{theorem}
+    \subsubsection{Variance}
+    \begin{definition}
+        Let $X$ be a random variable on a sample space $S$. The \textbf{variance} of $X$ is, denoted by $V(X)$ is:
+        \begin{equation*}
+            V(X) = \sum_{x \in S}(X(s) - E(X))^2p(s)=E(X^2) - E(X)^2
+        \end{equation*}
+        $V(X)$ is the weighted average of the square of the deviation of $X$. The \textbf{standard deviation} of $X$, denoted $\sigma(X)$, is:
+        \begin{equation*}
+            \sigma(X) = \sqrt{V(X)}
+        \end{equation*}
+    \end{definition}
+    \begin{example}
+        \textbf{Variance of the Value of a Die} \\
+        We have $V(X) = E(X^2) - E(X)^2$. From \hyperref[ex:ev-die]{Example 7.4.2.1}, we have $E(X) = 7/2$. To find $E(X^2)$ note that $X^2$ takes the values $i^2, i=1,2,\dots,6$, each with probability $\frac{1}{6}$. Thus:
+        \begin{equation*}
+            E(X^2) = \frac{1}{6}\sum_{i=1}^6 i^2 = \frac{1}{6}\cdot 91 = \frac{91}{6}
+        \end{equation*}
+        Thus:
+        \begin{equation*}
+            V(X) = \frac{91}{6} - \paren*{\frac{7}{2}}^2 = \frac{35}{12}
+        \end{equation*}
+    \end{example}
+    \begin{corollary}
+        If $X$ is a random variable on a sample space $S$ and $E(X) = \mu$, then:
+        \begin{equation*}
+            V(X) = E(X - \mu)^2
+        \end{equation*}
+    \end{corollary}
+    \begin{theorem}
+        \textbf{Variance of a Bernoulli Trial} \\
+        Because $X$ takes only the values $0$ and $1$, it follows that $X^2(t) = X(t)$. Hence:
+        \begin{equation*}
+            V(X) = E(X^2) - E(X)^2 = p - p^2 = p(1-p) = pq
+        \end{equation*}
+        Where $p$ is the probability of success on a single trial, $q$ is the probability of failure.
+    \end{theorem}
+    \begin{theorem}
+        If $X$ and $Y$ are independent random variables on the sample space $S$, the $V(X+Y) = V(X) + V(Y)$. Furthermore, if $X_i, i=1,2,\dots,n$, with $n$ a positive integer, are pairwise independent random variables on $S$, then:
+        \begin{equation*}
+            V(X_1 + X_2 + \dots + X_n) = V(X_1) + V(X_2) + \dots + V(X_n)
+        \end{equation*}
+    \end{theorem}
+
+\newpage
+\part{Exam 4 Study Guide}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Probability \& Combinatorics}
+
+\subsection{Basic Counting \& Complements}
+\textbf{Concept:} Often, calculating the probability of "at least one" or "at least $n$" is difficult directly. It is almost always easier to calculate the probability of the \textit{opposite} (complement) event and subtract from 1.
+
+\textbf{The Strategy:}
+\begin{enumerate}
+    \item Identify keywords: "At least one", "At least two", "Not all".
+    \item Define the Total Sample Space size ($|S|$).
+    \item Define the Complement Event ($E^c$).
+        \begin{itemize}
+            \item Example: "At least one heads" $\rightarrow$ Complement: "Zero heads" (All tails).
+            \item Example: "At least two consecutive same" $\rightarrow$ Complement: "Alternating perfectly".
+        \end{itemize}
+    \item Calculate $P(E) = 1 - P(E^c) = 1 - \frac{|E^c|}{|S|}$.
+\end{enumerate}
+
+\subsection{Inclusion-Exclusion Principle}
+\textbf{Concept:} Used when counting sets with overlapping conditions (e.g., passwords requiring Upper, Lower, AND Digits).
+
+\textbf{The Strategy:}
+\begin{enumerate}
+    \item Start with the \textbf{Total} possible permutations (ignoring restrictions).
+    \item Subtract the "Bad" sets (missing one condition).
+    \item Add back the intersections of "Bad" sets (missing two conditions) because you subtracted them twice.
+    \item Subtract the intersection of all three (missing all conditions), and so on.
+    \item \textbf{Formula:} $|A \cup B \cup C| = \sum|A| - \sum|A \cap B| + |A \cap B \cap C|$.
+\end{enumerate}
+
+\subsection{Independence}
+\textbf{Concept:} Two events $A$ and $B$ are independent if knowing $A$ happened gives you no information about $B$.
+
+\textbf{The Test:}
+To prove or disprove independence, calculate these two values separately:
+\begin{enumerate}
+    \item $P(A \cap B)$
+    \item $P(A) \times P(B)$
+\end{enumerate}
+\textbf{Conclusion:}
+\begin{itemize}
+    \item If $P(A \cap B) = P(A)P(B)$, they \textbf{are} independent.
+    \item If $P(A \cap B) \neq P(A)P(B)$, they are \textbf{dependent}.
+\end{itemize}
+
+\section{Conditional Probability \& Bayes' Theorem}
+
+\subsection{Common Pitfall: $P(A|B)$ vs $P(B|A)$}
+These are \textbf{not} the same. Confusing them is often called the "Prosecutor's Fallacy".
+\begin{itemize}
+    \item $P(A|B)$: The probability that $A$ is true, given evidence $B$. (e.g., "Probability you have the virus, given a positive test.")
+    \item $P(B|A)$: The probability of evidence $B$, given $A$ is true. (e.g., "Probability of testing positive, given you have the virus.")
+\end{itemize}
+\textit{Example:} If $A=$ "It is raining" and $B=$ "It is cloudy":
+\begin{itemize}
+    \item $P(B|A) \approx 100\%$ (Rain almost always implies clouds).
+    \item $P(A|B) \approx 10\%$ (Clouds often exist without rain).
+\end{itemize}
+
+\subsection{The Formula (Bayes)}
+$$ P(A|B) = \frac{P(B|A)P(A)}{P(B)} $$
+
+\subsection{Understanding the Denominator (Total Probability)}
+The denominator $P(B)$ represents the total probability of the evidence occurring, regardless of whether the hypothesis $A$ is true or false. It is the sum of two distinct scenarios:
+\begin{enumerate}
+    \item \textbf{True Positives:} You have the condition ($A$) AND test positive.
+    $$ P(B \cap A) = P(B|A)P(A) $$
+    \item \textbf{False Positives:} You do NOT have the condition ($A^c$) AND test positive.
+    $$ P(B \cap A^c) = P(B|A^c)P(A^c) $$
+\end{enumerate}
+Thus, the full formula is:
+$$ P(A|B) = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}} $$
+
+\subsection{Step-by-Step Strategy}
+\begin{enumerate}
+    \item \textbf{Identify the Hypothesis ($H$):} E.g., "Person uses drugs" or "Coin is biased".
+    \item \textbf{Identify the Evidence ($E$):} E.g., "Test is positive" or "Sequence of flips".
+    \item \textbf{Calculate the Numerator (True Positive):} $P(E|H) \times P(H)$.
+    \item \textbf{Calculate the False Positive Term:} $P(E|H^c) \times P(H^c)$.
+    \item \textbf{Sum for Denominator:} Numerator + False Positive Term.
+    \item \textbf{Divide:} Numerator / Denominator.
+\end{enumerate}
+\textit{Tip: For coin flip sequences, $P(E|H)$ is the product of individual flip probabilities given that specific coin.}
+
+\section{Number Theory}
+
+\subsection{Base Expansion \& Conversion}
+\textbf{Problem Type:} Convert $(Hex)_{16}$ to Binary, Octal, or Decimal.
+
+\textbf{The Strategy:}
+\begin{enumerate}
+    \item \textbf{Hex $\to$ Binary:} This is the "Gateway". Convert every single Hex digit into exactly \textbf{4 binary bits}.
+        \begin{itemize}
+            \item $A \to 10 \to 1010$
+            \item $7 \to 0111$
+        \end{itemize}
+    \item \textbf{Binary $\to$ Octal:} Group the binary string into chunks of \textbf{3 bits} starting from the \textbf{right}. Convert each chunk.
+    \item \textbf{Binary $\to$ Base 4:} Group binary string into chunks of \textbf{2 bits} from the right.
+    \item \textbf{Any Base $\to$ Decimal:} Multiply digit by position power. $(d_2 d_1 d_0)_b = d_2 \cdot b^2 + d_1 \cdot b^1 + d_0 \cdot b^0$.
+\end{enumerate}
+
+\subsection{Divisors (Count and Sum)}
+\textbf{Problem Type:} Find how many divisors $N$ has, or their sum.
+
+\textbf{The Strategy:}
+\begin{enumerate}
+    \item \textbf{Prime Factorization:} Break $N$ down completely. $N = p_1^{e_1} p_2^{e_2} \dots p_k^{e_k}$.
+    \item \textbf{Count:} Take every exponent, add 1, and multiply them.
+        $$ \text{Count} = (e_1 + 1)(e_2 + 1)\dots(e_k + 1) $$
+    \item \textbf{Sum:} Use the geometric series formula for each prime part:
+        $$ \text{Sum} = \prod_{i=1}^k \left( \frac{p_i^{e_i + 1} - 1}{p_i - 1} \right) $$
+\end{enumerate}
+
+\subsection{Divisibility Rules (General Bases)}
+\textbf{Concept:} Rules like "ends in 0 or 5" (Base 10) rely on modular arithmetic.
+\textbf{To find rule for $k$ in Base $b$:}
+Look at $b \pmod k$.
+\begin{itemize}
+    \item If $b \equiv 1 \pmod k$: The rule is "Sum of digits is divisible by $k$".
+    \item If $b \equiv -1 \pmod k$: The rule is "Alternating sum of digits is divisible by $k$".
+    \item If $b \equiv 0 \pmod k$: The rule is "Last digit is divisible by $k$".
+\end{itemize}
+
+\subsection{Key GCD Theorems for Proofs}
+When proving statements involving GCDs, keep these three properties in mind:
+\begin{enumerate}
+    \item \textbf{Bézout's Identity:} If $d = \gcd(a, b)$, there exist integers $s$ and $t$ such that $sa + tb = d$. Use this when you need to express the GCD algebraically.
+    \item \textbf{Euclid's Lemma:} If $a \mid bc$ and $\gcd(a, b) = 1$, then $a \mid c$. This is crucial for proofs involving prime factorization uniqueness or coprime integers.
+    \item \textbf{Euclidean Algorithm Step:} $\gcd(a, b) = \gcd(b, a \pmod b)$. This generalizes to $\gcd(a, m) = \gcd(a - km, m)$, allowing you to add/subtract multiples of one number from the other without changing the GCD.
+\end{enumerate}
+
+\section{Modular Arithmetic}
+
+\subsection{Solving Systems of Congruences}
+You will likely be asked to solve a system using two specific methods.
+
+\subsubsection{Method 1: Chinese Remainder Theorem (Construction)}
+\textbf{Use when:} You need a formulaic approach for $x \equiv a_i \pmod{m_i}$.
+\begin{enumerate}
+    \item Calculate $M = m_1 \times m_2 \times \dots \times m_k$.
+    \item For each equation $i$, calculate $M_i = M / m_i$.
+    \item Find the modular inverse $y_i$ such that $M_i \cdot y_i \equiv 1 \pmod{m_i}$.
+    \item \textbf{Solution:} $x = \sum (a_i \cdot M_i \cdot y_i) \pmod M$.
+\end{enumerate}
+
+\subsubsection{Method 2: Back Substitution}
+\textbf{Use when:} You prefer algebra over finding multiple inverses.
+\begin{enumerate}
+    \item Take the first equation: $x \equiv a \pmod m \implies x = mk + a$.
+    \item Substitute this expression for $x$ into the \textbf{second} equation.
+    \item Solve for $k \pmod{m_2}$.
+    \item Substitute $k$ back into the expression for $x$.
+    \item Repeat for all equations.
+\end{enumerate}
+
+\subsection{Fermat's Little Theorem}
+\textbf{Problem Type:} Find $a^K \pmod p$ where $p$ is prime and $K$ is huge.
+
+\textbf{Theorem:} $a^{p-1} \equiv 1 \pmod p$ (if $p \nmid a$).
+
+\textbf{The Strategy:}
+\begin{enumerate}
+    \item Divide the exponent $K$ by $(p-1)$.
+    \item Write $K = q(p-1) + r$.
+    \item The huge power cancels out: $a^K \equiv a^r \pmod p$.
+    \item Calculate the much smaller $a^r \pmod p$.
+\end{enumerate}
+
+\subsection{Proofs \& Disproofs}
+\begin{itemize}
+    \item \textbf{Disproving "For all $x$..." statements:} You only need \textbf{one} counterexample. Try small numbers (primes, 0, 1) or boundary cases.
+    \item \textbf{Proving GCD properties:} See Section 3.4 for essential theorems.
+\end{itemize}
+
+\newpage
+\section{Self-Check Practice Problems}
+
+\textbf{Problem 1 (Probability):} A fair coin is flipped 8 times. What is the probability that at least 2 flips are heads? (Hint: Use the complement).
+
+\textbf{Problem 2 (Bayes' Theorem):} A certain disease affects 1\% of the population. A test for the disease is 99\% accurate for sick people (True Positive) but has a 2\% false positive rate for healthy people. If a person tests positive, what is the probability they actually have the disease?
+
+\textbf{Problem 3 (Number Theory):} Convert the hexadecimal number $(2C5)_{16}$ into Octal (base 8). Show your work using binary as the intermediate step.
+
+\textbf{Problem 4 (Modular Arithmetic):} Solve the system of congruences using back substitution:
+$$ x \equiv 2 \pmod 3 $$
+$$ x \equiv 3 \pmod 5 $$
+
+\newpage
+\section{Answer Key \& Explanations}
+
+\subsection*{Solution to Problem 1}
+We use the \textbf{Complement Rule}.
+\begin{itemize}
+    \item \textbf{Total Outcomes:} Since a coin has 2 sides and we flip 8 times, Total = $2^8 = 256$.
+    \item \textbf{Complement Event:} "Less than 2 heads" means exactly 0 heads OR exactly 1 head.
+    \begin{itemize}
+        \item Ways to get 0 heads (TTTTTTTT): $\binom{8}{0} = 1$.
+        \item Ways to get 1 head: $\binom{8}{1} = 8$.
+        \item Total "Bad" outcomes = $1 + 8 = 9$.
+    \end{itemize}
+    \item \textbf{Calculation:} $P(\text{At least 2}) = 1 - \frac{9}{256} = \frac{247}{256}$.
+\end{itemize}
+\textbf{Note:} Do not use combinations for the total sample space (like $\binom{8}{2}$) when dealing with sequential coin flips; the sample space grows exponentially ($2^n$).
+
+\subsection*{Solution to Problem 2}
+We use Bayes' Theorem. Let $D$ = Disease, $+$ = Positive Test.
+\begin{itemize}
+    \item $P(D) = 0.01 \implies P(D^c) = 0.99$.
+    \item $P(+|D) = 0.99$ (True Positive Rate).
+    \item $P(+|D^c) = 0.02$ (False Positive Rate).
+    \item $P(D|+) = \frac{0.99(0.01)}{0.99(0.01) + 0.02(0.99)}$
+    \item $P(D|+) = \frac{0.0099}{0.0099 + 0.0198} = \frac{0.0099}{0.0297} = \frac{1}{3}$.
+\end{itemize}
+Answer: $\approx 33.3\%$.
+
+\subsection*{Solution to Problem 3}
+\begin{itemize}
+    \item \textbf{Step 1: Hex to Binary.}
+    $$ 2 \to 0010, \quad C (12) \to 1100, \quad 5 \to 0101 $$
+    Binary string: $001011000101_2$
+    \item \textbf{Step 2: Binary to Octal.} Group by 3s from the right.
+    $$ (001) \quad (011) \quad (000) \quad (101) $$
+    $$ 1 \qquad 3 \qquad 0 \qquad 5 $$
+    \item Answer: $1305_8$.
+\end{itemize}
+
+\subsection*{Solution to Problem 4}
+Using Back Substitution:
+\begin{enumerate}
+    \item From $x \equiv 2 \pmod 3$, we write $x = 3k + 2$.
+    \item Substitute into the second equation:
+    $$ 3k + 2 \equiv 3 \pmod 5 $$
+    $$ 3k \equiv 1 \pmod 5 $$
+    \item Multiply by 2 (the inverse of 3 mod 5, since $2 \times 3 = 6 \equiv 1$):
+    $$ 6k \equiv 2 \pmod 5 \implies k \equiv 2 \pmod 5 $$
+    \item Write $k = 5j + 2$.
+    \item Substitute back into $x$:
+    $$ x = 3(5j + 2) + 2 = 15j + 6 + 2 = 15j + 8 $$
+\end{enumerate}
+Answer: $x \equiv 8 \pmod{15}$.
+
+% Redefining Q environment for Solutions to keep style but allow flow
+\newtheorem{q}{Q}
+
+% Custom commands from the question source, modified to avoid newpages
+\newcommand{\beq}{\begin{q}\hskip-.2cm. }
+\newcommand{\eq}{\end{q}\par\nopagebreak\vskip0.2cm} % Changed from \newpage to keep solution near question
+\newcommand{\df}{\displaystyle\frac}
+
+% Solution formatting command
+\newcommand{\sol}[1]{\par\noindent{\bf Solution:}}
+
+\markright{ MAT163 Practice Exam 4 Solutions}
+
+{\bf Practice Exam 4 Solutions -- Discrete Mathematics I} \vskip0.2cm
+{\bf Name}: Valen Li {\bf Date}: \underline{\today} \vskip.2cm
+
+%%% Q1
+\beq  A fair coin is flipped n times. Give an expression for each of the probabilities below as a function of n. Simplify your final expression as much as possible.  \\(a) At least $n - 1$ flips come up heads. \\ (b) There are {\bf  at  least two} consecutive flips that are the same.  \\ (c) Assuming n is even, the number of heads is different from the number of tails. \eq 
+\sol{1}
+(a) \textbf{At least $n-1$ heads:} This implies getting exactly $n-1$ heads or exactly $n$ heads.
+\begin{itemize}
+    \item Ways to get $n$ heads: $\binom{n}{n} = 1$
+    \item Ways to get $n-1$ heads: $\binom{n}{n-1} = n$
+    \item Total outcomes: $2^n$
+    \item \textbf{Answer:} $\df{n+1}{2^n}$
+\end{itemize}
+
+(b) \textbf{At least two consecutive same:} We use the complement (no two consecutive flips are the same).
+\begin{itemize}
+    \item The only sequences with no consecutive same flips are alternating: $HTHT\dots$ and $THTH\dots$ (2 sequences).
+    \item Probability of complement: $\df{2}{2^n} = \df{1}{2^{n-1}}$
+    \item \textbf{Answer:} $1 - \df{1}{2^{n-1}}$
+\end{itemize}
+
+(c) \textbf{Number of heads $\neq$ number of tails (n is even):} Use the complement (Heads = Tails).
+\begin{itemize}
+    \item This occurs only if there are exactly $n/2$ heads.
+    \item Ways to choose $n/2$ heads: $\binom{n}{n/2}$
+    \item \textbf{Answer:} $1 - \df{\binom{n}{n/2}}{2^n}$
+\end{itemize}
+\hrulefill
+
+%%% Q2
+\beq  10 kids are randomly grouped into an A team with five kids and a B team with five kids. Each grouping is equally likely. There are 3 kids in the group, Alex and his two best friends Jose and Carl. What is the probability that Alex ends up on the same team with at least one of his two best friends?\eq 
+\sol{2}
+We calculate the probability of the complement: Alex is on a team with \textit{neither} of his friends.
+\begin{itemize}
+    \item Total ways to pick Alex's 4 teammates from the remaining 9 kids: $\binom{9}{4} = 126$.
+    \item Ways to pick teammates excluding Jose and Carl (picking 4 from remaining 7): $\binom{7}{4} = 35$.
+    \item $P(\text{No Friends}) = \df{35}{126} = \df{5}{18}$.
+    \item $P(\text{At least one}) = 1 - \df{5}{18}$.
+    \item \textbf{Answer:} $\df{13}{18}$
+\end{itemize}
+\hrulefill
+
+%%% Q3
+\beq  An online vendor requires that customers select a password that is a sequence of upper-case letters, lower-case letters and digits. A valid password must be at least 10 characters long, and it must contain at least one character from each of the three sets of characters. What is the probability that a randomly selected string with exactly ten characters results in a valid password? The alphabet for the strings in the sample space from which the string is drawn is the union of the three sets of characters.  \eq 
+\sol{3}
+Use Inclusion-Exclusion. Let $S$ be the total set of strings ($62^{10}$).
+Let $U$ be strings missing Uppercase, $L$ missing Lowercase, $D$ missing Digits.
+\begin{itemize}
+    \item $|U| = (26+10)^{10} = 36^{10}$
+    \item $|L| = (26+10)^{10} = 36^{10}$
+    \item $|D| = (26+26)^{10} = 52^{10}$
+    \item $|U \cap L| = 10^{10}$ (Digits only)
+    \item $|U \cap D| = 26^{10}$ (Lower only)
+    \item $|L \cap D| = 26^{10}$ (Upper only)
+\end{itemize}
+\textbf{Answer:} $\df{62^{10} - (2 \cdot 36^{10} + 52^{10}) + (10^{10} + 2 \cdot 26^{10})}{62^{10}}$
+\hrulefill
+
+%%% Q4
+\beq  A 5-card hand is dealt from a perfectly shuffled deck. Define the events  A: the hand is a four of a kind (all four cards of one rank plus a 5th card),  B: at least one of the cards in the hand is an ace.\\ Are the events A and B independent? Prove your answer by showing that one of the conditions for independence is either true or false. \eq   
+\sol{4}
+Events: $A$ (Four of a Kind), $B$ (At least one Ace).
+\begin{itemize}
+    \item $|A| = 13 \times 48 = 624$. (13 ranks for the quad $\times$ 48 kickers).
+    \item $A \cap B$: Hand is Four of a Kind AND has an Ace.
+    \begin{itemize}
+        \item Case 1: Quad Aces ($AAAA + X$). 48 possibilities.
+        \item Case 2: Quad Non-Aces ($KKKK + A$). 12 ranks $\times$ 4 suits of Aces = 48 possibilities.
+        \item $|A \cap B| = 96$.
+    \end{itemize}
+    \item $P(B|A) = \df{96}{624} = \df{2}{13} \approx 0.15$.
+    \item $P(B) = 1 - \frac{\binom{48}{5}}{\binom{52}{5}} \approx 0.34$.
+    \item Since $P(B|A) \neq P(B)$, they are \textbf{not independent}.
+\end{itemize}
+\hrulefill
+
+%%% Q5
+\beq  A wedding party of eight people is lined up in a random order. Every way of lining up the people in the wedding party is equally likely. \\ (a) What is the probability that the bride is next to the groom?  \\ (b) What is the probability that the maid of honor is in the leftmost position? \\  (c)  Determine whether the two events are independent. Prove your answer by showing that one of the conditions for independence is either true or false. \eq 
+\sol{5}
+Total permutations: $8!$.
+\begin{itemize}
+    \item (a) Treat Bride and Groom as one block $\{BG\}$. We arrange 7 items. $BG$ can be $BG$ or $GB$.
+    \\ $P = \df{2 \times 7!}{8!} = \df{1}{4}$.
+    \item (b) Maid of Honor fixed in position 1. Arrange remaining 7.
+    \\ $P = \df{7!}{8!} = \df{1}{8}$.
+    \item (c) Check $P(A \cap B)$. Maid in pos 1, Bride/Groom adjacent in remaining 7 spots.
+    \\ Ways = $2 \times 6!$ (treating BG as block in the line of 7).
+    \\ $P(A \cap B) = \df{2 \times 6!}{8!} = \df{2}{56} = \df{1}{28}$.
+    \\ Check Independence: $P(A) \times P(B) = \df{1}{4} \times \df{1}{8} = \df{1}{32}$.
+    \\ $\df{1}{28} \neq \df{1}{32}$. \textbf{Not Independent.}
+\end{itemize}
+\hrulefill
+
+%%% Q6
+\beq  A biased coin is flipped 10 times. In a single flip of the coin, the probability of heads is $1/3$ and the probability of tails is $2/3$. The outcomes of the coin flips are mutually independent. What is the probability of each event?\\ (a) Every flip comes up heads \\ (b) The first 5 flips come up heads. The last 5 flips come up tails.  \\ (c) The first flip comes up heads. The rest of the flips come up tails. \eq  
+\sol{6}
+$P(H) = 1/3, P(T) = 2/3$.
+\begin{itemize}
+    \item (a) All Heads: $(1/3)^{10} = \df{1}{59049}$.
+    \item (b) 5 Heads, then 5 Tails: $(1/3)^5 (2/3)^5 = \df{32}{3^{10}} = \df{32}{59049}$.
+    \item (c) 1 Head, then 9 Tails: $(1/3)^1 (2/3)^9 = \df{512}{59049}$.
+\end{itemize}
+\hrulefill
+
+%%% Q7
+\beq  The national flufferball association decides to implement a drug screening procedure to test its athletes for illegal performance enhancing drugs. 3\% of the professional flufferball players actually use performance enhancing drugs. A test for the drugs has a false positive rate of 2\% and a false negative rate of 4\%. In other words, a person who does not take the drugs will test positive with probability 0.02. A person who does take the drugs will test negative with probability 0.04. A randomly selected player is tested and tests positive. What is the probability that she really does take performance enhancing drugs? \eq 
+\sol{7}
+Bayes' Theorem. Let $D$ be Drug User, $+$ be Positive Test.
+\begin{itemize}
+    \item $P(D) = 0.03$. $P(D^c) = 0.97$.
+    \item $P(+|D) = 1 - 0.04 = 0.96$ (Sensitivity).
+    \item $P(+|D^c) = 0.02$ (False Positive).
+    \item $P(D|+) = \df{P(+|D)P(D)}{P(+|D)P(D) + P(+|D^c)P(D^c)}$
+    \item $P(D|+) = \df{0.96(0.03)}{0.96(0.03) + 0.02(0.97)} = \df{0.0288}{0.0288 + 0.0194} = \df{0.0288}{0.0482}$
+    \item \textbf{Answer:} $\approx 0.5975$ or $59.75\%$
+\end{itemize}
+\hrulefill
+
+%%% Q8
+\beq  Sally has two coins. The first coin is a fair coin and the second coin is biased. The biased coin comes up heads with probability .75 and tails with probability .25. She selects a coin at random and flips the coin ten times. The results of the coin flips are mutually independent. The result of the 10 flips is: T,T,H,T,H,T,T,T,H,T. What is the probability that she selected the biased coin? \eq    
+\sol{8}
+Let $C_F$ be Fair Coin ($50/50$), $C_B$ be Biased ($75/25$).
+Data: 3 Heads, 7 Tails.
+\begin{itemize}
+    \item $P(Data | C_F) = \binom{10}{3} (0.5)^{10} \approx 0.117$ (Actually since specific sequence given: $0.5^{10} \approx 0.000976$).
+    \item $P(Data | C_B) = 0.75^3 \times 0.25^7 \approx 0.0000257$.
+    \item Priors are equal ($0.5$).
+    \item $P(C_B | Data) = \df{0.0000257}{0.0000257 + 0.000976} \approx \textbf{0.0256}$
+\end{itemize}
+The sequence is extremely unlikely for a coin biased towards heads.
+\hrulefill
+
+%%% Q9
+\beq  Assume 1 person out of 10,000 is infected with HIV, and there is a test in which 2.5\% of all people test positive for the virus although they do not  have it. If you test negative on this test, then you definitely do not have HIV. What is the chance of having HIV, assuming you test positive for it? \eq   
+\sol{9}
+$P(HIV) = 0.0001$. $P(+|Healthy) = 0.025$. $P(-|HIV) = 0$ (so $P(+|HIV) = 1$).
+\begin{itemize}
+    \item $P(HIV|+) = \df{1(0.0001)}{1(0.0001) + 0.025(0.9999)}$
+    \item $P(HIV|+) = \df{0.0001}{0.0001 + 0.0249975} \approx \textbf{0.00398}$ or $0.4\%$
+\end{itemize}
+\hrulefill
+
+%%% Q10
+\beq  Consider an experiment in which a red die and a blue die are thrown. Let X be the random variable whose value is the product of the numbers on the red and blue dice. \\ (a) What is the range of $X$, i.e. its possible values ? \\ (b) What is the probability that $X = 6$? \eq   
+\sol{10}
+$X = \text{Red} \times \text{Blue}$.
+\begin{itemize}
+    \item (a) \textbf{Range:} $\{1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 25, 30, 36\}$
+    \item (b) Pairs multiplying to 6: $(1,6), (2,3), (3,2), (6,1)$. Total 4 outcomes.
+    \item $P(X=6) = \df{4}{36} = \df{1}{9}$.
+\end{itemize}
+\hrulefill
+
+%%% Q11
+\begin{q}\hskip-.3cm) Certain rules allow us to determine by inspection when a positive integer n is divisible by a positive integer k. For example, in base 10, $5|n$ if and only if n ends in the digit 5 or 0. Similarly, $2|n$ if and only if n ends in one of the digits $0,2,4,6,8$.  There are also rules to determine divisibility by many different integers.  Use your knowledge of  divisibility rules in base 10, to write divisibility rules for $n=2, 3,4,5,6,7,8$ in base 9\end{q}
+\sol{11}
+Divisibility rules in Base 9. Let $N = (d_k \dots d_1 d_0)_9$.
+\begin{itemize}
+    \item $n=2$: Since $9 \equiv 1 \pmod 2$, sum of digits must be even.
+    \item $n=3$: Since $9 \equiv 0 \pmod 3$, last digit $d_0$ must be divisible by 3 ($0, 3, 6$).
+    \item $n=4$: Since $9 \equiv 1 \pmod 4$, sum of digits divisible by 4.
+    \item $n=5$: Since $9 \equiv -1 \pmod 5$, alternating sum of digits divisible by 5.
+    \item $n=6$: Must satisfy rules for 2 and 3. Last digit $0,3,6$ AND sum of digits even.
+    \item $n=7$: Since $9 \equiv 2 \pmod 7$, $d_0 + 2d_1 + 4d_2 + \dots$ divisible by 7.
+    \item $n=8$: Since $9 \equiv 1 \pmod 8$, sum of digits divisible by 8.
+\end{itemize}
+\hrulefill
+
+%%% Q12
+\begin{q}\hskip-.3cm) (a) Find the number of positive integer divisors of $648$.\\ (b) Find the sum of all positive integer divisors of 648.\end{q}
+\sol{12}
+$648 = 2^3 \times 3^4$.
+\begin{itemize}
+    \item (a) Count: $(3+1)(4+1) = 20$.
+    \item (b) Sum: $\df{2^4-1}{2-1} \times \df{3^5-1}{3-1} = 15 \times 121 = \textbf{1815}$.
+\end{itemize}
+\hrulefill
+
+%%% Q13
+\begin{q}\hskip-.3cm) Find the decimal, binary, octal and base 4 expansion of $(D5A3)_{16}$.\end{q}
+\sol{13}
+Hex: $D5A3_{16}$.
+\begin{itemize}
+    \item \textbf{Binary:} $1101\ 0101\ 1010\ 0011_2$
+    \item \textbf{Base 4:} $11|01|01|01|10|10|00|11 \rightarrow 31112203_4$
+    \item \textbf{Octal:} $1|101|010|110|100|011 \rightarrow 152643_8$
+    \item \textbf{Decimal:} $13(16^3) + 5(16^2) + 10(16) + 3 = 53248 + 1280 + 160 + 3 = \textbf{54691}$
+\end{itemize}
+\hrulefill
+
+%%% Q14
+\begin{q}\hskip-.3cm) Find values a, b, and c (not all 0) such that $(abc)_5 = (cba)_8$, or prove that there are none.\end{q}
+\sol{14}
+$(abc)_5 = (cba)_8 \implies 25a + 5b + c = 64c + 8b + a$.
+\begin{itemize}
+    \item Simplify: $24a - 3b - 63c = 0 \implies 8a - b - 21c = 0 \implies b = 8a - 21c$.
+    \item Constraints: $1 \le a \le 4$, $0 \le b \le 4$, $1 \le c \le 4$.
+    \item If $c=1$, $b = 8a - 21$.
+    \item Try $a=3 \implies b = 24 - 21 = 3$. Valid ($331_5 = 131_{10}$? No. $25(3)+15+1=91$. $64(1)+24+3=91$).
+    \item \textbf{Answer:} $a=3, b=3, c=1$.
+\end{itemize}
+\hrulefill
+
+%%% Q15
+\begin{q}\hskip-.3cm) Suppose the odd primes 3, 5, 7,11,13,17,... in order of increasing size are $p_1,p_2,p_3,....$.\\ Prove or disprove:\\ $p_1p_2p_3 ...p_k + 2$ is prime, for all $k \geq 1$.\end{q}
+\sol{15}
+Disprove: $p_1 \dots p_k + 2$ is prime.
+\begin{itemize}
+    \item $k=1: 3+2=5$ (Prime)
+    \item $k=2: 3(5)+2=17$ (Prime)
+    \item $k=3: 3(5)(7)+2=107$ (Prime)
+    \item $k=4: 3(5)(7)(11)+2 = 1157$.
+    \item Test 1157: $1157 = 13 \times 89$. Not Prime.
+    \item \textbf{Answer:} False. Counterexample at $k=4$.
+\end{itemize}
+\hrulefill
+
+%%% Q16
+\begin{q}\hskip-.3cm) Use the construction in the proof of the Chinese remainder theorem to find all solutions to the system of congruences:\\  $x \equiv 1 \;\;( mod\;\; 2 )$,\\ $x \equiv 2 \;\;( mod\;\; 3 )$,\\ $x \equiv 3 \;\;( mod\;\; 5 )$,\\ $x \equiv 4 \;\;( mod\;\; 11 )$ \end{q}
+\sol{16}
+System: $x \equiv 1 (2), x \equiv 2 (3), x \equiv 3 (5), x \equiv 4 (11)$.
+\begin{itemize}
+    \item $M = 330$.
+    \item $x = 1(165)(1) + 2(110)(2) + 3(66)(1) + 4(30)(7) = 165 + 440 + 198 + 840 = 1643$.
+    \item $1643 \pmod{330} = 323$.
+    \item \textbf{Answer:} $x \equiv 323 \pmod{330}$.
+\end{itemize}
+\hrulefill
+
+%%% Q17
+\begin{q}\hskip-.3cm) Solve the system of congruences in the previous question using the method of back substitution.\end{q}
+\sol{17}
+Back Substitution.
+\begin{itemize}
+    \item $x = 2j+1$. Sub into mod 3: $2j+1 \equiv 2 \implies 2j \equiv 1 \implies j \equiv 2 \pmod 3$. $j=3k+2$.
+    \item $x = 2(3k+2)+1 = 6k+5$. Sub into mod 5: $6k+5 \equiv 3 \implies k \equiv 3 \pmod 5$. $k=5m+3$.
+    \item $x = 6(5m+3)+5 = 30m+23$. Sub into mod 11: $30m+23 \equiv 4 \implies 8m+1 \equiv 4 \implies 8m \equiv 3$.
+    \item Multiply by 7 (inverse of 8): $m \equiv 21 \equiv 10 \pmod{11}$. $m=11n+10$.
+    \item $x = 30(11n+10)+23 = 330n + 300 + 23 = 330n + 323$.
+\end{itemize}
+\hrulefill
+
+%%% Q18
+\begin{q}\hskip-.3cm) Use Fermat's little theorem to find $23^{1002}\; mod\; 41$.\end{q}
+\sol{18}
+$23^{1002} \pmod{41}$.
+\begin{itemize}
+    \item Fermat's Little Theorem: $23^{40} \equiv 1 \pmod{41}$.
+    \item $1002 = 25(40) + 2$.
+    \item $23^{1002} \equiv (23^{40})^{25} \cdot 23^2 \equiv 1 \cdot 529 \pmod{41}$.
+    \item $529 = 12(41) + 37$.
+    \item \textbf{Answer:} 37.
+\end{itemize}
+\hrulefill
+
+%%% Q19
+\begin{q}\hskip-.3cm) Show that if  {\bf a} ,{\bf b} , and {\bf m} are integers such that $m \geq 2$ and $a \equiv b\; ( mod\; m )$, then $gcd ( a , m ) = gcd ( b , m )$.\end{q}
+\sol{19}
+\textbf{Proof:}
+Let $d = \gcd(a, m)$. Then $d|a$ and $d|m$.
+Since $a \equiv b \pmod m$, $a = b + km$ for some integer $k$, so $b = a - km$.
+Since $d$ divides $a$ and $m$, it divides $a - km$, so $d|b$.
+Thus $d$ is a common divisor of $b$ and $m$.
+Similarly, any common divisor of $b$ and $m$ must divide $a$.
+Therefore, $\gcd(a, m) = \gcd(b, m)$.
+\hrulefill
+
+%%% Q20
+\begin{q}\hskip-.3cm) Find a counterexample to  of this statement about congruences:\\ If  $a \equiv b \;\;( mod\;\; m )$ and $c \equiv d \;\;( mod\;\; m )$,  where  {\bf a,\, b,\, c,\, d} and {\bf m} are integers with {\bf c} and {\bf d} positive and $m \geq 2$, then $a^c \equiv b^d \;\;( mod\;\; m )$.\end{q}
+\sol{20}
+Statement: If $a \equiv b \pmod m$ and $c \equiv d \pmod m$, then $a^c \equiv b^d \pmod m$.
+\textbf{Counterexample:}
+\begin{itemize}
+    \item Let $m=3$.
+    \item $a=2, b=5 \implies 2 \equiv 5 \pmod 3$.
+    \item $c=1, d=4 \implies 1 \equiv 4 \pmod 3$.
+    \item LHS: $2^1 = 2$.
+    \item RHS: $5^4 = 625 \equiv 1 \pmod 3$.
+    \item $2 \not\equiv 1 \pmod 3$.
+\end{itemize}
+\newpage
+\part{Homework Solutions}
+\section{Homework 1}
+\hskip4.5cm{\Large\bf Homework 1}\vskip2cm 
+ To show that $p\oplus q\equiv (p\land\lnot q)\lor  (\lnot p\land q) $ using truth table, where $\oplus$ is the XOR conjunction, we write the truth table below:\\
+\begin{tabular}{c|c|c|c|c|c|c|c}% here c means centered, l would mean left justified and r would be right. The | are used to let LaTeX know how many columns we need.
+$ p$ & $q$ & $\neg p$ & $p \wedge \neg q$ & $  \neg p \wedge q$ & $\left(p \wedge \neg q\right) \vee \left(\neg p \wedge q\right) $& $\neg q$ & $p \oplus q$ \\ \hline
+True&True&False&False&False&False&False&False\\ \hline % \\ means new line  \hline means "make a horizontal line under this row".
+True&False&False&True&True&False&True&True\\ \hline
+False&True&True&False&False&True&True&True\\ \hline  % the & (ampersand) symbols are used line up the items in the rows and indicate the end of the column.
+False&False&True&True&False&False&False&False\\ \hline
+\end{tabular}\vskip1cm
+
+\beq Given the truth table above, write the truth table for $p\lor q\land s$ and its negation\eeq
+
+\[
+\begin{array}{|c|c|c|c|c|}
+\hline
+p & q & s & p \lor (q \land s) & \lnot(p \lor (q \land s)) \\
+\hline
+T & T & T & T & F \\
+T & T & F & T & F \\
+T & F & T & T & F \\
+T & F & F & T & F \\
+F & T & T & T & F \\
+F & T & F & F & T \\
+F & F & T & F & T \\
+F & F & F & F & T \\
+\hline
+\end{array}
+\]
+\newpage
+\section{Homework 2}
+\section*{Logical Operators: NAND and NOR}
+
+In this document, we address a series of questions to demonstrate the properties and equivalences of logical operators, including the newly introduced NAND ($|$), defined as true when at least one of $p$ or $q$ is false, and NOR ($\downarrow$), defined as true only when both $p$ and $q$ are false. We use truth tables to verify equivalences and construct compound propositions.
+
+\subsection*{Q1: Conjunction, Disjunction, and Conditional using $\neg$ and $\vee$}
+To express conjunction ($p \wedge q$), disjunction ($p \vee q$), and conditional ($p \to q$) using only $\neg$ and $\vee$, we use the following equivalences:
+\begin{itemize}
+    \item Disjunction: $p \vee q$ (already given).
+    \item Conjunction: $p \wedge q \equiv \neg(\neg p \vee \neg q)$
+    \item Conditional: $p \to q \equiv \neg p \vee q$.
+\end{itemize}
+The truth table verifies these equivalences:
+
+\begin{center}
+\begin{tabular}{cc|cccc}
+\toprule
+$p$ & $q$ & $\neg p$ & $\neg q$ & $\neg p \vee \neg q$ & $\neg(\neg p \vee \neg q)$ \\
+\midrule
+T & T & F & F & F & T \\
+T & F & F & T & T & F \\
+F & T & T & F & T & F \\
+F & F & T & T & T & F \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The column for $\neg(\neg p \vee \neg q)$ matches $p \wedge q$. For the conditional:
+
+\begin{center}
+\begin{tabular}{cc|cc}
+\toprule
+$p$ & $q$ & $\neg p$ & $\neg p \vee q$ \\
+\midrule
+T & T & F & T \\
+T & F & F & F \\
+F & T & T & T \\
+F & F & T & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The column for $\neg p \vee q$ matches $p \to q$. Thus, $\neg$ and $\vee$ can express all three.
+
+\subsection*{Q2: Conjunction, Disjunction, and Conditional using $\neg$ and $\wedge$}
+To express conjunction ($p \wedge q$), disjunction ($p \vee q$), and conditional ($p \to q$) using only $\neg$ and $\wedge$, we use:
+\begin{itemize}
+    \item Conjunction: $p \wedge q$ (already given).
+    \item Disjunction: $p \vee q \equiv \neg(\neg p \wedge \neg q)$
+    \item Conditional: $p \to q \equiv \neg(p \wedge \neg q)$.
+\end{itemize}
+The truth table verifies these:
+
+\begin{center}
+\begin{tabular}{cc|ccccc}
+\toprule
+$p$ & $q$ & $\neg p$ & $\neg q$ & $\neg p \wedge \neg q$ & $\neg(\neg p \wedge \neg q)$ & $\neg(p \wedge \neg q)$ \\
+\midrule
+T & T & F & F & F & T & T \\
+T & F & F & T & F & T & F \\
+F & T & T & F & F & T & T \\
+F & F & T & T & T & F & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The column for $\neg(\neg p \wedge \neg q)$ matches $p \vee q$, and $\neg(p \wedge \neg q)$ matches $p \to q$. Thus, $\neg$ and $\wedge$ can express all three.
+
+\subsection*{Q3: Truth Table for NAND ($p | q$)}
+The NAND operator ($p | q$) is true when at least one of $p$ or $q$ is false, and false when both are true:
+
+\begin{center}
+\begin{tabular}{cc|c}
+\toprule
+$p$ & $q$ & $p | q$ \\
+\midrule
+T & T & F \\
+T & F & T \\
+F & T & T \\
+F & F & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Q4: Showing $p | q \equiv \neg(p \wedge q)$}
+We compare $p | q$ with $\neg(p \wedge q)$ using a truth table:
+
+\begin{center}
+\begin{tabular}{cc|ccc}
+\toprule
+$p$ & $q$ & $p \wedge q$ & $\neg(p \wedge q)$ & $p | q$ \\
+\midrule
+T & T & T & F & F \\
+T & F & F & T & T \\
+F & T & F & T & T \\
+F & F & F & T & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The columns for $\neg(p \wedge q)$ and $p | q$ are identical, confirming $p | q \equiv \neg(p \wedge q)$.
+
+\subsection*{Q5: Truth Table for NOR ($p \downarrow q$)}
+The NOR operator ($p \downarrow q$) is true only when both $p$ and $q$ are false:
+
+\begin{center}
+\begin{tabular}{cc|c}
+\toprule
+$p$ & $q$ & $p \downarrow q$ \\
+\midrule
+T & T & F \\
+T & F & F \\
+F & T & F \\
+F & F & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Q6: Showing $p \downarrow q \equiv \neg(p \vee q)$}
+We compare $p \downarrow q$ with $\neg(p \vee q)$ using a truth table:
+
+\begin{center}
+\begin{tabular}{cc|ccc}
+\toprule
+$p$ & $q$ & $p \vee q$ & $\neg(p \vee q)$ & $p \downarrow q$ \\
+\midrule
+T & T & T & F & F \\
+T & F & T & F & F \\
+F & T & T & F & F \\
+F & F & F & T & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The columns for $\neg(p \vee q)$ and $p \downarrow q$ are identical, confirming $p \downarrow q \equiv \neg(p \vee q)$.
+
+\subsection*{Q7: Showing $\{\downarrow\}$ is Functionally Complete}
+A set of operators is functionally complete if it can express negation, conjunction, and disjunction (or equivalently, $\neg$ and $\vee$ or $\neg$ and $\wedge$). We show this for $\{\downarrow\}$ in two parts.
+
+\subsubsection*{Q7a: Showing $p \downarrow p \equiv \neg p$}
+We construct a truth table for $p \downarrow p$:
+
+\begin{center}
+\begin{tabular}{c|cc}
+\toprule
+$p$ & $p \downarrow p$ & $\neg p$ \\
+\midrule
+T & F & F \\
+F & T & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Since $p \downarrow p$ matches $\neg p$, we have $p \downarrow p \equiv \neg p$.
+
+\subsubsection*{Q7b: Showing $(p \downarrow q) \downarrow (p \downarrow q) \equiv p \vee q$}
+We construct a truth table:
+
+\begin{center}
+\begin{tabular}{cc|ccc}
+\toprule
+$p$ & $q$ & $p \downarrow q$ & $(p \downarrow q) \downarrow (p \downarrow q)$ & $p \vee q$ \\
+\midrule
+T & T & F & T & T \\
+T & F & F & T & T \\
+F & T & F & T & T \\
+F & F & T & F & F \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The column for $(p \downarrow q) \downarrow (p \downarrow q)$ matches $p \vee q$. Since we can express $\neg p$ (from Q7a) and $p \vee q$, and Q1 shows that $\{\neg, \vee\}$ is functionally complete, $\{\downarrow\}$ is functionally complete.
+
+\subsection*{Q8: Expressing $p \to q$ using only $\downarrow$}
+We proved $p \to q \equiv \neg p \vee q$ in class so using this and the work from Q7:
+\begin{itemize}
+    \item $\neg p \equiv p \downarrow p$.
+    \item $p \vee q \equiv (p \downarrow q) \downarrow (p \downarrow q)$.
+\end{itemize}
+Thus, $p \to q \equiv \neg p \vee q \equiv (p \downarrow p) \vee q \equiv ((p \downarrow p) \downarrow q) \downarrow ((p \downarrow p) \downarrow q)$. The truth table verifies:
+
+\begin{center}
+\begin{tabular}{cc|ccccc}
+\toprule
+$p$ & $q$ & $p \downarrow p$ & $(p \downarrow p) \downarrow q$ & $((p \downarrow p) \downarrow q) \downarrow ((p \downarrow p) \downarrow q)$ & $p \to q$ \\
+\midrule
+T & T & F & T & T & T \\
+T & F & F & T & F & F \\
+F & T & T & F & T & T \\
+F & F & T & T & T & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The columns match, so $p \to q \equiv ((p \downarrow p) \downarrow q) \downarrow ((p \downarrow p) \downarrow q)$.
+
+\subsection*{Q9: Showing $p | q \equiv q | p$}
+We compare $p | q$ and $q | p$ using a truth table:
+
+\begin{center}
+\begin{tabular}{cc|cc}
+\toprule
+$p$ & $q$ & $p | q$ & $q | p$ \\
+\midrule
+T & T & F & F \\
+T & F & T & T \\
+F & T & T & T \\
+F & F & T & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The columns for $p | q$ and $q | p$ are identical, confirming $p | q \equiv q | p$.
+\newpage
+\section{Homework 3}
+\vskip.1cm{\bf Show all your work to get credit.} \vskip0.3cm
+{\bf Name}: Valen Li\ \vskip.5cm
+{\bf Date}: September 21, 2025 \vskip.5cm
+
+%%%% Problem 1
+\begin{q}
+Prove that \(\neg [r \vee (q \wedge (\neg r \rightarrow \neg p))] \equiv \neg r \wedge (p \vee \neg q)\) by using a series of logical equivalences.
+\end{q}
+{\bf Solution:} 
+
+\begin{itemize}
+    \item Simplify the implication: \(\neg r \ra \neg p \equiv \neg (\neg r) \vee \neg p \equiv r \vee \neg p\). Thus, the expression becomes:
+    \[
+    \neg [r \vee (q \wedge (r \vee \neg p))].
+    \]
+    \item Apply De Morgan’s Law to the negation of the disjunction:
+    \[
+    \neg [r \vee (q \wedge (r \vee \neg p))] = \neg r \wedge \neg (q \wedge (r \vee \neg p)).
+    \]
+    \item Apply De Morgan’s to the negated conjunction:
+    \[
+    \neg (q \wedge (r \vee \neg p)) = \neg q \vee \neg (r \vee \neg p).
+    \]
+    So the expression is:
+    \[
+    \neg r \wedge (\neg q \vee \neg (r \vee \neg p)).
+    \]
+    \item Simplify \(\neg (r \vee \neg p)\):
+    \[
+    \neg (r \vee \neg p) = \neg r \wedge \neg (\neg p) = \neg r \wedge p.
+    \]
+    Thus:
+    \[
+    \neg r \wedge (\neg q \vee (\neg r \wedge p)).
+    \]
+    \item Distribute \(\neg q \vee (\neg r \wedge p)\):
+    \[
+    \neg q \vee (\neg r \wedge p) = (\neg q \vee \neg r) \wedge (\neg q \vee p).
+    \]
+    So the expression becomes:
+    \[
+    \neg r \wedge (\neg q \vee \neg r) \wedge (\neg q \vee p).
+    \]
+    \item Apply the absorption law:
+    \[
+    \neg r \wedge (\neg q \vee \neg r) = \neg r.
+    \]
+    Resulting in: 
+    \[
+    \neg r \wedge (\neg q \vee p).
+    \]
+    \item Recognize that \(\neg q \vee p = p \vee \neg q\) (commutative property), so:
+    \[
+    \neg r \wedge (p \vee \neg q).
+    \]
+    This matches the right hand side we were given at the start.
+\end{itemize}
+
+\eeq
+
+%%%% Problem 2
+\begin{q}
+Express the following propositions using quantifiers, then express the negation in English and using quantifiers: \\
+(a) Some people have no common sense. \\
+(b) All Swedish movies are boring. \\
+(c) No one can keep a secret. \\
+(d) Someone in this class has a bad attitude. \\
+Make sure you indicate the predicate and its domain.
+\end{q}
+{\bf Solution:}
+
+\begin{itemize}
+    \item[(a)] {\bf Proposition:} Some people have no common sense.
+    \begin{itemize}
+        \item {\bf Predicate:} \(C(x) = \) ``x has common sense.''
+        \item {\bf Domain:} All people.
+        \item {\bf Quantified Form:} \(\exists x \neg C(x)\).
+        \item {\bf Negation (English):} ``All people have common sense.''
+        \item {\bf Negation (Quantifiers):} \(\neg (\exists x \neg C(x)) \equiv \forall x C(x)\).
+    \end{itemize}
+
+    \item[(b)] {\bf Proposition:} All Swedish movies are boring.
+    \begin{itemize}
+        \item {\bf Predicate:} \(B(x) = \) ``x is boring.''
+        \item {\bf Domain:} All Swedish movies.
+        \item {\bf Quantified Form:} \(\forall x B(x)\).
+        \item {\bf Negation (English):} ``Some Swedish movies are not boring.''
+        \item {\bf Negation (Quantifiers):} \(\neg (\forall x B(x)) \equiv \exists x \neg B(x)\).
+    \end{itemize}
+
+    \item[(c)] {\bf Proposition:} No one can keep a secret.
+    \begin{itemize}
+        \item {\bf Predicate:} \(K(x) = \) ``x can keep a secret.''
+        \item {\bf Domain:} All people.
+        \item {\bf Quantified Form:} \(\forall x \neg K(x)\).
+        \item {\bf Negation (English):} ``Someone can keep a secret.''
+        \item {\bf Negation (Quantifiers):} \(\neg (\forall x \neg K(x)) \equiv \exists x K(x)\).
+    \end{itemize}
+
+    \item[(d)] {\bf Proposition:} Someone in this class has a bad attitude.
+    \begin{itemize}
+        \item {\bf Predicate:} \(A(x) = \) ``x has a bad attitude.''
+        \item {\bf Domain:} All people in this class.
+        \item {\bf Quantified Form:} \(\exists x A(x)\).
+        \item {\bf Negation (English):} ``No one in this class has a bad attitude.''
+        \item {\bf Negation (Quantifiers):} \(\neg (\exists x A(x)) \equiv \forall x \neg A(x)\).
+    \end{itemize}
+\end{itemize}
+
+\eeq
+
+%%%% Problem 3
+\begin{q}
+Let \(M(x) = \) ``x is a millionaire'' and \(P(x) = \) ``x drives a Porsche''. The domain is all people. Translate to English: \\
+(a) \(\forall x (M(x) \ra P(x))\) \\
+(b) \(\exists x (M(x) \ra P(x))\) \\
+(c) \(\forall x (M(x) \wedge P(x))\) \\
+(d) \(\exists x (M(x) \vee P(x))\)
+\end{q}
+{\bf Solution:}
+
+\begin{itemize}
+    \item[(a)] \(\forall x (M(x) \ra P(x))\): ``All millionaires drive a Porsche.''
+    \item[(b)] \(\exists x (M(x) \ra P(x))\): Since \(M(x) \ra P(x) \equiv \neg M(x) \vee P(x)\), this translates to: ``There exists a person who is either not a millionaire or drives a Porsche.''
+    \item[(c)] \(\forall x (M(x) \wedge P(x))\): ``Everyone is both a millionaire and drives a Porsche.''
+    \item[(d)] \(\exists x (M(x) \vee P(x))\): ``There exists a person who is either a millionaire or drives a Porsche.''
+\end{itemize}
+
+\eeq
+
+%%%% Problem 4
+\begin{q}
+Prove that \(\cos x\) and \(\sin x\) are continuous \(\forall x \in \mathbb{R}\).
+\end{q}
+(I didn't understand how to prove this, so I watched a YouTube video that explained it and I only kinda get it so heres my attempt at the proof) \\ \\
+{\bf Solution:} 
+
+
+
+To prove that \(\sin x\) is continuous at every point \(a \in \mathbb{R}\), we need to show that for every \(\epsilon > 0\), there exists a \(\delta > 0\) such that if \(|x - a| < \delta\), then \(|\sin x - \sin a| < \epsilon\).
+
+Start with the trigonometric identity:
+\[
+\sin x - \sin a = 2 \cos\left(\frac{x + a}{2}\right) \sin\left(\frac{x - a}{2}\right).
+\]
+Taking the absolute value:
+\[
+|\sin x - \sin a| = 2 \left|\cos\left(\frac{x + a}{2}\right)\right| \left|\sin\left(\frac{x - a}{2}\right)\right|.
+\]
+Since \(\left|\cos \theta\right| \leq 1\) for any \(\theta\), this simplifies to:
+\[
+|\sin x - \sin a| \leq 2 \left|\sin\left(\frac{x - a}{2}\right)\right|.
+\]
+We use the known inequality \(|\sin \theta| \leq |\theta|\) for all real \(\theta\) (this can be established geometrically: in the unit circle, the vertical distance \(\sin \theta\) is less than or equal to the arc length \(\theta\) for \(\theta \geq 0\), and by symmetry for \(\theta < 0\)):
+\[
+\left|\sin\left(\frac{x - a}{2}\right)\right| \leq \left|\frac{x - a}{2}\right| = \frac{|x - a|}{2}.
+\]
+Substituting back:
+\[
+|\sin x - \sin a| \leq 2 \cdot \frac{|x - a|}{2} = |x - a|.
+\]
+To make \(|\sin x - \sin a| < \epsilon\), choose \(\delta = \epsilon\). Then, if \(|x - a| < \delta = \epsilon\), we have \(|\sin x - \sin a| \leq |x - a| < \epsilon\).
+
+This \(\delta\) works for any \(a\), so \(\sin x\) is continuous everywhere.
+\\ \\
+Similarly, for \(\cos x\) at \(a \in \mathbb{R}\):
+\[
+\cos x - \cos a = -2 \sin\left(\frac{x + a}{2}\right) \sin\left(\frac{x - a}{2}\right).
+\]
+Taking the absolute value:
+\[
+|\cos x - \cos a| = 2 \left|\sin\left(\frac{x + a}{2}\right)\right| \left|\sin\left(\frac{x - a}{2}\right)\right|.
+\]
+Since \(\left|\sin \theta\right| \leq 1\) for any \(\theta\):
+\[
+|\cos x - \cos a| \leq 2 \cdot 1 \cdot \left|\sin\left(\frac{x - a}{2}\right)\right| = 2 \left|\sin\left(\frac{x - a}{2}\right)\right|.
+\]
+Again, using \(|\sin \theta| \leq |\theta|\):
+\[
+2 \left|\sin\left(\frac{x - a}{2}\right)\right| \leq 2 \cdot \frac{|x - a|}{2} = |x - a|.
+\]
+So:
+\[
+|\cos x - \cos a| \leq |x - a|.
+\]
+Choose \(\delta = \epsilon\). If \(|x - a| < \delta = \epsilon\), then \(|\cos x - \cos a| < \epsilon\).
+
+This works for any \(a\), so \(\cos x\) is continuous everywhere.
+\eeq
+\newpage
+\section{Homework 4}
+{\bf Practice Exam 1 Discrete Mathematics 1 } \vskip0.2cm
+\vskip.1cm{\bf This is a mandatory homework. Show all your work to get credit. } \vskip0.2cm
+{\bf Name}: Valen Li {\bf Due Date}: {\underline{10/03/25}} \vskip.5cm
+%%questions \eeq
+
+\beq The following sign is at the entrance of a restaurant: ``No shoes, no shirt, no service." Write this sentence as a conditional proposition. \\
+
+-Lets set p equal to ``The user wears shoes'', q equal to ``The user wears a shirt'', and r equal to ``Service is provided''.
+Then $\lnot p$ is ``No shoes'', $\lnot q$ is ``No shirt'', and $\lnot r$ is ``No service''.
+The requirement for service is (shoes $\land$ shirt). The conditional proposition is:
+$$(\lnot p \land \lnot q) \ra \lnot r$$
+\eeq
+
+\beq Write these system specifications in symbols using the propositions:\\v: ``The user enters a valid password,"\\a: ``Access is granted to the user,"\\c: ``The user has contacted the network administrator,"\\and logical connectives. Then determine if the system specifications are consistent (i.e. all 3 statements can be simultaneously true).\\(i) ``The user has contacted the network administrator, but does not enter a valid password."\\(ii) ``Access is granted whenever the user has contacted the network administrator or enters a valid password."\\(iii) ``Access is denied if the user has not entered a valid password or has not contacted the network administrator." \\
+
+i) $C \land \lnot V$ \\
+
+ii) $(C \lor V) \ra A$ \\
+
+iii) $(\lnot V \lor \lnot C) \ra \lnot A$ \\
+
+1.For (i) to be True, we must have $C = \mathbf{T}$ and $V = \mathbf{F}$.
+2.Substitute $C=T$ and $V=F$ into (iii):
+$$(\lnot F \lor \lnot T) \ra \lnot A \equiv (T \lor F) \ra \lnot A \equiv T \ra \lnot A$$
+For (iii) to be True, the conclusion $\lnot A$ must be True, so $A = \mathbf{F}$.
+3.Now, check if the truth assignment $V=F, A=F, C=T$ satisfies (ii):
+$$(C \lor V) \ra A \equiv (T \lor F) \ra F \equiv T \ra F$$
+The statement $T \ra F$ is False.
+
+Since the requirement for (i) and (iii) to be true ($V=F, A=F, C=T$) makes (ii) false, there is no assignment that makes all three true. Therefore, the system specifications are inconsistent.
+\eeq
+
+\beq Solve this puzzle: You meet two people, A and B. Each person either always tells the truth or always lies. Person A tells you, ``We are not both truthtellers.''\\Determine, if possible, which type of person each one is. \\
+
+Let $P_A$ be the proposition ``A is a truthteller'' and $P_B$ be the proposition ``B is a truthteller''.
+A's statement $S$ is $\lnot (P_A \land P_B)$.
+
+1.Assume A is a Liar ($\lnot P_A$): A's statement $S$ must be False.
+$$\lnot S \equiv P_A \land P_B$$
+For $P_A \land P_B$ to be True, $P_A$ must be True.
+This contradicts our assumption that A is a Liar ($\lnot P_A$). Thus, this case is impossible.
+
+2.Assume A is a Truthteller ($P_A$): A's statement $S$ must be True.
+$$S \equiv \lnot (P_A \land P_B)$$
+Since $P_A$ is True, $S \equiv \lnot (T \land P_B) \equiv \lnot P_B$.
+Since $S$ must be True, $\lnot P_B$ must be True. This means $P_B$ is False.
+
+Conclusion: A must be a truthteller (Knight) and B must be a liar (Knave).
+\eeq
+
+\beq Write the following statement and its negation symbolically: "If it is Thursday, then we are going to swim only if it is not raining".\\
+
+Let $p$: ``It is Thursday'', $q$: ``We are going to swim'', $r$: ``It is raining''.
+The phrase ``A only if B'' means $A \ra B$. So, ``we are going to swim only if it is not raining'' is $q \ra \lnot r$.
+The entire statement is in the form ``If $p$, then $q \ra \lnot r$'':
+$$\text{Statement: } p \ra (q \ra \lnot r)$$
+
+To find the negation, we first simplify the statement using logical equivalences:
+$$p \ra (q \ra \lnot r) \equiv p \ra (\lnot q \lor \lnot r) \equiv \lnot p \lor (\lnot q \lor \lnot r) \equiv \lnot (p \land q \land r)$$
+Now negate the simplified form:
+$$\text{Negation: } \lnot (\lnot (p \land q \land r)) \equiv p \land q \land r$$
+In English, the negation is: \``It is Thursday, and we are going to swim, and it is raining.''
+\eeq
+
+\beq Prove that $ p \rightarrow (q \lor r ) \equiv (p\land \lnot q) \rightarrow r $ by using a series of logical equivalences.\\
+
+$$\begin{array}{rcll}
+(p\land \lnot q) \rightarrow r & \equiv & \lnot(p\land \lnot q) \lor r & (\text{Implication Law: } A \ra B \equiv \lnot A \lor B) \\
+& \equiv & (\lnot p \lor \lnot(\lnot q)) \lor r & (\text{De Morgan's Law}) \\
+& \equiv & (\lnot p \lor q) \lor r & (\text{Double Negation}) \\
+& \equiv & \lnot p \lor (q \lor r) & (\text{Associative Law}) \\
+& \equiv & p \rightarrow (q \lor r) & (\text{Implication Law})
+\end{array}$$
+The two expressions are equivalent.
+\eeq
+
+\beq Consider this sentence, which is Section 2 of Article I of the U. S. Constitution: \\``No person shall be a Representative who shall not have attained the age of twenty-five years, and been seven years a citizen of the United States, and who shall not, when elected, be an inhabitant of that state in which he shall be chosen."\\(a) Rewrite the sentence in English in the form ``If . . . , then . . . ". \\(b) Using the predicates A(x): ``x is at least twenty-five years old," C(x): ``x has been a citizen of the United States for at least seven years," I(x): ``x, when elected, is an inhabitant of the state in which he is chosen," and R(x): ``x can be a Representative," where the universe for x in all four predicates consists of all people, rewrite the sentence using quantifiers and these predicates. [Note: At the time at which the U. S. Constitution was ratified, the universe for x consisted of landowning males.]\\
+
+a) If a person is a Representative, then that person is at least 25 years old, has been a citizen of the United States for at least 7 years, and is an inhabitant of the state from which they are chosen when elected.\\
+
+b) The sentence establishes the necessary conditions for being a Representative. The form is $R(x) \ra (\text{requirements})$.
+$$\forall x (R(x) \rightarrow (A(x) \land C(x) \land I(x)))$$
+\eeq
+
+\beq Suppose that the universe for x and y is $\{1,2,3\}$. Also, assume that P(x,y) is a predicate that is true in the following cases, and false otherwise: P(1,3),P(2,1),P(2,2),P(3,1),P(3,2),P(3,3). Determine whether each of the following is true or false:\\(a) $\forall y\exists x (x\neq y \wedge P (x, y))$.\\(b) $\forall x\exists y (x\neq y \wedge \neg P (x, y))$.\\(c) $\forall y\exists x (x\neq y \wedge \neg P (x, y))$.\\
+
+The false cases $\neg P(x,y)$ are: $(1,1), (1,2), (2,3)$.
+
+a) $\forall y\exists x (x\neq y \wedge P (x, y))$. (True)
+\begin{itemize}
+\item $y=1$: $\exists x \neq 1$ $|$ $P(x, 1)$? Yes, $P(2,1)$ and $P(3,1)$ are True.
+\item $y=2$: $\exists x \neq 2$ $|$ $P(x, 2)$? Yes, $P(3,2)$ is True.
+\item $y=3$: $\exists x \neq 3$ $|$ $P(x, 3)$? Yes, $P(1,3)$ is True.
+\end{itemize}
+
+b) $\forall x\exists y (x\neq y \wedge \neg P (x, y))$. (False)
+\begin{itemize}
+\item $x=1$: $\exists y \neq 1$ $|$ $\neg P(1, y)$? Yes, $\neg P(1,2)$ is True.
+\item $x=2$: $\exists y \neq 2$ $|$ $\neg P(2, y)$? Yes, $\neg P(2,3)$ is True.
+\item $x=3$: $\exists y \neq 3$ $|$ $\neg P(3, y)$? No. $P(3,1), P(3,2), P(3,3)$ are all True, so $\neg P(3,y)$ is never True.
+\end{itemize}
+Since it fails for $x=3$, the statement is False.
+
+c) $\forall y\exists x (x\neq y \wedge \neg P (x, y))$. (False)
+\begin{itemize}
+\item $y=1$: $\exists x \neq 1$ $|$ $\neg P(x, 1)$? No. $P(1,1)$ is False (so $\neg P(1,1)$ is True, but $x \neq 1$ is required). $P(2,1)$ and $P(3,1)$ are True, so $\neg P(2,1)$ and $\neg P(3,1)$ are False.
+\end{itemize}
+Since it fails for $y=1$, the statement is False.
+\eeq
+
+\beq Determine whether this argument is valid: \\Lynn works part time or full time. ($P \lor F$)\\ If Lynn does not play on the team, then she does not work part time. ($\lnot T \ra \lnot P$)\\If Lynn plays on the team, she is busy. ($T \ra B$)\\Lynn does not work full time. ($\lnot F$)\\Therefore, Lynn is busy. ($\therefore B$) \\
+
+The argument is valid.
+$$\begin{array}{rll}
+1. & P \lor F & (\text{Premise 1}) \\
+2. & \lnot T \ra \lnot P & (\text{Premise 2}) \\
+3. & T \ra B & (\text{Premise 3}) \\
+4. & \lnot F & (\text{Premise 4}) \\
+5. & P & (\text{Disjunctive Syllogism from 1 and 4}) \\
+6. & P \ra T & (\text{Contrapositive from 2}) \\
+7. & T & (\text{Modus Ponens from 5 and 6}) \\
+8. & B & (\text{Modus Ponens from 7 and 3})
+\end{array}$$
+The conclusion $B$ logically follows from the premises.
+\eeq
+
+\beq Give a proof by contradiction of: ``If $n$ is an even integer, then $3n + 7$ is odd."\\
+
+We want to prove $p \ra q$, where $p$: ``$n$ is an even integer'' and $q$: ``$3n + 7$ is odd''.
+Assume the negation of the conclusion, $\lnot q$, holds: $3n + 7$ is even.
+Since $n$ is an even integer (premise $p$), we can write $n = 2k$ for some integer $k$.
+Substituting $n = 2k$ into the assumption:
+$$3n + 7 = 3(2k) + 7 = 6k + 7$$
+By our assumption, $6k + 7$ is even, so $6k + 7 = 2m$ for some integer $m$.
+$$6k + 7 = 2m$$
+$$6k - 2m = -7$$
+$$2(3k - m) = -7$$
+Let $j = 3k - m$. Since $k$ and $m$ are integers, $j$ is an integer.
+$$2j = -7$$
+This equation states that an even integer $2j$ is equal to an odd integer $-7$. This is a contradiction.
+Therefore, our assumption ($\lnot q$) must be false, and the original
+conclusion ($q$) that $3n+7$ is odd must be true.
+\eeq
+
+\beq Find the output of the following logic gate:\vskip.8cm \begin{tikzpicture}[
+% you can find documentation here: https://tikz.dev/library-circuits#autosec-5292
+        %Environment config
+        font=\sffamily,
+        thick,
+        %Environment styles
+        GateCfg/.style={
+            logic gate inputs={normal,normal,normal},
+            draw,
+            scale=2
+        }
+    ]
+    \path
+        (0,0) node[and gate US,GateCfg](AND1){} 
+            ++ (2,-4) node[and gate US,GateCfg](AND2){} 
+            ++ (5,3) node[or gate US,GateCfg](OR1){}
+        (AND1.input 3)
+            ++ (-1,0) node[not gate US, draw](N1){}
+        (AND2.input 3)
+            ++ (-1,0) node[not gate US, draw](N2){}
+        (AND2.input 1 -| N1)
+            node[not gate US, draw](N3){};
+
+    \draw
+        (OR1.input 1) -- ++(-1.5,0) |- (AND1.output)
+        (OR1.input 3) -- ++(-1.5,0) |- (AND2.output)
+        (N2.output)--(AND2.input 3)
+        (N1.output)--(AND1.input 3)
+        (N3.output)--(AND2.input 1)
+        (AND1.input 1) 
+            -- ++(-3,0) coordinate (init) node[anchor=east]{p}
+            node[pos=0.6](temp){}
+        (N1-| temp)
+            ++(0,5pt) edge (temp.center)
+            arc (90:-90:5pt) |- (N3.input)
+        (init |- N1) node[anchor=east]{q} 
+            -- (N1.input) node[pos=0.4](temp2){}
+        (temp2.center) |- (N2.input)
+        (OR1.output) -- ++(2,0) node [midway,anchor=south]{Output ?};
+    \end{tikzpicture} 
+
+$$ (p \land \lnot q) \lor (\lnot p \land \lnot q) $$
+\eeq
+
+\beq Prove, using whatever method you want, that at least one of the real numbers $a_1, a_2, ..., a_n$ is greater than or equal to the average of these numbers.\\
+  
+
+1. Let $\bar{a}$ be the average of the $n$ real numbers $a_1, a_2, \dots, a_n$.
+2. By the definition of the average, we have:
+$$\bar{a} = \df{a_1 + a_2 + \dots + a_n}{n}$$
+3. Multiplying by $n$ gives:
+$$n \bar{a} = a_1 + a_2 + \dots + a_n$$
+4. Rearranging the terms shows that the sum of the differences between each number and the average is zero:
+$$0 = (a_1 - \bar{a}) + (a_2 - \bar{a}) + \dots + (a_n - \bar{a})$$
+
+For a sum of $n$ real numbers to equal zero, it is impossible for all $n$ numbers to be strictly negative. If $(a_i - \bar{a}) < 0$ for all $i$, the sum would be strictly less than zero.
+
+Therefore, at least one of the difference terms, say $(a_k - \bar{a})$, must be greater than or equal to zero:
+$$a_k - \bar{a} \geq 0$$
+Adding $\bar{a}$ to both sides yields the desired result:
+$$a_k \geq \bar{a}$$
+We conclude that at least one of the numbers is greater than or equal to the average.
+\eeq
+
+\beq Prove by contraposition: $x\in {\mathbb R}, x^2 - 6x+5>0 \rightarrow x\geq 5\; \lor \; x\leq 1$\\
+
+Let $P$ be $x^2 - 6x+5>0$ and $Q$ be $x\geq 5 \lor x\leq 1$. We prove the contrapositive $\lnot Q \rightarrow \lnot P$.
+\begin{itemize}
+\item Hypothesis ($\lnot Q$): The negation of $x\geq 5 \lor x\leq 1$ is $x < 5 \land x > 1$, or $1 < x < 5$.
+\item Conclusion ($\lnot P$): The negation of $x^2 - 6x+5>0$ is $x^2 - 6x+5 \leq 0$.
+\end{itemize}
+Proof: Assume $1 < x < 5$.
+Factor the quadratic: $x^2 - 6x+5 = (x - 5)(x - 1)$.
+Since $x < 5$, the factor $(x - 5)$ is negative.
+Since $x > 1$, the factor $(x - 1)$ is positive.
+The product of a negative number and a positive number is negative:
+$$(x - 5)(x - 1) < 0$$
+Thus, $x^2 - 6x+5 \leq 0$ is true. Since the contrapositive is true, the original statement is also true.
+\eeq
+
+\beq Prove by contradiction $\sqrt{3\:}$ is irrational \\
+
+Assume, for the sake of contradiction, that $\sqrt{3}$ is rational.
+If $\sqrt{3}$ is rational, it can be written as a fraction $\df{a}{b}$, where $a$ and $b$ are integers, $b \neq 0$, and $\df{a}{b}$ is in simplest form ($a$ and $b$ have no common factors other than 1).
+$$\sqrt{3} = \df{a}{b}$$
+Squaring both sides gives:
+$$3 = \df{a^2}{b^2}$$
+$$3b^2 = a^2 \quad (*)$$
+Since $a^2$ equals $3$ times an integer ($b^2$), $a^2$ must be divisible by 3.
+By the fundamental theorem of arithmetic, if $3$ divides $a^2$, then $3$ must divide $a$.
+Therefore, we can write $a = 3k$ for some integer $k$.
+Substitute $a = 3k$ back into equation $(*)$:
+$$3b^2 = (3k)^2$$
+$$3b^2 = 9k^2$$
+Divide both sides by 3:
+$$b^2 = 3k^2$$
+Since $b^2$ equals $3$ times an integer ($k^2$), $b^2$ must be divisible by 3.
+Again, by the fundamental theorem of arithmetic, if $3$ divides $b^2$, then $3$ must divide $b$.
+We have established that $3$ divides $a$ (since $a=3k$) and $3$ divides $b$.
+This means that $a$ and $b$ have a common factor of 3.
+This contradicts our initial assumption that $\df{a}{b}$ was in simplest form (i.e., $a$ and $b$ have no common factors other than 1).
+Therefore, the initial assumption that $\sqrt{3}$ is rational must be false. Hence, $\sqrt{3}$ is irrational.
+\eeq
+
+%%questions
+\newpage
+\section{Homework 5}
+{\bf Exam 2 Discrete Mathematics 1 Solutions} \vskip0.2cm
+{\bf Name}: Valen Li {\bf Due Date}: \underline{10/15/25} \vskip0.5cm
+
+Code snippet
+
+% Problem 1
+\beq In this exercise, you prove the Schr\"{o}der-Bernstein theorem. Suppose that \(A\) and \(B\) are sets where \(|A|\leq|B|\)and \(|B|\leq|A|\). This means that there are injections \(f : A \ra B\) and \(g : B \ra A\). To prove the theorem, we must show that there is a bijection \(h : A \ra  B\), implying that \(|A|= |B|\). To build \(h : A \ra  B\),  we construct the chain of an element \(a \in  A\). This chain contains the elements \(a, f (a), g(f (a)), f (g(f (a))), g(f (g(f (a)))), ...\). It also may contain more elements that precede \(a\), extending the chain backwards. So, if there is an element \(b \in  B\) with \(g(b) = a\), then  the element \( b\) will be the term of the chain just before the element  \(a\). Because \(g : B \ra A\) may not be a surjection, there may not be any such \(b\), so that \(a\) is the first element of the chain. If such an element \(b\) exists, because \(g : B \ra A\)  is an injection, it is the unique element of \(B\) mapped by \(g\) to \(a\); hence we denote it by \(g^{-1}  (a)\). We extend the chain backwards as long as possible in the same way, adding \(f^{-1}  (g^{-1}  (a)), g^{-1}  (f^{-1}  (g^{-1}(a))), ...\) To construct the proof, complete these five parts. \\
+
+\textbf{(a)} Each element in \( A \cup B \) belongs to exactly one chain. The functions \( f: A \to B \) and \( g: B \to A \) define a partition of \( A \cup B \) into disjoint chains (sequences or cycles). The relationship is defined by $a \to f(a)$ for $a \in A$ and $b \to g(b)$ for $b \in B$. Since \( f \) and \( g \) are injective, each element has at most one predecessor and one successor, ensuring the set is partitioned into these unique sequences.
+
+{\bf (b)} Chains are categorized by their backward structure (origin):
+\begin{itemize}
+\item {Type 1 (Loop) / Type 2 ($\mathbf{C_{\infty}}$)}: Cyclic or infinite both ways.
+\item {Type 3 ($\mathbf{C_A}$)}: Ends backward at $a_0 \in A$ (no $b \in B$ such that $g(b) = a_0$).
+\item {Type 4 ($\mathbf{C_B}$)}: Ends backward at $b_0 \in B$ (no $a \in A$ such that $f(a) = b_0$).
+\end{itemize}
+Let $\mathcal{C}_{f}$ be the union of Type 1, 2, 3 chains, and $\mathcal{C}_{g^{-1}}$ be Type 4 chains.
+
+{\bf (c)} Define the bijection candidate \( h: A \ra B \):
+\[
+h(a) = \begin{cases} 
+f(a) & \text{if } a \text{ is in } \mathcal{C}_{f}, \\
+g^{-1}(a) & \text{if } a \text{ is in } \mathcal{C}_{g^{-1}}.
+\end{cases}
+\]
+For $a \in \mathcal{C}_{g^{-1}} = C_B$, $a$ is necessarily of the form $g(b)$ for some $b \in B$ (since the chain begins at $b_0 \in B$, $a$ cannot be the chain's origin), so $g^{-1}(a)$ is well-defined in $B$.
+
+{\bf (d)} To show \( h \) is injective, let \( h(a_1) = h(a_2) \).
+\begin{itemize}
+\item {Same Type}: If $a_1, a_2 \in \mathcal{C}_{f}$, $f(a_1) = f(a_2) \implies a_1 = a_2$ (by injectivity of $f$). If $a_1, a_2 \in \mathcal{C}_{g^{-1}}$, $g^{-1}(a_1) = g^{-1}(a_2) \implies a_1 = a_2$ (by injectivity of $g$).
+\item {Mixed Types}: If $a_1 \in \mathcal{C}_{f}$ and $a_2 \in \mathcal{C}_{g^{-1}}$, then $f(a_1) = g^{-1}(a_2)$. Applying $g$ gives $g(f(a_1)) = a_2$. This establishes a connection $a_1 \to f(a_1) \to a_2$, meaning $a_1$ and $a_2$ are in the same chain. This is a contradiction, as connected elements must be in the same type of chain ($\mathcal{C}_{f}$ vs $\mathcal{C}_{g^{-1}}$).
+\end{itemize}
+Thus, \( h \) is one-to-one.
+
+{\bf (e)} To show \( h \) is onto, take \( b \in B \).
+\begin{itemize}
+\item {If $b \in \mathcal{C}_{f}$}: Every $b \in B$ in these chains must have a predecessor $a \in A$ such that $f(a) = b$. For this $a$, $h(a) = f(a) = b$.
+\item {If $b \in \mathcal{C}_{g^{-1}}$}: Let $a = g(b)$. Then $a \in A$ and $a$ is also in $\mathcal{C}_{g^{-1}}$. By definition, $h(a) = h(g(b)) = g^{-1}(g(b)) = b$.
+\end{itemize}
+All \( b \in B \) are covered, so \( h \) is onto. Thus, \( h \) is a bijection, proving \( |A| = |B| \).
+\eq
+
+% Problem 2
+\beq 
+To show \( |(0,1)| = |\mathbb{R}| \), construct a bijection \( h: (0,1) \ra \mathbb{R} \), defined as:
+\[
+h(x) = \tan\left( \pi x - \frac{\pi}{2} \right).
+\]
+\begin{itemize}
+    \item {Domain}: For \( x \in (0,1) \), \( \pi x - \frac{\pi}{2} \in (-\frac{\pi}{2}, \frac{\pi}{2}) \), where \( \tan \) maps to \( \mathbb{R} \).
+    \item {Injectivity}: If \( h(x_1) = h(x_2) \), then \( \tan(\pi x_1 - \frac{\pi}{2}) = \tan(\pi x_2 - \frac{\pi}{2}) \). Since \( \tan \) is injective on \( (-\frac{\pi}{2}, \frac{\pi}{2}) \), \( \pi x_1 - \frac{\pi}{2} = \pi x_2 - \frac{\pi}{2} \), so \( x_1 = x_2 \).
+    \item {Surjectivity}: For \( y \in \mathbb{R} \), solve \( h(x) = y \): \( \tan(\pi x - \frac{\pi}{2}) = y \), so \( \pi x - \frac{\pi}{2} = \arctan(y) \), hence \( x = \frac{\arctan(y) + \frac{\pi}{2}}{\pi} \). Since \( \arctan(y) \in (-\frac{\pi}{2}, \frac{\pi}{2}) \), \( x \in (0,1) \), and \( h(x) = y \).
+\end{itemize}
+Thus, \( h \) is a bijection, so \( |(0,1)| = |\mathbb{R}| \).
+\eq
+\newpage
+\section{Homework 6}
+{\bf Homework 2 MATH163\hskip1cm Show all your work to get credit. }  \vskip0.2cm 
+{\bf Name}: Valen Li {\bf Due Date}:  \underline{10/24/25} 
+\vskip.5cm
+% Question 1
+\beq
+Let $S = \{\emptyset ,a,\{a\}\}$. Determine whether each of these is an  element of $S$, a subset of $S$, neither, or both. Justify your answer\\(a) \{a\}\\(b) \{\{a\}\} \\(c) $\emptyset$\\(d) $\{\{\emptyset\}, a\}$\\(e) $\{\emptyset\}$\\(f) $\{\emptyset,a\}$ \\
+
+\begin{enumerate}[(a)]
+    \item $\set*{a}$ is both an element of $S$ and a subset of $S$. Since $\set*{a}$ appears in $S$, it is an element of $S$. Additionally, every element of $\set*{a}$ is contained in $S$ (specifically, $S$ contains the element $a$), so $\set*{a}$ is a subset of $S$. 
+    \item $\set*{\set*{a}}$ is not an element of $S$, but it is a subset of $S$. The set $\set*{\set*{a}}$ does not appear in $S$, so it is not an element of $S$. However, every element of $\set*{\set*{a}}$ is contained in $S$ (specifically, $S$ contains the element $\set*{a}$), so $\set*{\set*{a}}$ is a subset of $S$.
+    \item $\emptyset$ is both an element of $S$ and a subset of $S$. Since $\emptyset$ appears in $S$, it is an element of $S$. Moreover, $\emptyset$ contains no elements, so vacuously all its elements are in $S$. Therefore, $\emptyset$ is a subset of $S$.
+    \item $\set*{\set*{\emptyset}, a}$ is neither an element of $S$ nor a subset of $S$. The set $\set*{\set*{\emptyset}, a}$ does not appear in $S$, so it is not an element of $S$. Since $\set*{\emptyset}$ is an element of $\set*{\set*{\emptyset}, a}$ but not of $S$, the set $\set*{\set*{\emptyset}, a}$ is not a subset of $S$.
+    \item $\set*{\emptyset}$ is not an element of $S$, but it is a subset of $S$. The set $\set*{\emptyset}$ does not appear in $S$, so it is not an element of $S$. However, every element of $\set*{\emptyset}$ is contained in $S$ (specifically, $S$ contains the element $\emptyset$), so $\set*{\emptyset}$ is a subset of $S$.
+    \item $\set*{\emptyset, a}$ is not an element of $S$, but it is a subset of $S$. The set $\set*{\emptyset, a}$ does not appear in $S$, so it is not an element of $S$. However, every element of $\set*{\emptyset, a}$ is contained in $S$ (specifically, $S$ contains both $\emptyset$ and $a$), so $\set*{\emptyset, a}$ is a subset of $S$.
+\end{enumerate}
+\newpage
+
+% Question 2
+\beq
+You begin with \$1000. You invest it at 5\% compounded annually, but at the end of each year you withdraw \$100 immediately after the interest is paid.\\(a) Set up a recurrence relation and initial condition for the amount you have after n years.\\(b) How much is left in the account after you have withdrawn \$100 at the end of the third year?\\(c) Find a formula for $a_n$.\\(d) Use the formula to determine how long it takes before the last withdrawal reduces the balance in the account to \$0.\\
+
+\begin{enumerate}[(a)]
+    \item 
+    $S_n = S_{n-1}(1.05) - 100, n \geq 1, S_0 = 1000$
+    \item
+    \begin{align*}
+        S_0 = 1000 && S_1 &= S_0(1.05) - 100  &&& S_2 &= S_1(1.05) - 100 &&& S_3 &= S_2(1.05) - 100 \\
+                   &&     &= 1000(1.05) - 100 &&&     &= 950(1.05) - 100 &&&     &= 897.5(1.05) - 100 \\
+                   &&     &= 1050 - 100       &&&     &= 997.5 - 100     &&&     &= 942.375 - 100 \\
+                   &&     &= 950              &&&     &= 897.5           &&&     &= 842.375
+    \end{align*}
+    \textbf{After withdrawing \$100 at the end of the third year, \$842.37 remains in the account.}
+    \item 
+    Let $P = S_0 = 1000, r = 1.05, c=100$.
+    \begin{align*}
+        S_0 = P && S_1 = Pr - c && S_2 &= (Pr - c)r - c &&& S_3 &= (Pr^2 - cr - c)r - c \\
+                &&              &&     &= Pr^2 - cr - c &&&     &= Pr^3 - cr^2 - cr - c
+    \end{align*}
+    \begin{align*}
+        S_n &= Pr^n - cr^{n-1} - cr^{n-2} - \cdots - cr^1 - c \\
+            &= Pr^n - c\paren*{r^{n-1} + r^{n-2} + \cdots + r + 1} \\
+            &= Pr^n - c\paren*{\sum_{i=0}^{n-1} r^i} \\
+            &= Pr^n - c\paren*{\sum_{i=1}^{n} r^{i-1}} \\
+            &= Pr^n - c\paren*{\frac{1-r^n}{1-r}} \\
+            &= 1000\paren*{1.05}^n - 100\paren*{\frac{1-1.05^n}{1-1.05}} \\
+            &= 1000\paren*{1.05}^n + 2000\paren*{1-1.05^n} \\
+            &= 1000\paren*{1.05^n + 2 - 2\paren*{1.05^n}} \\
+            &= 1000\paren*{-1.05^n + 2} \\
+        S_n &= -1000\paren*{1.05^n - 2}
+    \end{align*}
+    \item 
+    \begin{align*}
+        0 &= -1000(1.05^n - 2) \\
+        2 &= 1.05^n \\
+        \log_{1.05} 2 &= n \\
+        \frac{\log 2}{\log 1.05} &= n \\
+        14.21 &\approx n 
+    \end{align*}
+    \textbf{It will take 15 years before the last withdrawal reduces the account balance to \$0.}
+\end{enumerate}
+\newpage
+
+% Question 3
+\beq
+If $P(A)$ means the power set of $A$, \\
+(a) Prove that $P(A)\cup P(B) \subset P(A\cup B)$ is true for all sets A and B.\\(b) Prove that the converse of (a) is not true. That is, prove that:\\ $P(A \cup B) \subset P(A) \cup P(B)$ is false for some sets A and B. \\
+
+\begin{enumerate}[(a)]
+    \item 
+    \begin{proof}
+        Let $S \in (P(A) \unite P(B))$ be arbitrary. \\
+        \\
+        Then $S\in P(A) \lor S \in P(B)$. Since $S$ belongs to the power set of $A$ or $B$, we have $S \subset A \lor S \subset B$. \\
+        \\
+        Now, $P(A \unite B)$ contains all subsets of $A \unite B$, which includes all subsets of $A$ and all subsets of $B$. Therefore, in either case where $S \subset A$ or $S \subset B$, we have $S \in P(A \unite B)$. \\
+        \\
+        Since $S$ was arbitrary, we conclude that $P(A) \unite P(B) \subset P(A \unite B)$.
+    \end{proof}
+    
+    \item 
+    \begin{proof}
+        Let $A = \set*{0}$ and $B = \set*{1}$. \\
+        \\
+        Then $A \unite B = \set*{0,1}$ and $P(A \unite B) = \set*{\emptyset, \set*{0}, \set*{1}, \set*{0,1}}$. \\
+        \\
+        We have $P(A) = \set*{\emptyset, \set*{0}}$ and $P(B) = \set*{\emptyset, \set*{1}}$, so $P(A) \unite P(B) = \set*{\emptyset, \set*{0}, \set*{1}}$. \\ 
+        \\
+        For $P(A \unite B)$ to be a subset of $P(A) \unite P(B)$, every element of $P(A \unite B)$ must be in $P(A) \unite P(B)$. \\
+        \\
+        However, $\set*{0,1} \in P(A \unite B)$ but $\set*{0,1} \notin P(A) \unite P(B)$. Therefore, $P(A \unite B) \subset P(A) \unite P(B)$ is false for some sets $A$ and $B$.
+    \end{proof}
+    
+\end{enumerate}
+\newpage
+
+% Question 4
+\beq
+Prove that the following is true for all sets A, B, and C: if $A \cap C \subset B \cap C$ and $A \cup C \subset B \cup C$, then $A \subset B$. \\
+
+\begin{proof}
+    Let $x \in A$ be arbitrary. We consider two cases: \\
+    \\
+    \textbf{Case 1: $x \in C$.} Then $x \in A \inter C$. Since $A \inter C \subset B \inter C$, we have $x \in B \inter C$. Therefore, $x \in B$. \\
+    \textbf{Case 2: $x \not\in C$.} Since $x \in A$, we have $x \in A \unite C$. Since $A \unite C \subset B \unite C$, we have $x \in B \unite C$. Because $x \not\in C$, it follows that $x \in B$. \\
+    \\
+    In both cases, $x \in B$. Since $x$ was arbitrary, we conclude that $A \subset B$.
+\end{proof}
+\newpage
+% Question 5
+\beq
+Let $f:R\rightarrow R$ have the rule $f(x) = \lceil 3x\rceil + 1$and $g:R\rightarrow R$ have the rule $g(x)=\df{x}{3}$.\\(a) Find $(f o g)^{-1}(\{2.5\})$.\\ (b) Find $(f o g)^{-1}(\{2\})$. \\
+
+\
+\begin{align*}
+    (f \circ g)(x) &= \ceil*{3\paren*{\df{x}{3}}} + 1\\
+                   &= \ceil*{x} + 1 
+\end{align*}
+
+\begin{enumerate}[(a)]
+    \item 
+    We need to find all $x$ such that $(f \circ g)(x) = 2.5$. However, since $\ceil*{x}$ is always an integer and we add 1, $(f \circ g)(x)$ is always an integer. Therefore, $(f \circ g)(x) = 2.5$ has no solutions.
+    \begin{align*}
+        (f \circ g)^{-1}(\set*{2.5}) &= \emptyset
+    \end{align*}
+    \item
+    We need to find all $x$ such that $(f \circ g)(x) = 2$:
+    \begin{align*}
+        \ceil*{x} + 1 &= 2 \\
+        \ceil*{x} &= 1
+    \end{align*}
+    The ceiling function equals 1 when $0 < x \leq 1$.
+    \begin{align*}
+        (f \circ g)^{-1}(\set*{2}) &= (0, 1]
+    \end{align*}
+\end{enumerate}
+\newpage
+
+% Question 6
+\beq
+Find a formula for the recurrence relation $a_n = 2a_{n-1} + 2^n, a_0 = 1$, using a recursive method. \\
+
+\begin{align*}
+    a_0 &= a_0 &&& a_1 &= 2(a_0) + 2^1  &&& a_2 &= 2(2^1 a_0 + 2^1) + 2^2  &&& a_3 &= 2(2^2 a_0 + 2(2^2)) + 2^3 \\ 
+        &= 1   &&&     &= 2^1 a_0 + 2^1 &&&     &= 2^2 a_0 + 2^2 + 2^2      &&&     &= 2^3 a_0 + 2^3 + 2^3 + 2^3 \\
+        &      &&&     &= 4             &&&     &= 2^2 a_0 + 2(2^2)         &&&     &= 2^3 a_0 + 3(2^3) \\
+        &      &&&     &                &&&     &= 12                       &&&     &= 32
+\end{align*}
+Observing the pattern, we obtain:
+\begin{align*}
+    a_n &= 2^n a_0 + n(2^n) \\
+        &= 2^n + n(2^n) \\
+        &= (n+1)2^n
+\end{align*}
+
+\newpage
+\beq Find a formula for an infinite sequence $a_1,a_2,a_3,...$ that begins with the terms 1,2,1,2,1,2,1 and continues this alternating pattern.\\
+
+$a_n = 1 +((n+1) \bmod 2)$\\
+
+The expression $(n+1) \bmod 2$ yields 0 when $n$ is odd (since $n+1$ is even) and yields 1 when $n$ is even (since $n+1$ is odd). Adding 1 to this result produces the desired alternating sequence of 1's and 2's.\\ 
+
+\newpage
+\beq Find a function $f : {\mathbb Z} \rightarrow {\mathbb N} $ that is one-to-one but not onto.\\ \par
+f(x) = 
+\begin{cases}
+2x + 2 & \text{if } x \geq 0 \\
+-2x + 3 & \text{if } x < 0
+\end{cases}
+This function is one-to-one because no two distinct elements in the domain map to the same element in the codomain. However, it is not onto because the image of $f$ does not equal the entire codomain $\mathbb{N}$ (it misses 1 and 3).\\par
+Find a function $g: {\mathbb N} \rightarrow {\mathbb Z} $ that is one-to-one and  onto.\
+$g(x) = x/2$ when $x$ is even and $-(x-1)/2$ when $x$ is odd\
+This function is one-to-one because no two distinct elements in the domain map to the same element in the codomain. It is also onto because the image of $g$ equals the entire codomain $\mathbb{Z}$.\
+\newpage
+\beq Find  $1+x^2 +x^4 +x^6 +x^8 +... $ assuming  $0<|x|<1$.\\
+
+Formula for the sum of a geometric series: $\frac{1}{1-r}$.\\
+
+Since the common ratio of the sequence above is $x^2$, the sum is $\frac{1}{1-x^2}$.\\
+
+\newpage
+\beq Use the Principle of Mathematical Induction to  show this inequality is true for all  integers $n\geq 2$:\hskip1cm$\displaystyle\sum_{i=1}^n\df{1}{\sqrt{i\,\,}} > \sqrt{n\,\,}$\\
+
+\textbf{Base Case ($n = 2$):}
+
+For $n = 2$, we have:
+\[
+\sum_{i=1}^2 \frac{1}{\sqrt{i}} = \frac{1}{\sqrt{1}} + \frac{1}{\sqrt{2}} = 1 + \frac{1}{\sqrt{2}}
+\]
+Since $\sqrt{2} < 2$, we have $\frac{1}{\sqrt{2}} > \frac{1}{2}$. Therefore, $1 + \frac{1}{\sqrt{2}} > 1 + \frac{1}{2} = \frac{3}{2}$, which exceeds $\sqrt{2}$. Thus, the base case holds.
+
+\textbf{Inductive Hypothesis:}
+
+Assume that for some positive integer $k \geq 2$, the inequality
+\[
+\sum_{i=1}^k \frac{1}{\sqrt{i}} > \sqrt{k}
+\]
+is true.
+
+\textbf{Inductive Step:}
+
+We need to prove that for $n = k + 1$, the inequality
+\[
+\sum_{i=1}^{k+1} \frac{1}{\sqrt{i}} > \sqrt{k+1}
+\]
+holds.
+
+Starting with the left-hand side:
+\[
+\begin{aligned}
+\sum_{i=1}^{k+1} \frac{1}{\sqrt{i}} &= \left(\sum_{i=1}^k \frac{1}{\sqrt{i}}\right) + \frac{1}{\sqrt{k+1}}
+\end{aligned}
+\]
+
+By the inductive hypothesis, $\sum_{i=1}^k \frac{1}{\sqrt{i}} > \sqrt{k}$. Therefore:
+\[
+\begin{aligned}
+\sum_{i=1}^{k+1} \frac{1}{\sqrt{i}} &> \sqrt{k} + \frac{1}{\sqrt{k+1}}
+\end{aligned}
+\]
+
+We need to show that $\sqrt{k} + \frac{1}{\sqrt{k+1}} > \sqrt{k+1}$. Squaring both sides:
+\[
+\begin{aligned}
+\left(\sqrt{k} + \frac{1}{\sqrt{k+1}}\right)^2 &> (\sqrt{k+1})^2
+\end{aligned}
+\]
+
+Expanding the left-hand side:
+\[
+\begin{aligned}
+k + 2\sqrt{k}\cdot\frac{1}{\sqrt{k+1}} + \frac{1}{k+1} &> k+1
+\end{aligned}
+\]
+
+Subtracting $k$ from both sides:
+\[
+\begin{aligned}
+2\sqrt{k}\cdot\frac{1}{\sqrt{k+1}} + \frac{1}{k+1} &> 1
+\end{aligned}
+\]
+
+Simplifying $2\sqrt{k}\cdot\frac{1}{\sqrt{k+1}} = \frac{2\sqrt{k}}{\sqrt{k+1}}$:
+\[
+\begin{aligned}
+\frac{2\sqrt{k}}{\sqrt{k+1}} + \frac{1}{k+1} &> 1
+\end{aligned}
+\]
+
+To verify this, multiply through by $\sqrt{k+1}$:
+\[
+\begin{aligned}
+2\sqrt{k} + \frac{\sqrt{k+1}}{k+1} &> \sqrt{k+1}
+\end{aligned}
+\]
+
+Squaring $2\sqrt{k} > \sqrt{k+1}$ gives $4k > k+1$, which simplifies to $3k > 1$. Since $k \geq 2$, we have $3k \geq 6 > 1$, confirming the inequality.
+
+Therefore:
+\[
+\begin{aligned}
+\sum_{i=1}^{k+1} \frac{1}{\sqrt{i}} &> \sqrt{k} + \frac{1}{\sqrt{k+1}} > \sqrt{k+1}
+\end{aligned}
+\]
+
+By the Principle of Mathematical Induction, the inequality
+\[
+\sum_{i=1}^n \frac{1}{\sqrt{i}} > \sqrt{n}
+\]
+holds for all integers $n \geq 2$.
+
+
+\newpage
+\beq Prove that for all positive integers n,  $3^{2^n} -1$ is divisible by $2^{n+2}$.\\
+
+\textbf{Base Case: $n = 1$}\\
+
+$3^{2^1} - 1 = 3^2 - 1 = 9 - 1 = 8 = 2^3 = 2^{1+2}$\\
+
+Thus, the base case holds.\\
+
+\textbf{Inductive Hypothesis:} Assume that for some positive integer $k$, $3^{2^k} -1$ is divisible by $2^{k+2}$.\\
+
+\textbf{Inductive Step:} We need to show that for $n = k + 1$, $3^{2^{k+1}} - 1$ is divisible by $2^{k+3}$.\\
+
+\[3^{2^{k+1}} - 1 = (3^{2^k})^2 - 1\]\\
+
+Using the difference of squares formula $a^2 - b^2 = (a+b)(a-b)$ with $a = 3^{2^k}$ and $b = 1$:\\
+
+\[3^{2^{k+1}} - 1 = (3^{2^k} + 1)(3^{2^k} - 1)\]\\
+
+By the inductive hypothesis, $3^{2^k} - 1$ is divisible by $2^{k+2}$, so we can write $3^{2^k} - 1 = 2^{k+2} \cdot m$ for some integer $m$.\\
+
+\[3^{2^{k+1}} - 1 = (3^{2^k} + 1)(2^{k+2} \cdot m)\]\\
+
+To prove divisibility by $2^{k+3}$, we need to show that $3^{2^k} + 1$ is divisible by $2$.\\
+
+Since $3$ is odd, $3^{2^k}$ is also odd. The sum of an odd number and 1 (which is also odd) gives an even number. Therefore, $3^{2^k} + 1$ is even, meaning it is divisible by $2$.\\
+
+We can write $3^{2^k} + 1 = 2 \cdot \ell$ for some integer $\ell$. Thus:\\
+
+\[3^{2^{k+1}} - 1 = (2 \cdot \ell)(2^{k+2} \cdot m) = 2^{k+3} \cdot \ell m\]\\
+
+Hence, $3^{2^{k+1}} - 1$ is divisible by $2^{k+3}$.\\
+
+By mathematical induction, for all positive integers $n$, $3^{2^n} - 1$ is divisible by $2^{n+2}$.\\
+
+\newpage
+\beq Find a formula for $$(1-\df1{2^2})(1-\df1{3^2})(1-\df1{4^2})(1-\df1{5^2})...(1-\df1{n^2})$$  where $n \geq 2$, and use the Principle of Mathematical Induction to prove that the formula is correct.\\
+
+\textbf{Proposed Formula:} $(1-\frac{1}{2^2})(1-\frac{1}{3^2})\cdots(1-\frac{1}{n^2}) = \frac{n+1}{2n}$\\
+
+\textbf{Base Case ($n = 2$):}
+
+For $n = 2$, the formula gives:
+
+\[
+\frac{2+1}{2(2)} = \frac{3}{4}
+\]
+
+The product in the original expression is $(1 - \frac{1}{2^2}) = (1 - \frac{1}{4}) = \frac{3}{4}$. Therefore, the base case holds.
+
+\textbf{Inductive Hypothesis:}
+
+Assume that the formula holds for some positive integer $k \geq 2$:
+
+\[
+(1 - \frac{1}{2^2})(1 - \frac{1}{3^2}) \cdots (1 - \frac{1}{k^2}) = \frac{k+1}{2k}
+\]
+
+\textbf{Inductive Step:}
+
+We need to show that the formula holds for $n = k + 1$:
+
+\[
+(1 - \frac{1}{2^2})(1 - \frac{1}{3^2}) \cdots (1 - \frac{1}{k^2}) \cdot (1 - \frac{1}{(k+1)^2}) = \frac{(k+1)+1}{2(k+1)} = \frac{k+2}{2(k+1)}
+\]
+
+Starting with the left-hand side and using the inductive hypothesis:
+
+\[
+\begin{aligned}
+&(1 - \frac{1}{2^2})(1 - \frac{1}{3^2}) \cdots (1 - \frac{1}{k^2}) \cdot (1 - \frac{1}{(k+1)^2}) \\
+&= \frac{k+1}{2k} \cdot (1 - \frac{1}{(k+1)^2}) \\
+&= \frac{k+1}{2k} \cdot \frac{(k+1)^2 - 1}{(k+1)^2} \\
+&= \frac{k+1}{2k} \cdot \frac{k^2 + 2k + 1 - 1}{(k+1)^2} \\
+&= \frac{k+1}{2k} \cdot \frac{k^2 + 2k}{(k+1)^2} \\
+&= \frac{k+1}{2k} \cdot \frac{k(k + 2)}{(k+1)^2} \\
+&= \frac{(k+1) \cdot k(k + 2)}{2k(k+1)^2} \\
+&= \frac{k(k + 2)}{2k(k+1)} \\
+&= \frac{k + 2}{2(k+1)}
+\end{aligned}
+\]
+
+This matches our desired result. Therefore, the formula holds for $n = k + 1$.
+
+By mathematical induction, we have shown that the formula
+
+\[
+(1 - \frac{1}{2^2})(1 - \frac{1}{3^2}) \cdots (1 - \frac{1}{n^2}) = \frac{n+1}{2n}
+\]
+
+is correct for all positive integers $n \geq 2$.
+
+\newpage
+\beq Which amounts of stamps can be formed using just five cents stamp and nine cents stamp? Prove your answer using strong induction. \\
+We can form any amount of postage greater than or equal to 32 cents using only 5-cent and 9-cent stamps. \\ \\
+\textbf{Base Cases:}
+We verify that the amounts from 32 to 36 cents can be formed:
+\begin{itemize}
+\item 32 cents: Three 9-cent stamps and one 5-cent stamp ($3 \times 9 + 1 \times 5 = 27 + 5 = 32$).
+\item 33 cents: Two 9-cent stamps and three 5-cent stamps ($2 \times 9 + 3 \times 5 = 18 + 15 = 33$).
+\item 34 cents: One 9-cent stamp and five 5-cent stamps ($1 \times 9 + 5 \times 5 = 9 + 25 = 34$).
+\item 35 cents: Seven 5-cent stamps ($7 \times 5 = 35$).
+\item 36 cents: Four 9-cent stamps ($4 \times 9 = 36$).
+\end{itemize}
+Note that amounts such as 1, 2, 3, 4, 6, 7, 8, 11, 12, 13, 16, 17, 21, 22, 26, 27, 28, 29, 30, and 31 cents cannot be formed, while some smaller amounts like 5, 9, 10, 14, 15, 18, 19, 20, 23, 24, 25 can be formed as previously listed.\\ \\
+\textbf{Inductive Hypothesis:}
+Assume that for all positive integers $k$ where $32 \leq k \leq n$ (for some $n \geq 36$), we can form $k$ cents using only 5-cent and 9-cent stamps.\\ \\
+\textbf{Inductive Step:}
+We want to show that we can form $(n + 1)$ cents using these stamps.\\ \\ 
+Since $n \geq 36$, we have $n - 4 \geq 32$. By the inductive hypothesis, we can form $(n - 4)$ cents. Adding one 5-cent stamp to this gives us $(n - 4) + 5 = n + 1$ cents.\\ \\
+Therefore, we can form $(n + 1)$ cents using only 5-cent and 9-cent stamps.\\ \\
+By strong induction, we have shown that any amount greater than or equal to 32 cents can be formed using 5-cent and 9-cent stamps.\\ \\
+\newpage
+\beq  Let P( n) be the statement that a postage of n cents can be formed using just 3- cent stamps and 5- cent stamps. The parts of this exercise outline a strong induction proof that P( n) is true for $n \geq 8$.\\ \\
+
+a) Show that the statements P( 8), P( 9), and P( 10) are true, completing the basis step of the proof. \\ 
+
+
+We have $3 + 5 = 8$, $3 + 3 + 3 = 9$, and $5 + 5 = 10$, which confirms that P(8), P(9), and P(10) are all true.\\
+
+b) What is the inductive hypothesis of the proof?\\ 
+
+\textbf{Inductive Hypothesis:} P($k$) is true for all $k$ where $8 \leq k \leq n$, where $n \geq 10$.\\ 
+
+c) What do you need to prove in the inductive step?\\ 
+
+We need to prove that P($n + 1$) is true.\\
+
+d) Complete the inductive step for $n \geq 10$ .\\
+
+If $n \geq 10$, then $n + 1 = (n - 2) + 3$. Since $n - 2 \geq 8$, P($n - 2$) is true by the inductive hypothesis.\\
+
+Thus, a postage of $n - 2$ cents can be paid using 3-cent and 5-cent stamps. By adding one 3-cent stamp, we can pay a postage of $n + 1$ cents. Therefore, P($n + 1$) is true.\\
+
+e) Explain why these steps show that this statement is true whenever $n \geq 8$.\\
+
+The base cases establish that P($n$) is true for $n = 8, 9, 10$. The inductive step proves that if P($k$) is true for all $k$ in the range $8 \leq k \leq n$ (where $n \geq 10$), then P($n + 1$) is also true. By strong induction, this proves P($n$) holds for all $n \geq 8$. Specifically, once we have three consecutive values (8, 9, 10), we can generate any subsequent value by adding 3 to a value that is at least 8.
+
+\newpage 
+%%questions
+\newpage
+\section{Homework 7}
+{\bf \hskip2cm Practice for Counting and Discrete Probability}\par
+{\bf Name}: Valen Li % {\bf Section}:  \rule{1cm}{.01cm}\hspace*{0.2cm} {\bf Date}:  \rule{2.5cm}{.01cm} \vskip.5cm
+%%questions
+\beq Ten men and ten women are to be put in a row. Find the number of possible rows if no two of the same sex stand adjacent.
+
+\\ \\
+
+\textbf{Solution:}
+
+\\
+
+2 Possible rows: MWMWMWMWM... or WMWMWMWMWM... \\ \\
+
+For the first slot M or W there are 10 men or 10 women to choose from. \\ The next slot will have 10 of the alternate gender. \\ Then 9 then 8... \\ This is just 10!, so 10! for men and 10! for women = 2 * 10! is the number of possible rows.
+
+\eeq
+\beq In how many ways can 8 of the 9 letters in TETHERING be put in a row? \\ \\
+
+\textbf{Solution:} \\
+
+The word TETHERING has letters: T,T,E,T,H,E,R,I,N,G. \\
+
+Counts: T appears 3 times, E appears 2 times, others 1 time each. \\
+
+We remove one letter and arrange the remaining 8. \\
+
+\\
+
+Case 1: Remove one T. Left: T,T,E,E,H,R,I,N,G (2 T, 2 E). \\
+
+Number of arrangements = $\frac{8!}{2! \cdot 2!} = \frac{40320}{4} = 10080$. \\
+
+There are 3 T's to remove, so $3 \times 10080 = 30240$. \\
+
+\\
+
+Case 2: Remove one E. Left: T,T,T,H,R,I,N,G (3 T). \\
+
+Number of arrangements = $\frac{8!}{3!} = \frac{40320}{6} = 6720$. \\
+
+There are 2 E's to remove, so $2 \times 6720 = 13440$. \\
+
+\\
+
+Case 3: Remove H, R, I, N, or G (each appears once). \\
+
+Left: 8 letters with 3 T and 1 E. \\
+
+Number of arrangements = $\frac{8!}{3!} = 6720$ each. \\
+
+5 such letters, so $5 \times 6720 = 33600$. \\
+
+\\
+
+Total = $30240 + 13440 + 33600 = 77320$. \\
+
+\eeq
+\beq Prove the identity $$\binom {n} {r}\binom{r}{k}=\binom {n-k} {r-k} \binom{n}{k}$$ with \(n\geq r \geq k > 0\) \\ a) algebraically\\ b) using a combinatorial argument. \\ \\
+
+\textbf{a) Algebraic proof:} \\
+
+Left side: $\binom{n}{r} \binom{r}{k} = \frac{n!}{r!(n-r)!} \cdot \frac{r!}{k!(r-k)!} = \frac{n!}{k!(r-k)!(n-r)!}$. \\
+
+Right side: $\binom{n-k}{r-k} \binom{n}{k} = \frac{(n-k)!}{(r-k)!(n-k-r+k)!} \cdot \frac{n!}{k!(n-k)!} = \frac{n!}{k!(r-k)!(n-r)!}$. \\
+
+Both sides equal. \\
+
+\\
+
+\textbf{b) Combinatorial argument:} \\
+
+Left: Choose $r$ people from $n$, then choose $k$ leaders from those $r$. \\
+
+Right: First choose $k$ leaders from $n$ ($\binom{n}{k}$ ways). \\
+
+Then choose $r-k$ more members from the remaining $n-k$ people ($\binom{n-k}{r-k}$ ways). \\
+
+Same thing, so equal. \\
+
+\eeq
+\beq How many solutions are there to the equation \(\sum_{i=1}^{i =6}x_i= 31\), where \(x_i, (i = 1, 2, 3, 4, 5, 6) \) is a nonnegative integer such that:\\ a) \(x_i > 1 \)for \(i = 1,2,3,4,5,6 \)?\\ b) \(x_1 \geq1, x_2 \geq2, x_3 \geq3, x_4\geq4, x_5 >5, \text{and } x_6 \geq6 \)?\\ c) \(x_1 \geq 5 \)?\\d) \(x_1 < 8\) and \(x_2 >8\)? \\ \\
+
+\textbf{a)} Let $y_i = x_i - 2$, so $y_i \geq 0$. Then $\sum y_i = 31 - 12 = 19$. \\
+
+Stars and bars: $\binom{19+6-1}{6-1} = \binom{24}{5}$. \\
+
+\\
+
+\textbf{b)} Let $y_1 = x_1 - 1$, $y_2 = x_2 - 2$, ..., $y_5 = x_5 - 6$, $y_6 = x_6 - 6$. All $y_i \geq 0$. \\
+
+Sum: $y_1 + \cdots + y_6 = 31 - (1+2+3+4+6+6) = 31 - 22 = 9$. \\
+
+Answer: $\binom{9+6-1}{5} = \binom{14}{5}$. \\
+
+\\
+
+\textbf{c)} Let $z_1 = x_1 - 5$, $z_i = x_i$ for $i \geq 2$. All $\geq 0$. \\
+
+Sum: $z_1 + x_2 + \cdots + x_6 = 26$. \\
+
+Answer: $\binom{26+6-1}{5} = \binom{31}{5}$. \\
+
+\\
+
+\textbf{d)} $x_1 \leq 7$, $x_2 \geq 9$. Let $w_1 = x_1$, $w_2 = x_2 - 9$. \\
+
+Sum: $w_1 + w_2 + x_3 + \cdots + x_6 = 31 - 9 = 22$, $0 \leq w_1 \leq 7$, $w_2 \geq 0$. \\
+
+Total without upper bound: $\binom{22+6-1}{5} = \binom{27}{5}$. \\
+
+Subtract cases $w_1 \geq 8$: let $w_1' = w_1 - 8$, sum = $22-8=14$, $\binom{14+5}{5} = \binom{19}{5}$. \\
+
+Answer: $\binom{27}{5} - \binom{19}{5}$. \\
+
+\eeq
+\beq  10 kids are randomly grouped into an A team with five kids and a B team with five kids. Each grouping is equally likely. There are 3 kids in the group, Alex and his two best friends Jos\'e and Carl. What is the probability that Alex ends up on the same team with at least one of his two best friends? \\ \\
+
+Total ways to choose teams: ${\binom{10}{5}} = 256$ (divide by 2, teams unlabeled). \\
+
+Fix Alex on team A. Choose 4 more from 9 kids. \\
+
+Cases: \\
+
+- Both friends with Alex: choose 2 friends + 2 others: $\binom{2}{2}\binom{7}{2} = 21$. \\
+
+- Exactly one friend: $\binom{2}{1}\binom{7}{3} = 2 \times 35 = 70$. \\
+
+Favorable: $21 + 70 = 91$. \\
+
+Probability = $\frac{91}{256} = \frac{13}{36}$. \\
+
+\eeq
+\beq  Sally has two coins. The first coin is a fair coin and the second coin is biased. The biased coin comes up heads with probability .75 and tails with probability .25. She selects a coin at random and flips the coin ten times. The results of the coin flips are mutually independent. The result of the 10 flips is: T,T,H,T,H,T,T,T,H,T. What is the probability that she selected the biased coin? \\ \\
+
+P(data | fair) = $(0.5)^{10} = \frac{1}{1024}$. \\
+
+P(data | biased) = $(0.25)^7 (0.75)^3 = \frac{3^{3} \cdot 1^{7}}{4^{10}} = \frac{27}{1048576}$. \\
+
+P(biased) = P(fair) = 0.5. \\
+
+P(data) = $0.5 \cdot \frac{1}{1024} + 0.5 \cdot \frac{27}{1048576}$. \\
+
+= $\frac{512}{1048576} + \frac{27}{1048576} = \frac{539}{1048576}$. \\
+
+P(biased | data) = $\frac{0.5 \cdot 27 / 1048576}{539 / 1048576} = \frac{27}{2 \cdot 539} = \frac{27}{1078}. \\
+
+\eeq
+\beq You have 40 different books, 20 math books, 15 history books, and 5 geography books.\par You pick two books at random, one at a time. What is the probability that the two books are from different disciplines? \\ \\
+
+Total ways: $40 \times 39$. \\
+
+Favorable: \\
+
+- Math then not: $20 \times 20 = 400$ \\
+
+- History then not: $15 \times 25 = 375$ \\
+
+- Geography then not: $5 \times 35 = 175$ \\
+
+Total favorable: $400 + 375 + 175 = 950$. \\
+
+Probability = $\frac{950}{40 \times 39} = \frac{950}{1560} = \frac{95}{156} 
+
+\eeq
+
+\beq Find the expected value and the variance of the random value \(k\), the number of success, of the binomial distribution. \\ \\
+
+E[k] = $np$. \\
+
+Var(k) = $np(1-p)$. \\
+
+\eeq
+\beq Each of 26 cards has a different letter of the alphabet on it. You pick one card at random. A vowel $(a,e,i,o,u,y)$ is worth 3 points and a consonant is worth 0 points. Let X = the value of the card picked. Find E(X), V (X), and the standard deviation of X. \\ \\
+
+Vowels: 6 (worth 3), consonants: 20 (worth 0). \\
+
+E[X] = $\frac{6 \cdot 3 + 20 \cdot 0}{26} = \frac{18}{26} = \frac{9}{13}$. \\
+
+Var(X) = $E[X^2] - (E[X])^2 = \frac{6 \cdot 9}{26} - \left(\frac{9}{13}\right)^2 = \frac{54}{26} - \frac{81}{169} = \frac{729 - 81}{169 \cdot 13/13}$ \\
+
+$\frac{54}{26} = \frac{27}{13}, so \frac{27}{13} - \frac{81}{169} = \frac{27 \cdot 13 - 81}{169} = \frac{351 - 81}{169} = \frac{270}{169}.$ \\
+
+SD = $\sqrt{\frac{270}{169}} = \frac{\sqrt{270}}{13} = \frac{3\sqrt{30}}{13}.$ \\
+
+\eeq
+\beq  Urn 1 contains 9 black balls, 6 white balls and 5 green balls; urn 2 contains 12 green balls, 2 black balls and 6 white balls; urn 3 contains 6 green balls, 2 black balls and 2 white balls. You roll a die to determine which urn to choose: if you roll a 1 or 2 you choose urn 1; if you roll a 3 you choose urn 2  and if you roll a 4, 5, or 6 you choose urn 3. Once the urn is chosen, you draw out a ball at random from that urn. Given that the ball is black, what is the probability that the ball came from urn 3? \\ \\
+
+P(U1) = 2/6 = 1/3, P(U2)=1/6, P(U3)=3/6=1/2. \\
+
+P(B|U1)=9/20, P(B|U2)=2/20=1/10, P(B|U3)=2/10=1/5. \\
+
+P(B) = $(1/3)(9/20) + (1/6)(1/10) + (1/2)(1/5) = 3/20 + 1/60 + 1/10$. \\
+
+LCM 60: $9/60 + 1/60 + 6/60 = 16/60 = 4/15$. \\
+
+P(U3|B) = $\frac{(1/2)(1/5)}{4/15} = \frac{1/10}{4/15} = \frac{1}{10} \cdot \frac{15}{4} = \frac{3}{8}$. \\
+
+\eeq
+%%%questions
+\newpage
+\end{document}

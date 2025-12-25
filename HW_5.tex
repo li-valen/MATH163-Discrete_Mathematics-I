@@ -1,0 +1,72 @@
+\documentclass[12pt]{article}
+\usepackage{latexsym, amssymb, mathtools, amsmath}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\setlength{\textheight}{22.60cm}
+\setlength{\textwidth}{14.80cm}
+\hoffset=-1.5cm
+\pagestyle{myheadings}
+\newtheorem{q}{P}
+\newcommand{\beq}{\begin{q}\hskip-.18cm) }
+\newcommand{\eq}{\end{q}\newpage}
+\newcommand{\xor}{\oplus}
+\newcommand{\ra}{\rightarrow}
+\markright{Dr. Petrescu CCP MATH163 Homework 5}
+\begin{document}
+
+{\bf Exam 2 Discrete Mathematics 1 Solutions} \vskip0.2cm
+{\bf Name}: Valen Li {\bf Due Date}: \underline{10/15/25} \vskip0.5cm
+
+Code snippet
+
+% Problem 1
+\beq In this exercise, you prove the Schr\"{o}der-Bernstein theorem. Suppose that \(A\) and \(B\) are sets where \(|A|\leq|B|\)and \(|B|\leq|A|\). This means that there are injections \(f : A \ra B\) and \(g : B \ra A\). To prove the theorem, we must show that there is a bijection \(h : A \ra  B\), implying that \(|A|= |B|\). To build \(h : A \ra  B\),  we construct the chain of an element \(a \in  A\). This chain contains the elements \(a, f (a), g(f (a)), f (g(f (a))), g(f (g(f (a)))), ...\). It also may contain more elements that precede \(a\), extending the chain backwards. So, if there is an element \(b \in  B\) with \(g(b) = a\), then  the element \( b\) will be the term of the chain just before the element  \(a\). Because \(g : B \ra A\) may not be a surjection, there may not be any such \(b\), so that \(a\) is the first element of the chain. If such an element \(b\) exists, because \(g : B \ra A\)  is an injection, it is the unique element of \(B\) mapped by \(g\) to \(a\); hence we denote it by \(g^{-1}  (a)\). We extend the chain backwards as long as possible in the same way, adding \(f^{-1}  (g^{-1}  (a)), g^{-1}  (f^{-1}  (g^{-1}(a))), ...\) To construct the proof, complete these five parts. \\
+
+\textbf{(a)} Each element in \( A \cup B \) belongs to exactly one chain. The functions \( f: A \to B \) and \( g: B \to A \) define a partition of \( A \cup B \) into disjoint chains (sequences or cycles). The relationship is defined by $a \to f(a)$ for $a \in A$ and $b \to g(b)$ for $b \in B$. Since \( f \) and \( g \) are injective, each element has at most one predecessor and one successor, ensuring the set is partitioned into these unique sequences.
+
+{\bf (b)} Chains are categorized by their backward structure (origin):
+\begin{itemize}
+\item {Type 1 (Loop) / Type 2 ($\mathbf{C_{\infty}}$)}: Cyclic or infinite both ways.
+\item {Type 3 ($\mathbf{C_A}$)}: Ends backward at $a_0 \in A$ (no $b \in B$ such that $g(b) = a_0$).
+\item {Type 4 ($\mathbf{C_B}$)}: Ends backward at $b_0 \in B$ (no $a \in A$ such that $f(a) = b_0$).
+\end{itemize}
+Let $\mathcal{C}_{f}$ be the union of Type 1, 2, 3 chains, and $\mathcal{C}_{g^{-1}}$ be Type 4 chains.
+
+{\bf (c)} Define the bijection candidate \( h: A \ra B \):
+\[
+h(a) = \begin{cases} 
+f(a) & \text{if } a \text{ is in } \mathcal{C}_{f}, \\
+g^{-1}(a) & \text{if } a \text{ is in } \mathcal{C}_{g^{-1}}.
+\end{cases}
+\]
+For $a \in \mathcal{C}_{g^{-1}} = C_B$, $a$ is necessarily of the form $g(b)$ for some $b \in B$ (since the chain begins at $b_0 \in B$, $a$ cannot be the chain's origin), so $g^{-1}(a)$ is well-defined in $B$.
+
+{\bf (d)} To show \( h \) is injective, let \( h(a_1) = h(a_2) \).
+\begin{itemize}
+\item {Same Type}: If $a_1, a_2 \in \mathcal{C}_{f}$, $f(a_1) = f(a_2) \implies a_1 = a_2$ (by injectivity of $f$). If $a_1, a_2 \in \mathcal{C}_{g^{-1}}$, $g^{-1}(a_1) = g^{-1}(a_2) \implies a_1 = a_2$ (by injectivity of $g$).
+\item {Mixed Types}: If $a_1 \in \mathcal{C}_{f}$ and $a_2 \in \mathcal{C}_{g^{-1}}$, then $f(a_1) = g^{-1}(a_2)$. Applying $g$ gives $g(f(a_1)) = a_2$. This establishes a connection $a_1 \to f(a_1) \to a_2$, meaning $a_1$ and $a_2$ are in the same chain. This is a contradiction, as connected elements must be in the same type of chain ($\mathcal{C}_{f}$ vs $\mathcal{C}_{g^{-1}}$).
+\end{itemize}
+Thus, \( h \) is one-to-one.
+
+{\bf (e)} To show \( h \) is onto, take \( b \in B \).
+\begin{itemize}
+\item {If $b \in \mathcal{C}_{f}$}: Every $b \in B$ in these chains must have a predecessor $a \in A$ such that $f(a) = b$. For this $a$, $h(a) = f(a) = b$.
+\item {If $b \in \mathcal{C}_{g^{-1}}$}: Let $a = g(b)$. Then $a \in A$ and $a$ is also in $\mathcal{C}_{g^{-1}}$. By definition, $h(a) = h(g(b)) = g^{-1}(g(b)) = b$.
+\end{itemize}
+All \( b \in B \) are covered, so \( h \) is onto. Thus, \( h \) is a bijection, proving \( |A| = |B| \).
+\eq
+
+% Problem 2
+\beq 
+To show \( |(0,1)| = |\mathbb{R}| \), construct a bijection \( h: (0,1) \ra \mathbb{R} \), defined as:
+\[
+h(x) = \tan\left( \pi x - \frac{\pi}{2} \right).
+\]
+\begin{itemize}
+    \item {Domain}: For \( x \in (0,1) \), \( \pi x - \frac{\pi}{2} \in (-\frac{\pi}{2}, \frac{\pi}{2}) \), where \( \tan \) maps to \( \mathbb{R} \).
+    \item {Injectivity}: If \( h(x_1) = h(x_2) \), then \( \tan(\pi x_1 - \frac{\pi}{2}) = \tan(\pi x_2 - \frac{\pi}{2}) \). Since \( \tan \) is injective on \( (-\frac{\pi}{2}, \frac{\pi}{2}) \), \( \pi x_1 - \frac{\pi}{2} = \pi x_2 - \frac{\pi}{2} \), so \( x_1 = x_2 \).
+    \item {Surjectivity}: For \( y \in \mathbb{R} \), solve \( h(x) = y \): \( \tan(\pi x - \frac{\pi}{2}) = y \), so \( \pi x - \frac{\pi}{2} = \arctan(y) \), hence \( x = \frac{\arctan(y) + \frac{\pi}{2}}{\pi} \). Since \( \arctan(y) \in (-\frac{\pi}{2}, \frac{\pi}{2}) \), \( x \in (0,1) \), and \( h(x) = y \).
+\end{itemize}
+Thus, \( h \) is a bijection, so \( |(0,1)| = |\mathbb{R}| \).
+\eq
+
+\end{document}

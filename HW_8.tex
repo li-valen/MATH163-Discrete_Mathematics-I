@@ -1,0 +1,308 @@
+\documentclass[12pt]{article}
+\usepackage{latexsym}
+\usepackage{amsmath,amssymb}
+\usepackage{multicol}
+\usepackage{array}
+% Retaining original offsets and layout
+\voffset=-.8cm
+\hoffset=-1.5cm
+\setlength{\textheight}{22.60cm}
+\setlength{\textwidth}{14.80cm}
+\pagestyle{myheadings}
+
+% Redefining Q environment for Solutions to keep style but allow flow
+\newtheorem{q}{Q}
+
+% Custom commands from the question source, modified to avoid newpages
+\newcommand{\beq}{\begin{q}\hskip-.2cm. }
+\newcommand{\eq}{\end{q}\par\nopagebreak\vskip0.2cm} % Changed from \newpage to keep solution near question
+\newcommand{\df}{\displaystyle\frac}
+
+% Solution formatting command
+\newcommand{\sol}[1]{\par\noindent{\bf Solution:}}
+
+\markright{ MAT163 Practice Exam 4 Solutions}
+
+\begin{document}
+{\bf Practice Exam 4 Solutions -- Discrete Mathematics I} \vskip0.2cm
+{\bf Name}: \rule{7cm}{.01cm}\hspace*{0.2cm} {\bf Date}: \underline{\today} \vskip.2cm
+
+%%% Q1
+\beq  A fair coin is flipped n times. Give an expression for each of the probabilities below as a function of n. Simplify your final expression as much as possible.  \\(a) At least $n - 1$ flips come up heads. \\ (b) There are {\bf  at  least two} consecutive flips that are the same.  \\ (c) Assuming n is even, the number of heads is different from the number of tails. \eq 
+\sol{1}
+(a) \textbf{At least $n-1$ heads:} This implies getting exactly $n-1$ heads or exactly $n$ heads.
+\begin{itemize}
+    \item Ways to get $n$ heads: $\binom{n}{n} = 1$
+    \item Ways to get $n-1$ heads: $\binom{n}{n-1} = n$
+    \item Total outcomes: $2^n$
+    \item \textbf{Answer:} $\df{n+1}{2^n}$
+\end{itemize}
+
+(b) \textbf{At least two consecutive same:} We use the complement (no two consecutive flips are the same).
+\begin{itemize}
+    \item The only sequences with no consecutive same flips are alternating: $HTHT\dots$ and $THTH\dots$ (2 sequences).
+    \item Probability of complement: $\df{2}{2^n} = \df{1}{2^{n-1}}$
+    \item \textbf{Answer:} $1 - \df{1}{2^{n-1}}$
+\end{itemize}
+
+(c) \textbf{Number of heads $\neq$ number of tails (n is even):} Use the complement (Heads = Tails).
+\begin{itemize}
+    \item This occurs only if there are exactly $n/2$ heads.
+    \item Ways to choose $n/2$ heads: $\binom{n}{n/2}$
+    \item \textbf{Answer:} $1 - \df{\binom{n}{n/2}}{2^n}$
+\end{itemize}
+\hrulefill
+
+%%% Q2
+\beq  10 kids are randomly grouped into an A team with five kids and a B team with five kids. Each grouping is equally likely. There are 3 kids in the group, Alex and his two best friends Jose and Carl. What is the probability that Alex ends up on the same team with at least one of his two best friends?\eq 
+\sol{2}
+We calculate the probability of the complement: Alex is on a team with \textit{neither} of his friends.
+\begin{itemize}
+    \item Total ways to pick Alex's 4 teammates from the remaining 9 kids: $\binom{9}{4} = 126$.
+    \item Ways to pick teammates excluding Jose and Carl (picking 4 from remaining 7): $\binom{7}{4} = 35$.
+    \item $P(\text{No Friends}) = \df{35}{126} = \df{5}{18}$.
+    \item $P(\text{At least one}) = 1 - \df{5}{18}$.
+    \item \textbf{Answer:} $\df{13}{18}$
+\end{itemize}
+\hrulefill
+
+%%% Q3
+\beq  An online vendor requires that customers select a password that is a sequence of upper-case letters, lower-case letters and digits. A valid password must be at least 10 characters long, and it must contain at least one character from each of the three sets of characters. What is the probability that a randomly selected string with exactly ten characters results in a valid password? The alphabet for the strings in the sample space from which the string is drawn is the union of the three sets of characters.  \eq 
+\sol{3}
+Use Inclusion-Exclusion. Let $S$ be the total set of strings ($62^{10}$).
+Let $U$ be strings missing Uppercase, $L$ missing Lowercase, $D$ missing Digits.
+\begin{itemize}
+    \item $|U| = (26+10)^{10} = 36^{10}$
+    \item $|L| = (26+10)^{10} = 36^{10}$
+    \item $|D| = (26+26)^{10} = 52^{10}$
+    \item $|U \cap L| = 10^{10}$ (Digits only)
+    \item $|U \cap D| = 26^{10}$ (Lower only)
+    \item $|L \cap D| = 26^{10}$ (Upper only)
+\end{itemize}
+\textbf{Answer:} $\df{62^{10} - (2 \cdot 36^{10} + 52^{10}) + (10^{10} + 2 \cdot 26^{10})}{62^{10}}$
+\hrulefill
+
+%%% Q4
+\beq  A 5-card hand is dealt from a perfectly shuffled deck. Define the events  A: the hand is a four of a kind (all four cards of one rank plus a 5th card),  B: at least one of the cards in the hand is an ace.\\ Are the events A and B independent? Prove your answer by showing that one of the conditions for independence is either true or false. \eq   
+\sol{4}
+Events: $A$ (Four of a Kind), $B$ (At least one Ace).
+\begin{itemize}
+    \item $|A| = 13 \times 48 = 624$. (13 ranks for the quad $\times$ 48 kickers).
+    \item $A \cap B$: Hand is Four of a Kind AND has an Ace.
+    \begin{itemize}
+        \item Case 1: Quad Aces ($AAAA + X$). 48 possibilities.
+        \item Case 2: Quad Non-Aces ($KKKK + A$). 12 ranks $\times$ 4 suits of Aces = 48 possibilities.
+        \item $|A \cap B| = 96$.
+    \end{itemize}
+    \item $P(B|A) = \df{96}{624} = \df{2}{13} \approx 0.15$.
+    \item $P(B) = 1 - \frac{\binom{48}{5}}{\binom{52}{5}} \approx 0.34$.
+    \item Since $P(B|A) \neq P(B)$, they are \textbf{not independent}.
+\end{itemize}
+\hrulefill
+
+%%% Q5
+\beq  A wedding party of eight people is lined up in a random order. Every way of lining up the people in the wedding party is equally likely. \\ (a) What is the probability that the bride is next to the groom?  \\ (b) What is the probability that the maid of honor is in the leftmost position? \\  (c)  Determine whether the two events are independent. Prove your answer by showing that one of the conditions for independence is either true or false. \eq 
+\sol{5}
+Total permutations: $8!$.
+\begin{itemize}
+    \item (a) Treat Bride and Groom as one block $\{BG\}$. We arrange 7 items. $BG$ can be $BG$ or $GB$.
+    \\ $P = \df{2 \times 7!}{8!} = \df{1}{4}$.
+    \item (b) Maid of Honor fixed in position 1. Arrange remaining 7.
+    \\ $P = \df{7!}{8!} = \df{1}{8}$.
+    \item (c) Check $P(A \cap B)$. Maid in pos 1, Bride/Groom adjacent in remaining 7 spots.
+    \\ Ways = $2 \times 6!$ (treating BG as block in the line of 7).
+    \\ $P(A \cap B) = \df{2 \times 6!}{8!} = \df{2}{56} = \df{1}{28}$.
+    \\ Check Independence: $P(A) \times P(B) = \df{1}{4} \times \df{1}{8} = \df{1}{32}$.
+    \\ $\df{1}{28} \neq \df{1}{32}$. \textbf{Not Independent.}
+\end{itemize}
+\hrulefill
+
+%%% Q6
+\beq  A biased coin is flipped 10 times. In a single flip of the coin, the probability of heads is $1/3$ and the probability of tails is $2/3$. The outcomes of the coin flips are mutually independent. What is the probability of each event?\\ (a) Every flip comes up heads \\ (b) The first 5 flips come up heads. The last 5 flips come up tails.  \\ (c) The first flip comes up heads. The rest of the flips come up tails. \eq  
+\sol{6}
+$P(H) = 1/3, P(T) = 2/3$.
+\begin{itemize}
+    \item (a) All Heads: $(1/3)^{10} = \df{1}{59049}$.
+    \item (b) 5 Heads, then 5 Tails: $(1/3)^5 (2/3)^5 = \df{32}{3^{10}} = \df{32}{59049}$.
+    \item (c) 1 Head, then 9 Tails: $(1/3)^1 (2/3)^9 = \df{512}{59049}$.
+\end{itemize}
+\hrulefill
+
+%%% Q7
+\beq  The national flufferball association decides to implement a drug screening procedure to test its athletes for illegal performance enhancing drugs. 3\% of the professional flufferball players actually use performance enhancing drugs. A test for the drugs has a false positive rate of 2\% and a false negative rate of 4\%. In other words, a person who does not take the drugs will test positive with probability 0.02. A person who does take the drugs will test negative with probability 0.04. A randomly selected player is tested and tests positive. What is the probability that she really does take performance enhancing drugs? \eq 
+\sol{7}
+Bayes' Theorem. Let $D$ be Drug User, $+$ be Positive Test.
+\begin{itemize}
+    \item $P(D) = 0.03$. $P(D^c) = 0.97$.
+    \item $P(+|D) = 1 - 0.04 = 0.96$ (Sensitivity).
+    \item $P(+|D^c) = 0.02$ (False Positive).
+    \item $P(D|+) = \df{P(+|D)P(D)}{P(+|D)P(D) + P(+|D^c)P(D^c)}$
+    \item $P(D|+) = \df{0.96(0.03)}{0.96(0.03) + 0.02(0.97)} = \df{0.0288}{0.0288 + 0.0194} = \df{0.0288}{0.0482}$
+    \item \textbf{Answer:} $\approx 0.5975$ or $59.75\%$
+\end{itemize}
+\hrulefill
+
+%%% Q8
+\beq  Sally has two coins. The first coin is a fair coin and the second coin is biased. The biased coin comes up heads with probability .75 and tails with probability .25. She selects a coin at random and flips the coin ten times. The results of the coin flips are mutually independent. The result of the 10 flips is: T,T,H,T,H,T,T,T,H,T. What is the probability that she selected the biased coin? \eq    
+\sol{8}
+Let $C_F$ be Fair Coin ($50/50$), $C_B$ be Biased ($75/25$).
+Data: 3 Heads, 7 Tails.
+\begin{itemize}
+    \item $P(Data | C_F) = \binom{10}{3} (0.5)^{10} \approx 0.117$ (Actually since specific sequence given: $0.5^{10} \approx 0.000976$).
+    \item $P(Data | C_B) = 0.75^3 \times 0.25^7 \approx 0.0000257$.
+    \item Priors are equal ($0.5$).
+    \item $P(C_B | Data) = \df{0.0000257}{0.0000257 + 0.000976} \approx \textbf{0.0256}$
+\end{itemize}
+The sequence is extremely unlikely for a coin biased towards heads.
+\hrulefill
+
+%%% Q9
+\beq  Assume 1 person out of 10,000 is infected with HIV, and there is a test in which 2.5\% of all people test positive for the virus although they do not  have it. If you test negative on this test, then you definitely do not have HIV. What is the chance of having HIV, assuming you test positive for it? \eq   
+\sol{9}
+$P(HIV) = 0.0001$. $P(+|Healthy) = 0.025$. $P(-|HIV) = 0$ (so $P(+|HIV) = 1$).
+\begin{itemize}
+    \item $P(HIV|+) = \df{1(0.0001)}{1(0.0001) + 0.025(0.9999)}$
+    \item $P(HIV|+) = \df{0.0001}{0.0001 + 0.0249975} \approx \textbf{0.00398}$ or $0.4\%$
+\end{itemize}
+\hrulefill
+
+%%% Q10
+\beq  Consider an experiment in which a red die and a blue die are thrown. Let X be the random variable whose value is the product of the numbers on the red and blue dice. \\ (a) What is the range of $X$, i.e. its possible values ? \\ (b) What is the probability that $X = 6$? \eq   
+\sol{10}
+$X = \text{Red} \times \text{Blue}$.
+\begin{itemize}
+    \item (a) \textbf{Range:} $\{1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 25, 30, 36\}$
+    \item (b) Pairs multiplying to 6: $(1,6), (2,3), (3,2), (6,1)$. Total 4 outcomes.
+    \item $P(X=6) = \df{4}{36} = \df{1}{9}$.
+\end{itemize}
+\hrulefill
+
+%%% Q11
+\begin{q}\hskip-.3cm) Certain rules allow us to determine by inspection when a positive integer n is divisible by a positive integer k. For example, in base 10, $5|n$ if and only if n ends in the digit 5 or 0. Similarly, $2|n$ if and only if n ends in one of the digits $0,2,4,6,8$.  There are also rules to determine divisibility by many different integers.  Use your knowledge of  divisibility rules in base 10, to write divisibility rules for $n=2, 3,4,5,6,7,8$ in base 9\end{q}
+\sol{11}
+Divisibility rules in Base 9. Let $N = (d_k \dots d_1 d_0)_9$.
+\begin{itemize}
+    \item $n=2$: Since $9 \equiv 1 \pmod 2$, sum of digits must be even.
+    \item $n=3$: Since $9 \equiv 0 \pmod 3$, last digit $d_0$ must be divisible by 3 ($0, 3, 6$).
+    \item $n=4$: Since $9 \equiv 1 \pmod 4$, sum of digits divisible by 4.
+    \item $n=5$: Since $9 \equiv -1 \pmod 5$, alternating sum of digits divisible by 5.
+    \item $n=6$: Must satisfy rules for 2 and 3. Last digit $0,3,6$ AND sum of digits even.
+    \item $n=7$: Since $9 \equiv 2 \pmod 7$, $d_0 + 2d_1 + 4d_2 + \dots$ divisible by 7.
+    \item $n=8$: Since $9 \equiv 1 \pmod 8$, sum of digits divisible by 8.
+\end{itemize}
+\hrulefill
+
+%%% Q12
+\begin{q}\hskip-.3cm) (a) Find the number of positive integer divisors of $648$.\\ (b) Find the sum of all positive integer divisors of 648.\end{q}
+\sol{12}
+$648 = 2^3 \times 3^4$.
+\begin{itemize}
+    \item (a) Count: $(3+1)(4+1) = 20$.
+    \item (b) Sum: $\df{2^4-1}{2-1} \times \df{3^5-1}{3-1} = 15 \times 121 = \textbf{1815}$.
+\end{itemize}
+\hrulefill
+
+%%% Q13
+\begin{q}\hskip-.3cm) Find the decimal, binary, octal and base 4 expansion of $(D5A3)_{16}$.\end{q}
+\sol{13}
+Hex: $D5A3_{16}$.
+\begin{itemize}
+    \item \textbf{Binary:} $1101\ 0101\ 1010\ 0011_2$
+    \item \textbf{Base 4:} $11|01|01|01|10|10|00|11 \rightarrow 31112203_4$
+    \item \textbf{Octal:} $1|101|010|110|100|011 \rightarrow 152643_8$
+    \item \textbf{Decimal:} $13(16^3) + 5(16^2) + 10(16) + 3 = 53248 + 1280 + 160 + 3 = \textbf{54691}$
+\end{itemize}
+\hrulefill
+
+%%% Q14
+\begin{q}\hskip-.3cm) Find values a, b, and c (not all 0) such that $(abc)_5 = (cba)_8$, or prove that there are none.\end{q}
+\sol{14}
+$(abc)_5 = (cba)_8 \implies 25a + 5b + c = 64c + 8b + a$.
+\begin{itemize}
+    \item Simplify: $24a - 3b - 63c = 0 \implies 8a - b - 21c = 0 \implies b = 8a - 21c$.
+    \item Constraints: $1 \le a \le 4$, $0 \le b \le 4$, $1 \le c \le 4$.
+    \item If $c=1$, $b = 8a - 21$.
+    \item Try $a=3 \implies b = 24 - 21 = 3$. Valid ($331_5 = 131_{10}$? No. $25(3)+15+1=91$. $64(1)+24+3=91$).
+    \item \textbf{Answer:} $a=3, b=3, c=1$.
+\end{itemize}
+\hrulefill
+
+%%% Q15
+\begin{q}\hskip-.3cm) Suppose the odd primes 3, 5, 7,11,13,17,... in order of increasing size are $p_1,p_2,p_3,....$.\\ Prove or disprove:\\ $p_1p_2p_3 ...p_k + 2$ is prime, for all $k \geq 1$.\end{q}
+\sol{15}
+Disprove: $p_1 \dots p_k + 2$ is prime.
+\begin{itemize}
+    \item $k=1: 3+2=5$ (Prime)
+    \item $k=2: 3(5)+2=17$ (Prime)
+    \item $k=3: 3(5)(7)+2=107$ (Prime)
+    \item $k=4: 3(5)(7)(11)+2 = 1157$.
+    \item Test 1157: $1157 = 13 \times 89$. Not Prime.
+    \item \textbf{Answer:} False. Counterexample at $k=4$.
+\end{itemize}
+\hrulefill
+
+%%% Q16
+\begin{q}\hskip-.3cm) Use the construction in the proof of the Chinese remainder theorem to find all solutions to the system of congruences:\\  $x \equiv 1 \;\;( mod\;\; 2 )$,\\ $x \equiv 2 \;\;( mod\;\; 3 )$,\\ $x \equiv 3 \;\;( mod\;\; 5 )$,\\ $x \equiv 4 \;\;( mod\;\; 11 )$ \end{q}
+\sol{16}
+System: $x \equiv 1 (2), x \equiv 2 (3), x \equiv 3 (5), x \equiv 4 (11)$.
+\begin{itemize}
+    \item $M = 330$.
+    \item $x = 1(165)(1) + 2(110)(2) + 3(66)(1) + 4(30)(7) = 165 + 440 + 198 + 840 = 1643$.
+    \item $1643 \pmod{330} = 323$.
+    \item \textbf{Answer:} $x \equiv 323 \pmod{330}$.
+\end{itemize}
+\hrulefill
+
+%%% Q17
+\begin{q}\hskip-.3cm) Solve the system of congruences in the previous question using the method of back substitution.\end{q}
+\sol{17}
+Back Substitution.
+\begin{itemize}
+    \item $x = 2j+1$. Sub into mod 3: $2j+1 \equiv 2 \implies 2j \equiv 1 \implies j \equiv 2 \pmod 3$. $j=3k+2$.
+    \item $x = 2(3k+2)+1 = 6k+5$. Sub into mod 5: $6k+5 \equiv 3 \implies k \equiv 3 \pmod 5$. $k=5m+3$.
+    \item $x = 6(5m+3)+5 = 30m+23$. Sub into mod 11: $30m+23 \equiv 4 \implies 8m+1 \equiv 4 \implies 8m \equiv 3$.
+    \item Multiply by 7 (inverse of 8): $m \equiv 21 \equiv 10 \pmod{11}$. $m=11n+10$.
+    \item $x = 30(11n+10)+23 = 330n + 300 + 23 = 330n + 323$.
+\end{itemize}
+\hrulefill
+
+%%% Q18
+\begin{q}\hskip-.3cm) Use Fermat's little theorem to find $23^{1002}\; mod\; 41$.\end{q}
+\sol{18}
+$23^{1002} \pmod{41}$.
+\begin{itemize}
+    \item Fermat's Little Theorem: $23^{40} \equiv 1 \pmod{41}$.
+    \item $1002 = 25(40) + 2$.
+    \item $23^{1002} \equiv (23^{40})^{25} \cdot 23^2 \equiv 1 \cdot 529 \pmod{41}$.
+    \item $529 = 12(41) + 37$.
+    \item \textbf{Answer:} 37.
+\end{itemize}
+\hrulefill
+
+%%% Q19
+\begin{q}\hskip-.3cm) Show that if  {\bf a} ,{\bf b} , and {\bf m} are integers such that $m \geq 2$ and $a \equiv b\; ( mod\; m )$, then $gcd ( a , m ) = gcd ( b , m )$.\end{q}
+\sol{19}
+\textbf{Proof:}
+Let $d = \gcd(a, m)$. Then $d|a$ and $d|m$.
+Since $a \equiv b \pmod m$, $a = b + km$ for some integer $k$, so $b = a - km$.
+Since $d$ divides $a$ and $m$, it divides $a - km$, so $d|b$.
+Thus $d$ is a common divisor of $b$ and $m$.
+Similarly, any common divisor of $b$ and $m$ must divide $a$.
+Therefore, $\gcd(a, m) = \gcd(b, m)$.
+\hrulefill
+
+%%% Q20
+\begin{q}\hskip-.3cm) Find a counterexample to  of this statement about congruences:\\ If  $a \equiv b \;\;( mod\;\; m )$ and $c \equiv d \;\;( mod\;\; m )$,  where  {\bf a,\, b,\, c,\, d} and {\bf m} are integers with {\bf c} and {\bf d} positive and $m \geq 2$, then $a^c \equiv b^d \;\;( mod\;\; m )$.\end{q}
+\sol{20}
+Statement: If $a \equiv b \pmod m$ and $c \equiv d \pmod m$, then $a^c \equiv b^d \pmod m$.
+\textbf{Counterexample:}
+\begin{itemize}
+    \item Let $m=3$.
+    \item $a=2, b=5 \implies 2 \equiv 5 \pmod 3$.
+    \item $c=1, d=4 \implies 1 \equiv 4 \pmod 3$.
+    \item LHS: $2^1 = 2$.
+    \item RHS: $5^4 = 625 \equiv 1 \pmod 3$.
+    \item $2 \not\equiv 1 \pmod 3$.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,442 @@
+\documentclass[12pt]{article}  
+\usepackage{latexsym,amssymb}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{tabu} % extra features for tabular environment
+\usepackage{amsmath}  % improve math presentation
+\usepackage{graphicx} % takes care of graphic including machinery
+\usepackage{cite} % takes care of citations
+\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
+\usepackage{tikz}
+\usepackage{caption} 
+\usepackage{fancyhdr}
+\usepackage{amssymb} % symbols like /therefore
+\usepackage{amsthm} % proofs
+\usepackage{enumerate} % lettered lists
+\usepackage{mathtools} % macros
+\usepackage{tikz}
+\voffset=-.8cm
+\hoffset=-1.5cm
+\setlength{\textheight}{24cm}
+\setlength{\textwidth}{16cm}
+\pagestyle{myheadings}
+\newtheorem{q} {Question}
+\newcommand{\df}{\displaystyle\frac}
+\newcommand{\beq}{\begin{q}\hskip-.2cm)\hskip.2cm}
+\newcommand{\eq}{\end{q}\newpage}
+\DeclarePairedDelimiter\set{\{}{\}}
+
+\markright {MATH163 Homework 2\hskip2cm Show all your work.}
+\begin{document}
+{\bf Homework 2 MATH163\hskip1cm Show all your work to get credit. }  \vskip0.2cm 
+{\bf Name}: Valen Li {\bf Due Date}:  \underline{10/24/25} 
+\vskip.5cm
+% Question 1
+\beq
+Let $S = \{\emptyset ,a,\{a\}\}$. Determine whether each of these is an  element of $S$, a subset of $S$, neither, or both. Justify your answer\\(a) \{a\}\\(b) \{\{a\}\} \\(c) $\emptyset$\\(d) $\{\{\emptyset\}, a\}$\\(e) $\{\emptyset\}$\\(f) $\{\emptyset,a\}$ \\
+
+\begin{enumerate}[(a)]
+    \item $\set*{a}$ is both an element of $S$ and a subset of $S$. Since $\set*{a}$ appears in $S$, it is an element of $S$. Additionally, every element of $\set*{a}$ is contained in $S$ (specifically, $S$ contains the element $a$), so $\set*{a}$ is a subset of $S$. 
+    \item $\set*{\set*{a}}$ is not an element of $S$, but it is a subset of $S$. The set $\set*{\set*{a}}$ does not appear in $S$, so it is not an element of $S$. However, every element of $\set*{\set*{a}}$ is contained in $S$ (specifically, $S$ contains the element $\set*{a}$), so $\set*{\set*{a}}$ is a subset of $S$.
+    \item $\emptyset$ is both an element of $S$ and a subset of $S$. Since $\emptyset$ appears in $S$, it is an element of $S$. Moreover, $\emptyset$ contains no elements, so vacuously all its elements are in $S$. Therefore, $\emptyset$ is a subset of $S$.
+    \item $\set*{\set*{\emptyset}, a}$ is neither an element of $S$ nor a subset of $S$. The set $\set*{\set*{\emptyset}, a}$ does not appear in $S$, so it is not an element of $S$. Since $\set*{\emptyset}$ is an element of $\set*{\set*{\emptyset}, a}$ but not of $S$, the set $\set*{\set*{\emptyset}, a}$ is not a subset of $S$.
+    \item $\set*{\emptyset}$ is not an element of $S$, but it is a subset of $S$. The set $\set*{\emptyset}$ does not appear in $S$, so it is not an element of $S$. However, every element of $\set*{\emptyset}$ is contained in $S$ (specifically, $S$ contains the element $\emptyset$), so $\set*{\emptyset}$ is a subset of $S$.
+    \item $\set*{\emptyset, a}$ is not an element of $S$, but it is a subset of $S$. The set $\set*{\emptyset, a}$ does not appear in $S$, so it is not an element of $S$. However, every element of $\set*{\emptyset, a}$ is contained in $S$ (specifically, $S$ contains both $\emptyset$ and $a$), so $\set*{\emptyset, a}$ is a subset of $S$.
+\end{enumerate}
+\newpage
+
+% Question 2
+\beq
+You begin with \$1000. You invest it at 5\% compounded annually, but at the end of each year you withdraw \$100 immediately after the interest is paid.\\(a) Set up a recurrence relation and initial condition for the amount you have after n years.\\(b) How much is left in the account after you have withdrawn \$100 at the end of the third year?\\(c) Find a formula for $a_n$.\\(d) Use the formula to determine how long it takes before the last withdrawal reduces the balance in the account to \$0.\\
+
+\begin{enumerate}[(a)]
+    \item 
+    $S_n = S_{n-1}(1.05) - 100, n \geq 1, S_0 = 1000$
+    \item
+    \begin{align*}
+        S_0 = 1000 && S_1 &= S_0(1.05) - 100  &&& S_2 &= S_1(1.05) - 100 &&& S_3 &= S_2(1.05) - 100 \\
+                   &&     &= 1000(1.05) - 100 &&&     &= 950(1.05) - 100 &&&     &= 897.5(1.05) - 100 \\
+                   &&     &= 1050 - 100       &&&     &= 997.5 - 100     &&&     &= 942.375 - 100 \\
+                   &&     &= 950              &&&     &= 897.5           &&&     &= 842.375
+    \end{align*}
+    \textbf{After withdrawing \$100 at the end of the third year, \$842.37 remains in the account.}
+    \item 
+    Let $P = S_0 = 1000, r = 1.05, c=100$.
+    \begin{align*}
+        S_0 = P && S_1 = Pr - c && S_2 &= (Pr - c)r - c &&& S_3 &= (Pr^2 - cr - c)r - c \\
+                &&              &&     &= Pr^2 - cr - c &&&     &= Pr^3 - cr^2 - cr - c
+    \end{align*}
+    \begin{align*}
+        S_n &= Pr^n - cr^{n-1} - cr^{n-2} - \cdots - cr^1 - c \\
+            &= Pr^n - c\paren*{r^{n-1} + r^{n-2} + \cdots + r + 1} \\
+            &= Pr^n - c\paren*{\sum_{i=0}^{n-1} r^i} \\
+            &= Pr^n - c\paren*{\sum_{i=1}^{n} r^{i-1}} \\
+            &= Pr^n - c\paren*{\frac{1-r^n}{1-r}} \\
+            &= 1000\paren*{1.05}^n - 100\paren*{\frac{1-1.05^n}{1-1.05}} \\
+            &= 1000\paren*{1.05}^n + 2000\paren*{1-1.05^n} \\
+            &= 1000\paren*{1.05^n + 2 - 2\paren*{1.05^n}} \\
+            &= 1000\paren*{-1.05^n + 2} \\
+        S_n &= -1000\paren*{1.05^n - 2}
+    \end{align*}
+    \item 
+    \begin{align*}
+        0 &= -1000(1.05^n - 2) \\
+        2 &= 1.05^n \\
+        \log_{1.05} 2 &= n \\
+        \frac{\log 2}{\log 1.05} &= n \\
+        14.21 &\approx n 
+    \end{align*}
+    \textbf{It will take 15 years before the last withdrawal reduces the account balance to \$0.}
+\end{enumerate}
+\newpage
+
+% Question 3
+\beq
+If $P(A)$ means the power set of $A$, \\
+(a) Prove that $P(A)\cup P(B) \subset P(A\cup B)$ is true for all sets A and B.\\(b) Prove that the converse of (a) is not true. That is, prove that:\\ $P(A \cup B) \subset P(A) \cup P(B)$ is false for some sets A and B. \\
+
+\begin{enumerate}[(a)]
+    \item 
+    \begin{proof}
+        Let $S \in (P(A) \unite P(B))$ be arbitrary. \\
+        \\
+        Then $S\in P(A) \lor S \in P(B)$. Since $S$ belongs to the power set of $A$ or $B$, we have $S \subset A \lor S \subset B$. \\
+        \\
+        Now, $P(A \unite B)$ contains all subsets of $A \unite B$, which includes all subsets of $A$ and all subsets of $B$. Therefore, in either case where $S \subset A$ or $S \subset B$, we have $S \in P(A \unite B)$. \\
+        \\
+        Since $S$ was arbitrary, we conclude that $P(A) \unite P(B) \subset P(A \unite B)$.
+    \end{proof}
+    
+    \item 
+    \begin{proof}
+        Let $A = \set*{0}$ and $B = \set*{1}$. \\
+        \\
+        Then $A \unite B = \set*{0,1}$ and $P(A \unite B) = \set*{\emptyset, \set*{0}, \set*{1}, \set*{0,1}}$. \\
+        \\
+        We have $P(A) = \set*{\emptyset, \set*{0}}$ and $P(B) = \set*{\emptyset, \set*{1}}$, so $P(A) \unite P(B) = \set*{\emptyset, \set*{0}, \set*{1}}$. \\ 
+        \\
+        For $P(A \unite B)$ to be a subset of $P(A) \unite P(B)$, every element of $P(A \unite B)$ must be in $P(A) \unite P(B)$. \\
+        \\
+        However, $\set*{0,1} \in P(A \unite B)$ but $\set*{0,1} \notin P(A) \unite P(B)$. Therefore, $P(A \unite B) \subset P(A) \unite P(B)$ is false for some sets $A$ and $B$.
+    \end{proof}
+    
+\end{enumerate}
+\newpage
+
+% Question 4
+\beq
+Prove that the following is true for all sets A, B, and C: if $A \cap C \subset B \cap C$ and $A \cup C \subset B \cup C$, then $A \subset B$. \\
+
+\begin{proof}
+    Let $x \in A$ be arbitrary. We consider two cases: \\
+    \\
+    \textbf{Case 1: $x \in C$.} Then $x \in A \inter C$. Since $A \inter C \subset B \inter C$, we have $x \in B \inter C$. Therefore, $x \in B$. \\
+    \textbf{Case 2: $x \not\in C$.} Since $x \in A$, we have $x \in A \unite C$. Since $A \unite C \subset B \unite C$, we have $x \in B \unite C$. Because $x \not\in C$, it follows that $x \in B$. \\
+    \\
+    In both cases, $x \in B$. Since $x$ was arbitrary, we conclude that $A \subset B$.
+\end{proof}
+\newpage
+% Question 5
+\beq
+Let $f:R\rightarrow R$ have the rule $f(x) = \lceil 3x\rceil + 1$and $g:R\rightarrow R$ have the rule $g(x)=\df{x}{3}$.\\(a) Find $(f o g)^{-1}(\{2.5\})$.\\ (b) Find $(f o g)^{-1}(\{2\})$. \\
+
+\
+\begin{align*}
+    (f \circ g)(x) &= \ceil*{3\paren*{\df{x}{3}}} + 1\\
+                   &= \ceil*{x} + 1 
+\end{align*}
+
+\begin{enumerate}[(a)]
+    \item 
+    We need to find all $x$ such that $(f \circ g)(x) = 2.5$. However, since $\ceil*{x}$ is always an integer and we add 1, $(f \circ g)(x)$ is always an integer. Therefore, $(f \circ g)(x) = 2.5$ has no solutions.
+    \begin{align*}
+        (f \circ g)^{-1}(\set*{2.5}) &= \emptyset
+    \end{align*}
+    \item
+    We need to find all $x$ such that $(f \circ g)(x) = 2$:
+    \begin{align*}
+        \ceil*{x} + 1 &= 2 \\
+        \ceil*{x} &= 1
+    \end{align*}
+    The ceiling function equals 1 when $0 < x \leq 1$.
+    \begin{align*}
+        (f \circ g)^{-1}(\set*{2}) &= (0, 1]
+    \end{align*}
+\end{enumerate}
+\newpage
+
+% Question 6
+\beq
+Find a formula for the recurrence relation $a_n = 2a_{n-1} + 2^n, a_0 = 1$, using a recursive method. \\
+
+\begin{align*}
+    a_0 &= a_0 &&& a_1 &= 2(a_0) + 2^1  &&& a_2 &= 2(2^1 a_0 + 2^1) + 2^2  &&& a_3 &= 2(2^2 a_0 + 2(2^2)) + 2^3 \\ 
+        &= 1   &&&     &= 2^1 a_0 + 2^1 &&&     &= 2^2 a_0 + 2^2 + 2^2      &&&     &= 2^3 a_0 + 2^3 + 2^3 + 2^3 \\
+        &      &&&     &= 4             &&&     &= 2^2 a_0 + 2(2^2)         &&&     &= 2^3 a_0 + 3(2^3) \\
+        &      &&&     &                &&&     &= 12                       &&&     &= 32
+\end{align*}
+Observing the pattern, we obtain:
+\begin{align*}
+    a_n &= 2^n a_0 + n(2^n) \\
+        &= 2^n + n(2^n) \\
+        &= (n+1)2^n
+\end{align*}
+
+\newpage
+\beq Find a formula for an infinite sequence $a_1,a_2,a_3,...$ that begins with the terms 1,2,1,2,1,2,1 and continues this alternating pattern.\\
+
+$a_n = 1 +((n+1) \bmod 2)$\\
+
+The expression $(n+1) \bmod 2$ yields 0 when $n$ is odd (since $n+1$ is even) and yields 1 when $n$ is even (since $n+1$ is odd). Adding 1 to this result produces the desired alternating sequence of 1's and 2's.\\ 
+
+\newpage
+\beq Find a function $f : {\mathbb Z} \rightarrow {\mathbb N} $ that is one-to-one but not onto.\\ \par
+f(x) = 
+\begin{cases}
+2x + 2 & \text{if } x \geq 0 \\
+-2x + 3 & \text{if } x < 0
+\end{cases}
+This function is one-to-one because no two distinct elements in the domain map to the same element in the codomain. However, it is not onto because the image of $f$ does not equal the entire codomain $\mathbb{N}$ (it misses 1 and 3).\\par
+Find a function $g: {\mathbb N} \rightarrow {\mathbb Z} $ that is one-to-one and  onto.\
+$g(x) = x/2$ when $x$ is even and $-(x-1)/2$ when $x$ is odd\
+This function is one-to-one because no two distinct elements in the domain map to the same element in the codomain. It is also onto because the image of $g$ equals the entire codomain $\mathbb{Z}$.\
+\newpage
+\beq Find  $1+x^2 +x^4 +x^6 +x^8 +... $ assuming  $0<|x|<1$.\\
+
+Formula for the sum of a geometric series: $\frac{1}{1-r}$.\\
+
+Since the common ratio of the sequence above is $x^2$, the sum is $\frac{1}{1-x^2}$.\\
+
+\newpage
+\beq Use the Principle of Mathematical Induction to  show this inequality is true for all  integers $n\geq 2$:\hskip1cm$\displaystyle\sum_{i=1}^n\df{1}{\sqrt{i\,\,}} > \sqrt{n\,\,}$\\
+
+\textbf{Base Case ($n = 2$):}
+
+For $n = 2$, we have:
+\[
+\sum_{i=1}^2 \frac{1}{\sqrt{i}} = \frac{1}{\sqrt{1}} + \frac{1}{\sqrt{2}} = 1 + \frac{1}{\sqrt{2}}
+\]
+Since $\sqrt{2} < 2$, we have $\frac{1}{\sqrt{2}} > \frac{1}{2}$. Therefore, $1 + \frac{1}{\sqrt{2}} > 1 + \frac{1}{2} = \frac{3}{2}$, which exceeds $\sqrt{2}$. Thus, the base case holds.
+
+\textbf{Inductive Hypothesis:}
+
+Assume that for some positive integer $k \geq 2$, the inequality
+\[
+\sum_{i=1}^k \frac{1}{\sqrt{i}} > \sqrt{k}
+\]
+is true.
+
+\textbf{Inductive Step:}
+
+We need to prove that for $n = k + 1$, the inequality
+\[
+\sum_{i=1}^{k+1} \frac{1}{\sqrt{i}} > \sqrt{k+1}
+\]
+holds.
+
+Starting with the left-hand side:
+\[
+\begin{aligned}
+\sum_{i=1}^{k+1} \frac{1}{\sqrt{i}} &= \left(\sum_{i=1}^k \frac{1}{\sqrt{i}}\right) + \frac{1}{\sqrt{k+1}}
+\end{aligned}
+\]
+
+By the inductive hypothesis, $\sum_{i=1}^k \frac{1}{\sqrt{i}} > \sqrt{k}$. Therefore:
+\[
+\begin{aligned}
+\sum_{i=1}^{k+1} \frac{1}{\sqrt{i}} &> \sqrt{k} + \frac{1}{\sqrt{k+1}}
+\end{aligned}
+\]
+
+We need to show that $\sqrt{k} + \frac{1}{\sqrt{k+1}} > \sqrt{k+1}$. Squaring both sides:
+\[
+\begin{aligned}
+\left(\sqrt{k} + \frac{1}{\sqrt{k+1}}\right)^2 &> (\sqrt{k+1})^2
+\end{aligned}
+\]
+
+Expanding the left-hand side:
+\[
+\begin{aligned}
+k + 2\sqrt{k}\cdot\frac{1}{\sqrt{k+1}} + \frac{1}{k+1} &> k+1
+\end{aligned}
+\]
+
+Subtracting $k$ from both sides:
+\[
+\begin{aligned}
+2\sqrt{k}\cdot\frac{1}{\sqrt{k+1}} + \frac{1}{k+1} &> 1
+\end{aligned}
+\]
+
+Simplifying $2\sqrt{k}\cdot\frac{1}{\sqrt{k+1}} = \frac{2\sqrt{k}}{\sqrt{k+1}}$:
+\[
+\begin{aligned}
+\frac{2\sqrt{k}}{\sqrt{k+1}} + \frac{1}{k+1} &> 1
+\end{aligned}
+\]
+
+To verify this, multiply through by $\sqrt{k+1}$:
+\[
+\begin{aligned}
+2\sqrt{k} + \frac{\sqrt{k+1}}{k+1} &> \sqrt{k+1}
+\end{aligned}
+\]
+
+Squaring $2\sqrt{k} > \sqrt{k+1}$ gives $4k > k+1$, which simplifies to $3k > 1$. Since $k \geq 2$, we have $3k \geq 6 > 1$, confirming the inequality.
+
+Therefore:
+\[
+\begin{aligned}
+\sum_{i=1}^{k+1} \frac{1}{\sqrt{i}} &> \sqrt{k} + \frac{1}{\sqrt{k+1}} > \sqrt{k+1}
+\end{aligned}
+\]
+
+By the Principle of Mathematical Induction, the inequality
+\[
+\sum_{i=1}^n \frac{1}{\sqrt{i}} > \sqrt{n}
+\]
+holds for all integers $n \geq 2$.
+
+
+\newpage
+\beq Prove that for all positive integers n,  $3^{2^n} -1$ is divisible by $2^{n+2}$.\\
+
+\textbf{Base Case: $n = 1$}\\
+
+$3^{2^1} - 1 = 3^2 - 1 = 9 - 1 = 8 = 2^3 = 2^{1+2}$\\
+
+Thus, the base case holds.\\
+
+\textbf{Inductive Hypothesis:} Assume that for some positive integer $k$, $3^{2^k} -1$ is divisible by $2^{k+2}$.\\
+
+\textbf{Inductive Step:} We need to show that for $n = k + 1$, $3^{2^{k+1}} - 1$ is divisible by $2^{k+3}$.\\
+
+\[3^{2^{k+1}} - 1 = (3^{2^k})^2 - 1\]\\
+
+Using the difference of squares formula $a^2 - b^2 = (a+b)(a-b)$ with $a = 3^{2^k}$ and $b = 1$:\\
+
+\[3^{2^{k+1}} - 1 = (3^{2^k} + 1)(3^{2^k} - 1)\]\\
+
+By the inductive hypothesis, $3^{2^k} - 1$ is divisible by $2^{k+2}$, so we can write $3^{2^k} - 1 = 2^{k+2} \cdot m$ for some integer $m$.\\
+
+\[3^{2^{k+1}} - 1 = (3^{2^k} + 1)(2^{k+2} \cdot m)\]\\
+
+To prove divisibility by $2^{k+3}$, we need to show that $3^{2^k} + 1$ is divisible by $2$.\\
+
+Since $3$ is odd, $3^{2^k}$ is also odd. The sum of an odd number and 1 (which is also odd) gives an even number. Therefore, $3^{2^k} + 1$ is even, meaning it is divisible by $2$.\\
+
+We can write $3^{2^k} + 1 = 2 \cdot \ell$ for some integer $\ell$. Thus:\\
+
+\[3^{2^{k+1}} - 1 = (2 \cdot \ell)(2^{k+2} \cdot m) = 2^{k+3} \cdot \ell m\]\\
+
+Hence, $3^{2^{k+1}} - 1$ is divisible by $2^{k+3}$.\\
+
+By mathematical induction, for all positive integers $n$, $3^{2^n} - 1$ is divisible by $2^{n+2}$.\\
+
+\newpage
+\beq Find a formula for $$(1-\df1{2^2})(1-\df1{3^2})(1-\df1{4^2})(1-\df1{5^2})...(1-\df1{n^2})$$  where $n \geq 2$, and use the Principle of Mathematical Induction to prove that the formula is correct.\\
+
+\textbf{Proposed Formula:} $(1-\frac{1}{2^2})(1-\frac{1}{3^2})\cdots(1-\frac{1}{n^2}) = \frac{n+1}{2n}$\\
+
+\textbf{Base Case ($n = 2$):}
+
+For $n = 2$, the formula gives:
+
+\[
+\frac{2+1}{2(2)} = \frac{3}{4}
+\]
+
+The product in the original expression is $(1 - \frac{1}{2^2}) = (1 - \frac{1}{4}) = \frac{3}{4}$. Therefore, the base case holds.
+
+\textbf{Inductive Hypothesis:}
+
+Assume that the formula holds for some positive integer $k \geq 2$:
+
+\[
+(1 - \frac{1}{2^2})(1 - \frac{1}{3^2}) \cdots (1 - \frac{1}{k^2}) = \frac{k+1}{2k}
+\]
+
+\textbf{Inductive Step:}
+
+We need to show that the formula holds for $n = k + 1$:
+
+\[
+(1 - \frac{1}{2^2})(1 - \frac{1}{3^2}) \cdots (1 - \frac{1}{k^2}) \cdot (1 - \frac{1}{(k+1)^2}) = \frac{(k+1)+1}{2(k+1)} = \frac{k+2}{2(k+1)}
+\]
+
+Starting with the left-hand side and using the inductive hypothesis:
+
+\[
+\begin{aligned}
+&(1 - \frac{1}{2^2})(1 - \frac{1}{3^2}) \cdots (1 - \frac{1}{k^2}) \cdot (1 - \frac{1}{(k+1)^2}) \\
+&= \frac{k+1}{2k} \cdot (1 - \frac{1}{(k+1)^2}) \\
+&= \frac{k+1}{2k} \cdot \frac{(k+1)^2 - 1}{(k+1)^2} \\
+&= \frac{k+1}{2k} \cdot \frac{k^2 + 2k + 1 - 1}{(k+1)^2} \\
+&= \frac{k+1}{2k} \cdot \frac{k^2 + 2k}{(k+1)^2} \\
+&= \frac{k+1}{2k} \cdot \frac{k(k + 2)}{(k+1)^2} \\
+&= \frac{(k+1) \cdot k(k + 2)}{2k(k+1)^2} \\
+&= \frac{k(k + 2)}{2k(k+1)} \\
+&= \frac{k + 2}{2(k+1)}
+\end{aligned}
+\]
+
+This matches our desired result. Therefore, the formula holds for $n = k + 1$.
+
+By mathematical induction, we have shown that the formula
+
+\[
+(1 - \frac{1}{2^2})(1 - \frac{1}{3^2}) \cdots (1 - \frac{1}{n^2}) = \frac{n+1}{2n}
+\]
+
+is correct for all positive integers $n \geq 2$.
+
+\newpage
+\beq Which amounts of stamps can be formed using just five cents stamp and nine cents stamp? Prove your answer using strong induction. \\
+We can form any amount of postage greater than or equal to 32 cents using only 5-cent and 9-cent stamps. \\ \\
+\textbf{Base Cases:}
+We verify that the amounts from 32 to 36 cents can be formed:
+\begin{itemize}
+\item 32 cents: Three 9-cent stamps and one 5-cent stamp ($3 \times 9 + 1 \times 5 = 27 + 5 = 32$).
+\item 33 cents: Two 9-cent stamps and three 5-cent stamps ($2 \times 9 + 3 \times 5 = 18 + 15 = 33$).
+\item 34 cents: One 9-cent stamp and five 5-cent stamps ($1 \times 9 + 5 \times 5 = 9 + 25 = 34$).
+\item 35 cents: Seven 5-cent stamps ($7 \times 5 = 35$).
+\item 36 cents: Four 9-cent stamps ($4 \times 9 = 36$).
+\end{itemize}
+Note that amounts such as 1, 2, 3, 4, 6, 7, 8, 11, 12, 13, 16, 17, 21, 22, 26, 27, 28, 29, 30, and 31 cents cannot be formed, while some smaller amounts like 5, 9, 10, 14, 15, 18, 19, 20, 23, 24, 25 can be formed as previously listed.\\ \\
+\textbf{Inductive Hypothesis:}
+Assume that for all positive integers $k$ where $32 \leq k \leq n$ (for some $n \geq 36$), we can form $k$ cents using only 5-cent and 9-cent stamps.\\ \\
+\textbf{Inductive Step:}
+We want to show that we can form $(n + 1)$ cents using these stamps.\\ \\ 
+Since $n \geq 36$, we have $n - 4 \geq 32$. By the inductive hypothesis, we can form $(n - 4)$ cents. Adding one 5-cent stamp to this gives us $(n - 4) + 5 = n + 1$ cents.\\ \\
+Therefore, we can form $(n + 1)$ cents using only 5-cent and 9-cent stamps.\\ \\
+By strong induction, we have shown that any amount greater than or equal to 32 cents can be formed using 5-cent and 9-cent stamps.\\ \\
+\newpage
+\beq  Let P( n) be the statement that a postage of n cents can be formed using just 3- cent stamps and 5- cent stamps. The parts of this exercise outline a strong induction proof that P( n) is true for $n \geq 8$.\\ \\
+
+a) Show that the statements P( 8), P( 9), and P( 10) are true, completing the basis step of the proof. \\ 
+
+
+We have $3 + 5 = 8$, $3 + 3 + 3 = 9$, and $5 + 5 = 10$, which confirms that P(8), P(9), and P(10) are all true.\\
+
+b) What is the inductive hypothesis of the proof?\\ 
+
+\textbf{Inductive Hypothesis:} P($k$) is true for all $k$ where $8 \leq k \leq n$, where $n \geq 10$.\\ 
+
+c) What do you need to prove in the inductive step?\\ 
+
+We need to prove that P($n + 1$) is true.\\
+
+d) Complete the inductive step for $n \geq 10$ .\\
+
+If $n \geq 10$, then $n + 1 = (n - 2) + 3$. Since $n - 2 \geq 8$, P($n - 2$) is true by the inductive hypothesis.\\
+
+Thus, a postage of $n - 2$ cents can be paid using 3-cent and 5-cent stamps. By adding one 3-cent stamp, we can pay a postage of $n + 1$ cents. Therefore, P($n + 1$) is true.\\
+
+e) Explain why these steps show that this statement is true whenever $n \geq 8$.\\
+
+The base cases establish that P($n$) is true for $n = 8, 9, 10$. The inductive step proves that if P($k$) is true for all $k$ in the range $8 \leq k \leq n$ (where $n \geq 10$), then P($n + 1$) is also true. By strong induction, this proves P($n$) holds for all $n \geq 8$. Specifically, once we have three consecutive values (8, 9, 10), we can generate any subsequent value by adding 3 to a value that is at least 8.
+
+\newpage 
+%%questions
+\end{document}

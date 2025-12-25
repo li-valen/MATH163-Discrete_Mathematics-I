@@ -1,0 +1,219 @@
+\documentclass[12pt]{article}  
+\usepackage{latexsym,graphicx}
+\usepackage{tikz}
+\usepackage{amsmath}
+\voffset=-2cm
+\hoffset=-2cm
+\setlength{\textheight}{24cm}
+\setlength{\textwidth}{18cm}
+\usepackage{fancyhdr}
+\newtheorem{q} {Q}
+\newcommand{\beq} {\begin{q}\hskip-.3cm)\hskip.2cm  }
+\newcommand{\eeq} {\end{q}\newpage}
+\newcommand{\df}{\displaystyle\frac}
+\pagestyle{fancy}
+\fancyhf{} % clear all headers and footers fields
+\fancyhead[R] { {\bf MATH163 Practice for Exam 3}}
+\fancyhead[L]{Show All your work}
+\fancyfoot[C]{\bf State the reasoning to solve this problem.}
+\begin{document}
+{\bf \hskip2cm Practice for Counting and Discrete Probability}\par
+{\bf Name}: Valen Li % {\bf Section}:  \rule{1cm}{.01cm}\hspace*{0.2cm} {\bf Date}:  \rule{2.5cm}{.01cm} \vskip.5cm
+%%questions
+\beq Ten men and ten women are to be put in a row. Find the number of possible rows if no two of the same sex stand adjacent.
+
+\\ \\
+
+\textbf{Solution:}
+
+\\
+
+2 Possible rows: MWMWMWMWM... or WMWMWMWMWM... \\ \\
+
+For the first slot M or W there are 10 men or 10 women to choose from. \\ The next slot will have 10 of the alternate gender. \\ Then 9 then 8... \\ This is just 10!, so 10! for men and 10! for women = 2 * 10! is the number of possible rows.
+
+\eeq
+\beq In how many ways can 8 of the 9 letters in TETHERING be put in a row? \\ \\
+
+\textbf{Solution:} \\
+
+The word TETHERING has letters: T,T,E,T,H,E,R,I,N,G. \\
+
+Counts: T appears 3 times, E appears 2 times, others 1 time each. \\
+
+We remove one letter and arrange the remaining 8. \\
+
+\\
+
+Case 1: Remove one T. Left: T,T,E,E,H,R,I,N,G (2 T, 2 E). \\
+
+Number of arrangements = $\frac{8!}{2! \cdot 2!} = \frac{40320}{4} = 10080$. \\
+
+There are 3 T's to remove, so $3 \times 10080 = 30240$. \\
+
+\\
+
+Case 2: Remove one E. Left: T,T,T,H,R,I,N,G (3 T). \\
+
+Number of arrangements = $\frac{8!}{3!} = \frac{40320}{6} = 6720$. \\
+
+There are 2 E's to remove, so $2 \times 6720 = 13440$. \\
+
+\\
+
+Case 3: Remove H, R, I, N, or G (each appears once). \\
+
+Left: 8 letters with 3 T and 1 E. \\
+
+Number of arrangements = $\frac{8!}{3!} = 6720$ each. \\
+
+5 such letters, so $5 \times 6720 = 33600$. \\
+
+\\
+
+Total = $30240 + 13440 + 33600 = 77320$. \\
+
+\eeq
+\beq Prove the identity $$\binom {n} {r}\binom{r}{k}=\binom {n-k} {r-k} \binom{n}{k}$$ with \(n\geq r \geq k > 0\) \\ a) algebraically\\ b) using a combinatorial argument. \\ \\
+
+\textbf{a) Algebraic proof:} \\
+
+Left side: $\binom{n}{r} \binom{r}{k} = \frac{n!}{r!(n-r)!} \cdot \frac{r!}{k!(r-k)!} = \frac{n!}{k!(r-k)!(n-r)!}$. \\
+
+Right side: $\binom{n-k}{r-k} \binom{n}{k} = \frac{(n-k)!}{(r-k)!(n-k-r+k)!} \cdot \frac{n!}{k!(n-k)!} = \frac{n!}{k!(r-k)!(n-r)!}$. \\
+
+Both sides equal. \\
+
+\\
+
+\textbf{b) Combinatorial argument:} \\
+
+Left: Choose $r$ people from $n$, then choose $k$ leaders from those $r$. \\
+
+Right: First choose $k$ leaders from $n$ ($\binom{n}{k}$ ways). \\
+
+Then choose $r-k$ more members from the remaining $n-k$ people ($\binom{n-k}{r-k}$ ways). \\
+
+Same thing, so equal. \\
+
+\eeq
+\beq How many solutions are there to the equation \(\sum_{i=1}^{i =6}x_i= 31\), where \(x_i, (i = 1, 2, 3, 4, 5, 6) \) is a nonnegative integer such that:\\ a) \(x_i > 1 \)for \(i = 1,2,3,4,5,6 \)?\\ b) \(x_1 \geq1, x_2 \geq2, x_3 \geq3, x_4\geq4, x_5 >5, \text{and } x_6 \geq6 \)?\\ c) \(x_1 \geq 5 \)?\\d) \(x_1 < 8\) and \(x_2 >8\)? \\ \\
+
+\textbf{a)} Let $y_i = x_i - 2$, so $y_i \geq 0$. Then $\sum y_i = 31 - 12 = 19$. \\
+
+Stars and bars: $\binom{19+6-1}{6-1} = \binom{24}{5}$. \\
+
+\\
+
+\textbf{b)} Let $y_1 = x_1 - 1$, $y_2 = x_2 - 2$, ..., $y_5 = x_5 - 6$, $y_6 = x_6 - 6$. All $y_i \geq 0$. \\
+
+Sum: $y_1 + \cdots + y_6 = 31 - (1+2+3+4+6+6) = 31 - 22 = 9$. \\
+
+Answer: $\binom{9+6-1}{5} = \binom{14}{5}$. \\
+
+\\
+
+\textbf{c)} Let $z_1 = x_1 - 5$, $z_i = x_i$ for $i \geq 2$. All $\geq 0$. \\
+
+Sum: $z_1 + x_2 + \cdots + x_6 = 26$. \\
+
+Answer: $\binom{26+6-1}{5} = \binom{31}{5}$. \\
+
+\\
+
+\textbf{d)} $x_1 \leq 7$, $x_2 \geq 9$. Let $w_1 = x_1$, $w_2 = x_2 - 9$. \\
+
+Sum: $w_1 + w_2 + x_3 + \cdots + x_6 = 31 - 9 = 22$, $0 \leq w_1 \leq 7$, $w_2 \geq 0$. \\
+
+Total without upper bound: $\binom{22+6-1}{5} = \binom{27}{5}$. \\
+
+Subtract cases $w_1 \geq 8$: let $w_1' = w_1 - 8$, sum = $22-8=14$, $\binom{14+5}{5} = \binom{19}{5}$. \\
+
+Answer: $\binom{27}{5} - \binom{19}{5}$. \\
+
+\eeq
+\beq  10 kids are randomly grouped into an A team with five kids and a B team with five kids. Each grouping is equally likely. There are 3 kids in the group, Alex and his two best friends Jos\'e and Carl. What is the probability that Alex ends up on the same team with at least one of his two best friends? \\ \\
+
+Total ways to choose teams: ${\binom{10}{5}} = 256$ (divide by 2, teams unlabeled). \\
+
+Fix Alex on team A. Choose 4 more from 9 kids. \\
+
+Cases: \\
+
+- Both friends with Alex: choose 2 friends + 2 others: $\binom{2}{2}\binom{7}{2} = 21$. \\
+
+- Exactly one friend: $\binom{2}{1}\binom{7}{3} = 2 \times 35 = 70$. \\
+
+Favorable: $21 + 70 = 91$. \\
+
+Probability = $\frac{91}{256} = \frac{13}{36}$. \\
+
+\eeq
+\beq  Sally has two coins. The first coin is a fair coin and the second coin is biased. The biased coin comes up heads with probability .75 and tails with probability .25. She selects a coin at random and flips the coin ten times. The results of the coin flips are mutually independent. The result of the 10 flips is: T,T,H,T,H,T,T,T,H,T. What is the probability that she selected the biased coin? \\ \\
+
+P(data | fair) = $(0.5)^{10} = \frac{1}{1024}$. \\
+
+P(data | biased) = $(0.25)^7 (0.75)^3 = \frac{3^{3} \cdot 1^{7}}{4^{10}} = \frac{27}{1048576}$. \\
+
+P(biased) = P(fair) = 0.5. \\
+
+P(data) = $0.5 \cdot \frac{1}{1024} + 0.5 \cdot \frac{27}{1048576}$. \\
+
+= $\frac{512}{1048576} + \frac{27}{1048576} = \frac{539}{1048576}$. \\
+
+P(biased | data) = $\frac{0.5 \cdot 27 / 1048576}{539 / 1048576} = \frac{27}{2 \cdot 539} = \frac{27}{1078}. \\
+
+\eeq
+\beq You have 40 different books, 20 math books, 15 history books, and 5 geography books.\par You pick two books at random, one at a time. What is the probability that the two books are from different disciplines? \\ \\
+
+Total ways: $40 \times 39$. \\
+
+Favorable: \\
+
+- Math then not: $20 \times 20 = 400$ \\
+
+- History then not: $15 \times 25 = 375$ \\
+
+- Geography then not: $5 \times 35 = 175$ \\
+
+Total favorable: $400 + 375 + 175 = 950$. \\
+
+Probability = $\frac{950}{40 \times 39} = \frac{950}{1560} = \frac{95}{156} 
+
+\eeq
+
+\beq Find the expected value and the variance of the random value \(k\), the number of success, of the binomial distribution. \\ \\
+
+E[k] = $np$. \\
+
+Var(k) = $np(1-p)$. \\
+
+\eeq
+\beq Each of 26 cards has a different letter of the alphabet on it. You pick one card at random. A vowel $(a,e,i,o,u,y)$ is worth 3 points and a consonant is worth 0 points. Let X = the value of the card picked. Find E(X), V (X), and the standard deviation of X. \\ \\
+
+Vowels: 6 (worth 3), consonants: 20 (worth 0). \\
+
+E[X] = $\frac{6 \cdot 3 + 20 \cdot 0}{26} = \frac{18}{26} = \frac{9}{13}$. \\
+
+Var(X) = $E[X^2] - (E[X])^2 = \frac{6 \cdot 9}{26} - \left(\frac{9}{13}\right)^2 = \frac{54}{26} - \frac{81}{169} = \frac{729 - 81}{169 \cdot 13/13}$ \\
+
+$\frac{54}{26} = \frac{27}{13}, so \frac{27}{13} - \frac{81}{169} = \frac{27 \cdot 13 - 81}{169} = \frac{351 - 81}{169} = \frac{270}{169}.$ \\
+
+SD = $\sqrt{\frac{270}{169}} = \frac{\sqrt{270}}{13} = \frac{3\sqrt{30}}{13}.$ \\
+
+\eeq
+\beq  Urn 1 contains 9 black balls, 6 white balls and 5 green balls; urn 2 contains 12 green balls, 2 black balls and 6 white balls; urn 3 contains 6 green balls, 2 black balls and 2 white balls. You roll a die to determine which urn to choose: if you roll a 1 or 2 you choose urn 1; if you roll a 3 you choose urn 2  and if you roll a 4, 5, or 6 you choose urn 3. Once the urn is chosen, you draw out a ball at random from that urn. Given that the ball is black, what is the probability that the ball came from urn 3? \\ \\
+
+P(U1) = 2/6 = 1/3, P(U2)=1/6, P(U3)=3/6=1/2. \\
+
+P(B|U1)=9/20, P(B|U2)=2/20=1/10, P(B|U3)=2/10=1/5. \\
+
+P(B) = $(1/3)(9/20) + (1/6)(1/10) + (1/2)(1/5) = 3/20 + 1/60 + 1/10$. \\
+
+LCM 60: $9/60 + 1/60 + 6/60 = 16/60 = 4/15$. \\
+
+P(U3|B) = $\frac{(1/2)(1/5)}{4/15} = \frac{1/10}{4/15} = \frac{1}{10} \cdot \frac{15}{4} = \frac{3}{8}$. \\
+
+\eeq
+%%%questions
+\end{document} 
