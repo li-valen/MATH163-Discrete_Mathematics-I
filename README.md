@@ -46,7 +46,7 @@ This repository tracks course materials, notes, and progress for MATH 163. The c
 - **Expected Value and Variance (7.4)**: Expectation, linearity, variance, standard deviation.
 
 ### Current Grades (snapshot)
-- **Final course grade**: B
+- **Final course grade for first semester**: B
 
 Notes:
 - If more than one exam grade is shown, the exam average is computed after dropping the lowest exam grade.
